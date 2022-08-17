@@ -19,6 +19,7 @@ import { Dialog, Popover, Tab, Transition } from '@headlessui/react'
 import { MenuIcon, SearchIcon, ShoppingBagIcon, XIcon } from '@heroicons/react/outline'
 import { classNames } from '../utils/function';
 import { Site } from '../interfaces/siteV1';
+import Link from 'next/link';
 
 const navigation = {
   featured: [
@@ -232,10 +233,12 @@ export const Header:FC<Header> = ({site}) => {
                               <div className="aspect-w-1 aspect-h-1 rounded-lg bg-gray-100 overflow-hidden group-hover:opacity-75">
                                 <img src={item.imageSrc} alt={item.imageAlt} className="object-center object-cover" />
                               </div>
-                              <a href={item.href} className="mt-6 block font-medium text-gray-900">
+                              <Link href={`/${item.href}`} >
+                              <a  className="mt-6 block font-medium text-gray-900">
                                 <span className="absolute z-10 inset-0" aria-hidden="true" />
                                 {item.name}
                               </a>
+                              </Link>
                               <p aria-hidden="true" className="mt-1">
                                 Comprar ahora
                               </p>
@@ -254,9 +257,11 @@ export const Header:FC<Header> = ({site}) => {
                             >
                               {children1.children.map((children2,i) => (
                                 <li key={i} className="flow-root">
-                                  <a href={children2.head.href} className="-m-2 p-2 block text-gray-500">
+                                  <Link href={`/${children0.head.href}/${children1.head.href}/${children2.head.href}`}>
+                                  <a  className="-m-2 p-2 block text-gray-500">
                                     {children2.head.name}
                                   </a>
+                                  </Link>
                                 </li>
                               ))}
                             </ul>
@@ -270,9 +275,12 @@ export const Header:FC<Header> = ({site}) => {
                 <div className="border-t border-gray-200 py-6 px-4 space-y-6">
                   {navigation.pages.map((page) => (
                     <div key={page.name} className="flow-root">
-                      <a href={page.href} className="-m-2 p-2 block font-medium text-gray-900">
+                      <Link href={`/${page.href}`} >
+                        
+                      <a className="-m-2 p-2 block font-medium text-gray-900">
                         {page.name}
                       </a>
+                      </Link>
                     </div>
                   ))}
                 </div>
@@ -326,14 +334,17 @@ export const Header:FC<Header> = ({site}) => {
 
               {/* Logo */}
               <div className="ml-4 flex lg:ml-0">
-                <a href="#">
+              <Link href={`/`} >
+
+                <a >
                   <span className="sr-only">Workflow</span>
                   <img
                     className="h-8 w-auto"
                     src="https://regalosterrakota.com/wp-content/uploads/2021/10/cropped-2-1-web.png"
                     alt=""
-                  />
+                    />
                 </a>
+                    </Link>
               </div>
 
               {/* Flyout menus */}
@@ -382,10 +393,12 @@ export const Header:FC<Header> = ({site}) => {
                                               className="object-center object-cover"
                                             />
                                           </div>
-                                          <a href={item.href} className="mt-6 block font-medium text-gray-900">
+                                          <Link href={`/${item.href}`} >
+                                          <a className="mt-6 block font-medium text-gray-900">
                                             <span className="absolute z-10 inset-0" aria-hidden="true" />
                                             {item.name}
                                           </a>
+                                          </Link>
                                           <p aria-hidden="true" className="mt-1">
                                             Comprar Ahora
                                           </p>
@@ -404,10 +417,12 @@ export const Header:FC<Header> = ({site}) => {
                                             className="mt-6 space-y-6 sm:mt-4 sm:space-y-4"
                                           >
                                             {children1.children.map((children2, i) => (
-                                              <li key={i} className="flex">
-                                                <a href={children2.head.href} className="hover:text-gray-800">
+                                              <li key={i} className="flex" onClick={() => setOpen(false)}>
+                                                <Link href={`/${children0.head.href}/${children1.head.href}/${children2.head.href}`} >
+                                                <a  className="hover:text-gray-800" >
                                                   {children2.head.name}
                                                 </a>
+                                                </Link>
                                               </li>
                                             ))}
                                           </ul>
@@ -425,13 +440,17 @@ export const Header:FC<Header> = ({site}) => {
                   ))}
 
                   {navigation.pages.map((page) => (
-                    <a
+                    <Link 
+                      href={`/${page.href}`}
                       key={page.name}
-                      href={page.href}
-                      className="flex items-center text-sm font-medium text-gray-700 hover:text-gray-800"
+                      onClick={() => setOpen(false)}
                     >
+                    <a
+                      className="flex items-center text-sm font-medium text-gray-700 hover:text-gray-800"
+                      >
                       {page.name}
                     </a>
+                      </Link>
                   ))}
                 </div>
               </Popover.Group>
