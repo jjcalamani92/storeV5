@@ -1,10 +1,15 @@
 
-import { FC } from 'react';
+import { FC, Key } from 'react';
 import Image from "next/image"
 
 import { Children } from '../interfaces/siteV1';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import useSWR from 'swr';
+import { FURNITURIES } from '../graphql/query/ecommerceV1.query';
+import Skeleton from "react-loading-skeleton";
+import 'react-loading-skeleton/dist/skeleton.css'
+import { Wear } from '../interfaces/ecommerceV1';
 /*
   This example requires Tailwind CSS v2.0+ 
   
@@ -132,29 +137,52 @@ interface ProductPage {
   item: Children
 }
 export const ProductPage: FC<ProductPage> = ({ item }) => {
+  const { asPath, query } = useRouter()
   // console.log(item);
-  const {asPath} = useRouter()
-
+  const { data, isValidating, error } = useSWR([FURNITURIES, { site: process.env.API_SITE }])
+  console.log(data);
+  
   return (
     <section className='py-10'>
       <h2 className="text-2xl font-bold tracking-tight text-gray-900">{item.head.name}</h2>
-
-<div className="grid grid-cols-1 gap-y-10 sm:grid-cols-2 gap-x-6 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8 mt-6 ">
-  {products.map((product) => (
-    <a key={product.id} href={product.href} className="group">
-      <div className="w-full aspect-w-1 aspect-h-1 bg-gray-200 rounded-lg overflow-hidden xl:aspect-w-7 xl:aspect-h-8">
-        <img
-          src={product.imageSrc}
-          alt={product.imageAlt}
-          className="w-full h-full object-center object-cover group-hover:opacity-75"
-        />
-      </div>
-      <h3 className="mt-4 text-sm text-gray-700">{product.name}</h3>
-      <p className="mt-1 text-lg font-medium text-gray-900">{product.price}</p>
-    </a>
-  ))}
-</div>
+      {
+        isValidating
+          ?
+          <div className={`grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6`}>
+            {[1, 2, 3, 4, 5, 6,7,8,9,10].map(i => (
+              <Card key={i} />
+            ))}
+          </div>
+          :
+          <div className="grid grid-cols-1 gap-y-10 sm:grid-cols-2 gap-x-6 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8 mt-6 ">
+            {data.furnitures.map((product:Wear) => (
+              <a key={product._id} href={product.article.slug} className="group">
+                <div className="w-full aspect-w-1 aspect-h-1 bg-gray-200 rounded-lg overflow-hidden xl:aspect-w-7 xl:aspect-h-8">
+                  <Image
+                    src={product.article.image[0].src}
+                    alt={product.article.image[0].alt}
+                    width={500}
+                    height={600}
+                    objectFit='cover'
+                  />
+                </div>
+                <h3 className="mt-4 text-sm text-gray-700">{product.article.title}</h3>
+                <p className="mt-1 text-lg font-medium text-gray-900">{product.article.price}</p>
+              </a>
+            ))}
+          </div>
+      }
     </section>
 
+  )
+}
+const Card = () => {
+  return (
+    <div className="shadow-lg ">
+      <Skeleton
+        height={365} />
+      <Skeleton height={30} />
+      <Skeleton height={30} />
+    </div>
   )
 }

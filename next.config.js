@@ -16,7 +16,7 @@ const nextConfig = {
 	},
 	images: {
 		// loader: 'cloudinary',
-		domains: ["res.cloudinary.com", "regalosterrakota.com" ],
+		domains: ["res.cloudinary.com", "regalosterrakota.com", "tailwindui.com" ],
 	}
 }
 

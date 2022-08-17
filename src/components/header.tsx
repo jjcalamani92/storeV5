@@ -162,10 +162,10 @@ interface Header {
   site: Site
 }
 
-export const Header:FC<Header> = ({site}) => {
+export const Header: FC<Header> = ({ site }) => {
   const [open, setOpen] = useState(false)
   console.log(site);
-  
+
   return (
     <div className="bg-white">
       {/* Mobile menu */}
@@ -209,7 +209,7 @@ export const Header:FC<Header> = ({site}) => {
                 <Tab.Group as="div" className="mt-2">
                   <div className="border-b border-gray-200">
                     <Tab.List className="-mb-px flex px-4 space-x-8">
-                      {site.children.filter(children0 => children0.type === 'ecommerce').map((children0,i) => (
+                      {site.children.filter(children0 => children0.type === 'ecommerce').map((children0, i) => (
                         <Tab
                           key={i}
                           className={({ selected }) =>
@@ -225,7 +225,7 @@ export const Header:FC<Header> = ({site}) => {
                     </Tab.List>
                   </div>
                   <Tab.Panels as={Fragment}>
-                    {site.children.filter(children0 => children0.type === 'ecommerce').map((children0,i) => (
+                    {site.children.filter(children0 => children0.type === 'ecommerce').map((children0, i) => (
                       <Tab.Panel key={i} className="pt-10 pb-8 px-4 space-y-10">
                         <div className="grid grid-cols-2 gap-x-4">
                           {navigation.featured.map((item) => (
@@ -234,10 +234,10 @@ export const Header:FC<Header> = ({site}) => {
                                 <img src={item.imageSrc} alt={item.imageAlt} className="object-center object-cover" />
                               </div>
                               <Link href={`/${item.href}`} >
-                              <a  className="mt-6 block font-medium text-gray-900">
-                                <span className="absolute z-10 inset-0" aria-hidden="true" />
-                                {item.name}
-                              </a>
+                                <a className="mt-6 block font-medium text-gray-900">
+                                  <span className="absolute z-10 inset-0" aria-hidden="true" />
+                                  {item.name}
+                                </a>
                               </Link>
                               <p aria-hidden="true" className="mt-1">
                                 Comprar ahora
@@ -255,12 +255,12 @@ export const Header:FC<Header> = ({site}) => {
                               // aria-labelledby={`${category.id}-${section.id}-heading-mobile`}
                               className="mt-6 flex flex-col space-y-6"
                             >
-                              {children1.children.map((children2,i) => (
+                              {children1.children.map((children2, i) => (
                                 <li key={i} className="flow-root">
                                   <Link href={`/${children0.head.href}/${children1.head.href}/${children2.head.href}`}>
-                                  <a  className="-m-2 p-2 block text-gray-500">
-                                    {children2.head.name}
-                                  </a>
+                                    <a className="-m-2 p-2 block text-gray-500">
+                                      {children2.head.name}
+                                    </a>
                                   </Link>
                                 </li>
                               ))}
@@ -276,10 +276,10 @@ export const Header:FC<Header> = ({site}) => {
                   {navigation.pages.map((page) => (
                     <div key={page.name} className="flow-root">
                       <Link href={`/${page.href}`} >
-                        
-                      <a className="-m-2 p-2 block font-medium text-gray-900">
-                        {page.name}
-                      </a>
+
+                        <a className="-m-2 p-2 block font-medium text-gray-900">
+                          {page.name}
+                        </a>
                       </Link>
                     </div>
                   ))}
@@ -317,7 +317,7 @@ export const Header:FC<Header> = ({site}) => {
 
       <header className="relative bg-white">
         <p className="bg-pink-600 h-10 flex items-center justify-center text-sm font-medium text-white px-4 lg:px-0 ">
-         Obtenga envío gratis en pedidos superiores a $ 100
+          Obtenga envío gratis en pedidos superiores a $ 100
         </p>
 
         <nav aria-label="Top" className="max-w-7xl mx-auto px-4 lg:px-0">
@@ -334,17 +334,17 @@ export const Header:FC<Header> = ({site}) => {
 
               {/* Logo */}
               <div className="ml-4 flex lg:ml-0">
-              <Link href={`/`} >
+                <Link href={`/`} >
 
-                <a >
-                  <span className="sr-only">Workflow</span>
-                  <img
-                    className="h-8 w-auto"
-                    src="https://regalosterrakota.com/wp-content/uploads/2021/10/cropped-2-1-web.png"
-                    alt=""
+                  <a >
+                    <span className="sr-only">Workflow</span>
+                    <img
+                      className="h-8 w-auto"
+                      src="https://regalosterrakota.com/wp-content/uploads/2021/10/cropped-2-1-web.png"
+                      alt=""
                     />
-                </a>
-                    </Link>
+                  </a>
+                </Link>
               </div>
 
               {/* Flyout menus */}
@@ -377,7 +377,7 @@ export const Header:FC<Header> = ({site}) => {
                             leaveTo="opacity-0"
                           >
                             <Popover.Panel className="absolute top-full inset-x-0 text-sm text-gray-500">
-                              
+
                               <div className="absolute inset-0 top-1/2 bg-white shadow" aria-hidden="true" />
 
                               <div className="relative bg-white">
@@ -394,10 +394,10 @@ export const Header:FC<Header> = ({site}) => {
                                             />
                                           </div>
                                           <Link href={`/${item.href}`} >
-                                          <a className="mt-6 block font-medium text-gray-900">
-                                            <span className="absolute z-10 inset-0" aria-hidden="true" />
-                                            {item.name}
-                                          </a>
+                                            <a className="mt-6 block font-medium text-gray-900">
+                                              <span className="absolute z-10 inset-0" aria-hidden="true" />
+                                              {item.name}
+                                            </a>
                                           </Link>
                                           <p aria-hidden="true" className="mt-1">
                                             Comprar Ahora
@@ -406,7 +406,7 @@ export const Header:FC<Header> = ({site}) => {
                                       ))}
                                     </div>
                                     <div className="row-start-1 col-span-2 grid grid-cols-4 gap-y-10 gap-x-8 text-sm">
-                                      {children0.children.map((children1, i)=> (
+                                      {children0.children.map((children1, i) => (
                                         <div key={i}>
                                           <p id={`${children1.head.name}-heading`} className="font-medium text-gray-900">
                                             {children1.head.name}
@@ -419,9 +419,9 @@ export const Header:FC<Header> = ({site}) => {
                                             {children1.children.map((children2, i) => (
                                               <li key={i} className="flex" onClick={() => setOpen(false)}>
                                                 <Link href={`/${children0.head.href}/${children1.head.href}/${children2.head.href}`} >
-                                                <a  className="hover:text-gray-800" >
-                                                  {children2.head.name}
-                                                </a>
+                                                  <a className="hover:text-gray-800" >
+                                                    {children2.head.name}
+                                                  </a>
                                                 </Link>
                                               </li>
                                             ))}
@@ -433,28 +433,28 @@ export const Header:FC<Header> = ({site}) => {
                                 </div>
                               </div>
                             </Popover.Panel>
-                          </Transition> 
+                          </Transition>
                         </>
                       )}
                     </Popover>
                   ))}
 
                   {navigation.pages.map((page) => (
-                    <Link 
+                    <Link
                       href={`/${page.href}`}
                       key={page.name}
                       onClick={() => setOpen(false)}
                     >
-                    <a
-                      className="flex items-center text-sm font-medium text-gray-700 hover:text-gray-800"
+                      <a
+                        className="flex items-center text-sm font-medium text-gray-700 hover:text-gray-800"
                       >
-                      {page.name}
-                    </a>
-                      </Link>
+                        {page.name}
+                      </a>
+                    </Link>
                   ))}
                 </div>
               </Popover.Group>
-             
+
 
               <div className="ml-auto flex items-center">
                 {/* <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">

@@ -40,3 +40,51 @@ export const WEAR = gql`
     }
   }
 `;
+
+export const ALL_FURNITURIES = gql`
+  query AllFurnitures {
+    allFurnitures{
+      _id
+			article{
+        title
+        slug
+      }
+    }
+  }
+`;
+export const FURNITURIES = gql`
+  query Furnitures($site:String!) {
+    furnitures(site:$site) {
+      _id
+			article{
+        title
+        slug
+        price
+        route
+        image{
+          src
+          alt
+        }
+      }
+    }
+  }
+`;
+export const FURNITURIE = gql`
+  query Furniture($_id:ID!) {
+    furniture(_id:$_id) {
+      _id
+			article{
+        title
+        slug
+        description
+        price
+        discountPrice
+        image{
+          src
+          alt
+        }
+        route
+      }
+    }
+  }
+`;
