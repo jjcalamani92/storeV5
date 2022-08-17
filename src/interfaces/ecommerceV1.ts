@@ -8,6 +8,7 @@ export interface Article {
   description:string
   price:number
   discountPrice:number
+  route:string
   image: ImageProduct[]
 }
 export interface ImageProduct {

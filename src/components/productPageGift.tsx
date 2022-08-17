@@ -6,7 +6,7 @@ import { Children } from '../interfaces/siteV1';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import useSWR from 'swr';
-import { FURNITURIES } from '../graphql/query/ecommerceV1.query';
+import { FURNITURIES, FURNITURIES1, GIFTS } from '../graphql/query/ecommerceV1.query';
 import Skeleton from "react-loading-skeleton";
 import 'react-loading-skeleton/dist/skeleton.css'
 import { Wear } from '../interfaces/ecommerceV1';
@@ -136,12 +136,9 @@ const products = [
 interface ProductPage {
   item: Children
 }
-export const ProductPage: FC<ProductPage> = ({ item }) => {
+export const ProductPageGift: FC<ProductPage> = ({ item }) => {
   const { asPath, query } = useRouter()
-  // console.log(item);
-  const { data, isValidating, error } = useSWR([FURNITURIES, { site: process.env.API_SITE }])
-  console.log(data);
-  
+  const { data, isValidating, error } = useSWR([GIFTS, { site: process.env.API_SITE }])
   return (
     <section className='py-10'>
       <h2 className="text-2xl font-bold tracking-tight text-gray-900">{item.head.name}</h2>
@@ -149,13 +146,13 @@ export const ProductPage: FC<ProductPage> = ({ item }) => {
         isValidating
           ?
           <div className={`grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6`}>
-            {[1, 2, 3, 4, 5, 6,7,8,9,10].map(i => (
+            {["1", "2", "3", "4", "5", "6","7","8","9","10"].map(i => (
               <Card key={i} />
             ))}
           </div>
           :
           <div className="grid grid-cols-1 gap-y-10 sm:grid-cols-2 gap-x-6 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8 mt-6 ">
-            {data.furnitures.map((product:Wear) => (
+            {data!.gifts.filter((data:Wear) => data.article.route === asPath).map((product:Wear) => (
               <a key={product._id} href={product.article.slug} className="group">
                 <div className="w-full aspect-w-1 aspect-h-1 bg-gray-200 rounded-lg overflow-hidden xl:aspect-w-7 xl:aspect-h-8">
                   <Image
@@ -167,7 +164,7 @@ export const ProductPage: FC<ProductPage> = ({ item }) => {
                   />
                 </div>
                 <h3 className="mt-4 text-sm text-gray-700">{product.article.title}</h3>
-                <p className="mt-1 text-lg font-medium text-gray-900">{product.article.price}</p>
+                <p className="mt-1 text-lg font-medium text-gray-900">{product.article.price} Bs.</p>
               </a>
             ))}
           </div>

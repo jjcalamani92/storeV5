@@ -52,6 +52,23 @@ export const ALL_FURNITURIES = gql`
     }
   }
 `;
+export const FURNITURIES1 = gql`
+  query Furnitures1($site:String!, $route:String!) {
+    furnitures1(site:$site, route:$route) {
+      _id
+			article{
+        title
+        slug
+        price
+        route
+        image{
+          src
+          alt
+        }
+      }
+    }
+  }
+`;
 export const FURNITURIES = gql`
   query Furnitures($site:String!) {
     furnitures(site:$site) {
@@ -84,6 +101,23 @@ export const FURNITURIE = gql`
           alt
         }
         route
+      }
+    }
+  }
+`;
+export const GIFTS = gql`
+  query Gifts($site:String!) {
+    gifts(site:$site) {
+      _id
+			article{
+        title
+        slug
+        price
+        route
+        image{
+          src
+          alt
+        }
       }
     }
   }
