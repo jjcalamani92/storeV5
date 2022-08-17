@@ -5,8 +5,7 @@ import { SITE } from '../graphql'
 import { Site } from '../interfaces/siteV1'
 import { Layout, Routes } from '../layouts'
 import { graphQLClient } from '../swr/graphQLClient'
-import { seo } from '../utils/function'
-import { paths } from '../utils/functionV1'
+import { paths, seo } from '../utils/functionV1'
 
 interface Props {
   site: Site
@@ -17,7 +16,7 @@ const Slug: FC<Props> = ({site}) => {
   // console.log(site);
   
   return (
-    <Layout site={site}>
+    <Layout head={seo(site, query)}  site={site}>
       <Routes site={site} />
     </Layout>
     )
