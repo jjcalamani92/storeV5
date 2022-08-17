@@ -164,7 +164,7 @@ interface Header {
 
 export const Header: FC<Header> = ({ site }) => {
   const [open, setOpen] = useState(false)
-  console.log(site);
+  // console.log(site);
 
   return (
     <div className="bg-white">

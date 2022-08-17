@@ -1,24 +1,22 @@
-
 import { FC, useContext, useState, } from "react";
-// import { SwiperDetail } from "./Swiper";
 import { useRouter } from 'next/router';
 import { RadioGroup } from '@headlessui/react';
 import { Wear } from "../interfaces/ecommerceV1";
 import { SwiperDetail } from "./swiper";
 
-function classNames(...classes: string[]) {
-	return classes.filter(Boolean).join(" ");
-}
+
 
 interface Props {
-	product: Wear;
+	products: Wear[];
 }
 
-export const ProductOverviews: FC<Props> = ({ product }) => {
+export const ProductOverviewFurniture: FC<Props> = ({ products }) => {
+	const {asPath, query} = useRouter()
+	const product = products.find(data => data.article.slug === query.slug![1])!
 
 	return (
 		<>
-			<section className="bg-white" >
+			<section className="bg-white py-10" >
 				{/* <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 lg:max-w-7xl grid  grid-cols-1 md:gap-4 lg:grid-cols-5"> */}
 				<div className="max-w-2xl mx-auto py-0 px-4 sm:px-0 lg:max-w-7xl lg:py-0 lg:px-8 grid grid-cols-1 lg:gap-6 lg:grid-cols-5">
 					<div className="col-span-3" >
@@ -48,7 +46,7 @@ export const ProductOverviews: FC<Props> = ({ product }) => {
 							<div className="mt-6">
                 <div className="flex items-center justify-between">
                   <h3 className="text-sm text-gray-900 font-medium">Tallas</h3>
-                  <a href="#" className="text-sm font-medium text-orange-600 hover:text-orange-500">
+                  <a href="#" className="text-sm font-medium text-pink-700 hover:text-pink-600">
                     Guia de tallas
                   </a>
                 </div>
@@ -67,7 +65,7 @@ export const ProductOverviews: FC<Props> = ({ product }) => {
                             // size.inStock
                               ? 'bg-white shadow-sm text-gray-900 cursor-pointer'
                               : 'bg-gray-50 text-gray-200 cursor-not-allowed',
-                            active ? 'ring-2 ring-orange-500' : '',
+                            active ? 'ring-2 ring-pink-600' : '',
                             'group relative border rounded-md py-3 px-4 flex items-center justify-center text-sm font-medium uppercase hover:bg-gray-50 focus:outline-none sm:flex-1 sm:py-6'
                           )
                         }
@@ -79,7 +77,7 @@ export const ProductOverviews: FC<Props> = ({ product }) => {
                               <span
                                 className={classNames(
                                   active ? 'border' : 'border-2',
-                                  checked ? 'border-orange-500' : 'border-transparent',
+                                  checked ? 'border-pink-600' : 'border-transparent',
                                   'absolute -inset-px rounded-md pointer-events-none'
                                 )}
                                 aria-hidden="true"
@@ -108,7 +106,7 @@ export const ProductOverviews: FC<Props> = ({ product }) => {
               </div>
 								{/* <button
 									type="submit"
-									className="mt-10 w-full bg-orange-500 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-400"
+									className="mt-10 w-full bg-pink-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-pink-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-400"
 								>
 									Agregar al carrito
 								</button> */}
@@ -116,7 +114,7 @@ export const ProductOverviews: FC<Props> = ({ product }) => {
 							{/* <form className="mt-5">
 								<button
 									type="submit"
-									className="mt-4 w-full bg-orange-500 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-400"
+									className="mt-4 w-full bg-pink-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-pink-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-400"
 								>
 									Agregar al carrito
 								</button>
@@ -124,7 +122,7 @@ export const ProductOverviews: FC<Props> = ({ product }) => {
 							<a
 								href={`https://wa.me/591${`site.numberPhone`}?text=Hola%20me%20interesa%20este%20producto:%20https://${`site.numberPhone`}/detalles/${`site.numberPhone`}`}
 								target={'blank'}
-								className="mt-3 w-full bg-orange-500 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-400"
+								className="mt-3 w-full bg-pink-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-pink-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-400"
 							>
 								Preguntar por WhatsApp
 							</a>
@@ -137,12 +135,12 @@ export const ProductOverviews: FC<Props> = ({ product }) => {
 						</div>
 						<div className="mb-4">
 							<h2 className="text-sm font-medium text-gray-900 mb-4">Compartir</h2>
-							{/* <div className="grid grid-cols-7 gap-2 text-orange-500 ">
+							{/* <div className="grid grid-cols-7 gap-2 text-pink-600 ">
 
 								<Link href={`https://www.facebook.com/sharer.php?u=https://${site.domain}${router.asPath}`}>
 									<a target={'_blank'}>
 										<FontAwesomeIcon
-											className="w-6 h-6 hover:text-orange-600"
+											className="w-6 h-6 hover:text-pink-700"
 											icon={faFacebookF}
 										/>
 									</a>
@@ -150,7 +148,7 @@ export const ProductOverviews: FC<Props> = ({ product }) => {
 								<Link href={'#'}>
 									<a target={'_blank'}>
 										<FontAwesomeIcon
-											className="w-6 h-6 hover:text-orange-600"
+											className="w-6 h-6 hover:text-pink-700"
 											icon={faInstagram}
 										/>
 									</a>
@@ -158,7 +156,7 @@ export const ProductOverviews: FC<Props> = ({ product }) => {
 								<Link href={'#'}>
 									<a target={'_blank'}>
 										<FontAwesomeIcon
-											className="w-6 h-6 hover:text-orange-600"
+											className="w-6 h-6 hover:text-pink-700"
 											icon={faTwitter}
 										/>
 									</a>
@@ -166,7 +164,7 @@ export const ProductOverviews: FC<Props> = ({ product }) => {
 								<Link href={'#'}>
 									<a target={'_blank'}>
 										<FontAwesomeIcon
-											className="w-6 h-6 hover:text-orange-600"
+											className="w-6 h-6 hover:text-pink-700"
 											icon={faLinkedin}
 										/>
 									</a>
@@ -174,7 +172,7 @@ export const ProductOverviews: FC<Props> = ({ product }) => {
 								<Link href={'#'}>
 									<a target={'_blank'}>
 										<FontAwesomeIcon
-											className="w-6 h-6 hover:text-orange-600"
+											className="w-6 h-6 hover:text-pink-700"
 											icon={faPinterest}
 										/>
 									</a>
@@ -182,7 +180,7 @@ export const ProductOverviews: FC<Props> = ({ product }) => {
 								<Link href={'#'}>
 									<a target={'_blank'}>
 										<FontAwesomeIcon
-											className="w-6 h-6 hover:text-orange-600"
+											className="w-6 h-6 hover:text-pink-700"
 											icon={faWhatsapp}
 										/>
 									</a>
@@ -190,7 +188,7 @@ export const ProductOverviews: FC<Props> = ({ product }) => {
 								<Link href={'#'}>
 									<a target={'_blank'}>
 										<FontAwesomeIcon
-											className="w-6 h-6 hover:text-orange-600"
+											className="w-6 h-6 hover:text-pink-700"
 											icon={faTelegram}
 										/>
 									</a>

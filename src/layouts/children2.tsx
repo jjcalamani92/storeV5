@@ -15,14 +15,11 @@ interface Props {
 
 export const Children2: FC<Props> = ({ site }) => {
   const { asPath, query } = useRouter()
-  console.log(query.slug);
+  // console.log(query.slug);
   
   // console.log(children2(site, query));
   
   switch (asPath) {
-    
-    // case childrenPaths2(site).find(data => data === asPath):
-    //   return <ChildrenPage item={children2(site, query)!} />
     case childrenPaths2(site).find(data => data === asPath):
       if (children2(site, query)!.type === 'products-furniture') {
         return <ProductPageFurniture item={children2(site, query)!} />

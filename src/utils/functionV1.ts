@@ -1,5 +1,6 @@
 import { Site } from '../interfaces/siteV1';
 import { ParsedUrlQuery } from 'querystring';
+import { Wear } from '../interfaces/ecommerceV1';
 export const childrens0 = (site: Site) => {
   return site?.children;
 };
@@ -81,4 +82,7 @@ export const paths = (site: Site) => {
       ])
     ])
   ]).flat(5).filter(data => data !== null)
+}
+export const productPaths = (gifts: Wear[]) => {
+  return gifts.map(data => `/detalles/${data.article.slug}`)
 }

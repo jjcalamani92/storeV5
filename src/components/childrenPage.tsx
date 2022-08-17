@@ -90,7 +90,7 @@ interface ChildrenPage {
   item: Children
 }
 export const ChildrenPage: FC<ChildrenPage> = ({ item }) => {
-  console.log(item);
+  // console.log(item);
   const {asPath} = useRouter()
 
   return (
