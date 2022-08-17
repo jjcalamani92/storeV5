@@ -65,3 +65,20 @@ export const childrenPaths1 = (site: Site) => {
 export const childrenPaths2 = (site: Site) => {
   return childrens0(site)!.map(data0 => data0.children?.map(data1 => data1.children?.map(data2 => `/${data0.head.href}/${data1.head.href}/${data2.head.href}`))).flat(2).filter(data => typeof data !== 'undefined')
 }
+export const paths = (site: Site) => {
+  return site.children.map(data0 =>  [
+    {
+      slug: data0.slug === "home" ? [] : [data0.slug],
+    },
+    data0.children && data0.children.map(data1 => [
+      {
+        slug: [data0.slug, data1.slug],
+      },
+      data1.children && data1.children.map(data2 => [
+        {
+          slug: [data0.slug, data1.slug, data2.slug],
+        },
+      ])
+    ])
+  ]).flat(5).filter(data => data !== null)
+}

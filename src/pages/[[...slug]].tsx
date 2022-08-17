@@ -6,6 +6,7 @@ import { Site } from '../interfaces/siteV1'
 import { Layout, Routes } from '../layouts'
 import { graphQLClient } from '../swr/graphQLClient'
 import { seo } from '../utils/function'
+import { paths } from '../utils/functionV1'
 
 interface Props {
   site: Site
@@ -23,8 +24,9 @@ const Slug: FC<Props> = ({site}) => {
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
+  const { site } = await graphQLClient.request(SITE, { _id: process.env.API_SITE })
   return {
-    paths: [{params : {slug: []}}, {params : {slug: ['aboutme']}}],
+    paths: paths(site).map(data =>( {params: data})),
     fallback: 'blocking'
   };
 }
