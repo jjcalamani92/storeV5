@@ -35,7 +35,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   const { site } = await graphQLClient.request(SITE, { _id: process.env.API_SITE })
   return {
     props: { site },
-    revalidate: 10,
+    revalidate: 20,
   }
 }
 export default Slug
