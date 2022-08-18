@@ -18,8 +18,8 @@ interface Props {
 const Slug: FC<Props> = ({site, furnitures, gifts}) => {
   const { query, asPath } = useRouter()
   // console.log(site);
-  console.log(furnitures);
-  console.log(gifts);
+  // console.log(furnitures);
+  // console.log(gifts);
   
   return (
     <Layout head={seo(site, query)}  site={site}>

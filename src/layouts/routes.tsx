@@ -10,6 +10,9 @@ import { Children1 } from './children1';
 import { Children2 } from './children2';
 import { Wear } from '../interfaces/ecommerceV1';
 import { ProductOverviewFurniture } from '../components/productOverviewFurniture';
+import { ChildrenPage } from '../components/childrenPage';
+import { ChildrenPageDashboard } from '../components/childrenPageDashboard';
+import { ProductPageDashboard } from '../components/productPageDashboard';
 
 interface Routes {
   site: Site
@@ -37,6 +40,10 @@ export const Routes: FC<Routes> = ({ site, products }) => {
       return <ProductOverviewFurniture products={products.furnitures}/>
     case productPaths(products.gifts).find(data => data === asPath):
       return <ProductOverviewFurniture products={products.gifts}/>
+    case '/dashboard/pages':
+      return <ChildrenPageDashboard item={site.children} />
+    case '/dashboard/products':
+      return <ProductPageDashboard products={products.furnitures} />
 
     default:
       return <Page404 />
