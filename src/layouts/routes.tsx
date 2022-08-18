@@ -32,7 +32,7 @@ export const Routes: FC<Routes> = ({ site, products }) => {
     case childrenPaths1(site).find(data => data === asPath):
       return <Children1 site={site}/>
     case childrenPaths2(site).find(data => data === asPath):
-      return <Children2 site={site}/>
+      return <Children2 site={site} products={products}/>
     case productPaths(products.furnitures).find(data => data === asPath):
       return <ProductOverviewFurniture products={products.furnitures}/>
     case productPaths(products.gifts).find(data => data === asPath):

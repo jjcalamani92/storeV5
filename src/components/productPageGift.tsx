@@ -29,14 +29,16 @@ import { Wear } from '../interfaces/ecommerceV1';
 
 interface ProductPage {
   item: Children
+  products: Wear[]
+
 }
-export const ProductPageGift: FC<ProductPage> = ({ item }) => {
+export const ProductPageGift: FC<ProductPage> = ({ item, products }) => {
   const { asPath, query } = useRouter()
   const { data, isValidating, error } = useSWR([GIFTS, { site: process.env.API_SITE }])
   return (
     <section className='py-10'>
       <h2 className="text-2xl font-bold tracking-tight text-gray-900">{item.head.name}</h2>
-      {
+      {/* {
         isValidating
           ?
           <div className={`grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6`}>
@@ -45,8 +47,9 @@ export const ProductPageGift: FC<ProductPage> = ({ item }) => {
             ))}
           </div>
           :
+      } */}
           <div className="grid grid-cols-1 gap-y-10 sm:grid-cols-2 gap-x-6 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8 mt-6 ">
-            {data!.gifts.filter((data: Wear) => data.article.route === asPath).map((product: Wear) => (
+            {products.filter((data: Wear) => data.article.route === asPath).map((product: Wear) => (
 
               <Link href={`/detalles/${product.article.slug}`} key={product._id}>
                 <a className="group">
@@ -65,7 +68,6 @@ export const ProductPageGift: FC<ProductPage> = ({ item }) => {
               </Link>
             ))}
           </div>
-      }
     </section>
 
   )

@@ -8,12 +8,17 @@ import { ProductPageFurniture } from "../components/productPageFurniture";
 import useSWR from "swr";
 import { FURNITURIES } from "../graphql/query/ecommerceV1.query";
 import { ProductPageGift } from "../components/productPageGift";
+import { Wear } from "../interfaces/ecommerceV1";
 
 interface Props {
   site: Site
+  products: {
+    furnitures: Wear[]
+    gifts: Wear[]
+  }
 }
 
-export const Children2: FC<Props> = ({ site }) => {
+export const Children2: FC<Props> = ({ site, products }) => {
   const { asPath, query } = useRouter()
   // console.log(query.slug);
   
@@ -22,9 +27,9 @@ export const Children2: FC<Props> = ({ site }) => {
   switch (asPath) {
     case childrenPaths2(site).find(data => data === asPath):
       if (children2(site, query)!.type === 'products-furniture') {
-        return <ProductPageFurniture item={children2(site, query)!} />
+        return <ProductPageFurniture item={children2(site, query)!} products={products.furnitures}/>
       } else if (children2(site, query)!.type === 'products-gift') {
-        return <ProductPageGift item={children2(site, query)!} />
+        return <ProductPageGift item={children2(site, query)!} products={products.gifts}/>
       }
       
     // case getPathsC0(sites, asPath):

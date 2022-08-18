@@ -29,14 +29,17 @@ import { Wear } from '../interfaces/ecommerceV1';
 
 interface ProductPage {
   item: Children
+  products: Wear[]
 }
-export const ProductPageFurniture: FC<ProductPage> = ({ item }) => {
+export const ProductPageFurniture: FC<ProductPage> = ({ item, products }) => {
   const { asPath, query } = useRouter()
-  const { data, isValidating, error } = useSWR([FURNITURIES, { site: process.env.API_SITE }])
+  // const { data, isValidating, error } = useSWR([FURNITURIES, { site: process.env.API_SITE }])
+  console.log(products);
+  
   return (
     <section className='py-10'>
       <h2 className="text-2xl font-bold tracking-tight text-gray-900">{item.head.name}</h2>
-      {
+      {/* {
         isValidating
           ?
           <div className={`grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6`}>
@@ -45,8 +48,10 @@ export const ProductPageFurniture: FC<ProductPage> = ({ item }) => {
             ))}
           </div>
           :
+          <h1>Hi</h1>
+      } */}
           <div className="grid grid-cols-1 gap-y-10 sm:grid-cols-2 gap-x-6 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8 mt-6 ">
-            {data!.furnitures.filter((data:Wear) => data.article.route === asPath).map((product:Wear) => (
+            {products.filter((data:Wear) => data.article.route === asPath).map((product:Wear) => (
               <Link href={`/detalles/${product.article.slug}`} key={product._id}>
               <a  className="group">
                 <div className="w-full aspect-w-1 aspect-h-1 bg-gray-200 rounded-lg overflow-hidden xl:aspect-w-7 xl:aspect-h-8">
@@ -64,7 +69,6 @@ export const ProductPageFurniture: FC<ProductPage> = ({ item }) => {
                     </Link>
             ))}
           </div>
-      }
     </section>
 
   )
