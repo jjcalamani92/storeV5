@@ -2,6 +2,7 @@
 import { Fragment } from 'react'
 import { Popover, Transition } from '@headlessui/react'
 import { MenuIcon, XIcon } from '@heroicons/react/outline'
+import Image from 'next/image'
 
 const navigation = [
   { name: 'Product', href: '#' },
@@ -147,7 +148,16 @@ export const Hero = () => {
           src="https://regalosterrakota.com/wp-content/uploads/2022/03/76193631_545525186018032_6163726159403024384_n-1024x430.png"
           alt=""
         />
+        {/* <Image 
+          src={src ? src : "https://res.cloudinary.com/dvcyhn0lj/image/upload/v1655217461/14.1_no-image.jpg_gkwtld.jpg"}
+          width={1000}
+          height={500}
+          alt="hola"
+          objectFit='cover'
+        /> */}
       </div>
     </div>
   )
 }
+// const src = "https://regalosterrakota.com/wp-content/uploads/2022/03/76193631_545525186018032_6163726159403024384_n-1024x430.png"
+const src = null

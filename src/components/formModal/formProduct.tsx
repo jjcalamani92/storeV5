@@ -5,11 +5,16 @@ import { useRouter } from 'next/router';
 import { useForm } from 'react-hook-form';
 import { CreateProductInput } from '../../interfaces/ecommerceV1';
 import { Cascader } from 'antd';
+
 import { graphQLClient } from '../../swr/graphQLClient';
-import { CREATE_WEAR_PRODUCT } from '../../graphql/mutation/ecommerceV1.mutation';
+import { CREATE_FURNITURE_PRODUCT, CREATE_WEAR_PRODUCT } from '../../graphql/mutation/ecommerceV1.mutation';
 import { useSWRConfig } from 'swr';
-import { WEARS } from '../../graphql/query/ecommerceV1.query';
-import 'antd/lib/cascader/style/index.css'
+import { FURNITURIES, WEARS } from '../../graphql/query/ecommerceV1.query';
+// import 'antd/lib/cascader/style/index.less'
+// import 'antd/lib/cascader/style/index.css';
+// import 'antd/dist/antd.css'
+
+
 interface Props {
   open: boolean
   setOpen: React.Dispatch<React.SetStateAction<boolean>>
@@ -21,6 +26,36 @@ const product = {
   route: ['ropa', 'hombre', 'chamarra']
 }
 const routes = [
+  {
+    value: 'tienda',
+    label: 'tienda',
+    children: [
+      {
+        value: 'muebles',
+        label: 'muebles',
+        children: [
+          {
+            value: 'para-el-hogar',
+            label: 'para el hogar',
+          },
+        ],
+      },
+      {
+        value: 'mujer',
+        label: 'mujer',
+        children: [
+          {
+            value: 'chamarra',
+            label: 'chamarra',
+          },
+          {
+            value: 'chaquetas',
+            label: 'chaquetas',
+          },
+        ],
+      },
+    ],
+  },
   {
     value: 'ropa',
     label: 'ropa',
@@ -64,10 +99,10 @@ export const ModalProduct: FC<Props> = ({ open, setOpen, children }) => {
   })
   const cancelButtonRef = useRef(null)
   const onSubmit = async (form: CreateProductInput) => {
-    const data = {...form, price: Number(form.price), discountPrice: Number(form.discountPrice), inStock: Number(form.inStock), route: route, site: query.slug![2]}
+    const data = {...form, price: Number(form.price), discountPrice: Number(form.discountPrice), inStock: Number(form.inStock), route: `/${route.join('/')}`, site: process.env.API_SITE}
     // console.log(data);
-    await graphQLClient.request(CREATE_WEAR_PRODUCT, { input: data })
-    mutate([WEARS, { site: query.slug![2] }])
+    await graphQLClient.request(CREATE_FURNITURE_PRODUCT, { input: data })
+    mutate([FURNITURIES, { site: process.env.API_SITE }])
   }
   const filter = (inputValue: string, path: any[]) =>
   path.some(
@@ -78,7 +113,8 @@ export const ModalProduct: FC<Props> = ({ open, setOpen, children }) => {
     {
       selectedOptions
     }
-
+    console.log(`/${value.join('/')}`)
+    
     setRoute(value);
   };
   const [route, setRoute] = useState(getValues('route'))
@@ -111,12 +147,12 @@ export const ModalProduct: FC<Props> = ({ open, setOpen, children }) => {
               <Dialog.Panel className="relative bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:max-w-lg sm:w-full">
                 <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                   <div className="sm:flex sm:items-start">
-                    {/* <div className="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-orange-100 sm:mx-0 sm:h-10 sm:w-10">
-                      <ExclamationIcon className="h-6 w-6 text-orange-600" aria-hidden="true" />
+                    {/* <div className="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-pink-100 sm:mx-0 sm:h-10 sm:w-10">
+                      <ExclamationIcon className="h-6 w-6 text-pink-600" aria-hidden="true" />
                     </div> */}
                     <div className="mt-3 text-center sm:mt-0 sm:text-left">
                       <Dialog.Title as="h3" className="text-lg leading-6 font-medium text-gray-900">
-                        Actualizar datos del sitio
+                        New Product
                       </Dialog.Title>
 
                     </div>
@@ -132,7 +168,7 @@ export const ModalProduct: FC<Props> = ({ open, setOpen, children }) => {
                           minLength: { value: 2, message: 'Mínimo 2 caracteres' }
                         })} />
                         <div>
-                          {errors.title && <span className="text-xs md:text-sm text-orange-500">{errors.title.message}</span>}
+                          {errors.title && <span className="text-xs md:text-sm text-pink-500">{errors.title.message}</span>}
                         </div>
                       </div>
                       <div className="relative col-span-1">
@@ -144,7 +180,7 @@ export const ModalProduct: FC<Props> = ({ open, setOpen, children }) => {
                           minLength: { value: 2, message: 'Mínimo 2 caracteres' }
                         })} />
                         <div>
-                          {errors.mark && <span className="text-xs md:text-sm text-orange-500">{errors.mark.message}</span>}
+                          {errors.mark && <span className="text-xs md:text-sm text-pink-500">{errors.mark.message}</span>}
                         </div>
                       </div>
                       <div className="relative col-span-1">
@@ -156,7 +192,7 @@ export const ModalProduct: FC<Props> = ({ open, setOpen, children }) => {
                           minLength: { value: 2, message: 'Mínimo 2 caracteres' }
                         })} />
                         <div>
-                          {errors.featured && <span className="text-xs md:text-sm text-orange-500">{errors.featured.message}</span>}
+                          {errors.featured && <span className="text-xs md:text-sm text-pink-500">{errors.featured.message}</span>}
                         </div>
                       </div>
                       <div className="col-span-2">
@@ -180,7 +216,7 @@ export const ModalProduct: FC<Props> = ({ open, setOpen, children }) => {
                             
                         />
                         {/* <div>
-                          {errors.section && <span className="text-xs md:text-sm text-orange-500">{errors.section.message}</span>}
+                          {errors.section && <span className="text-xs md:text-sm text-pink-500">{errors.section.message}</span>}
                         </div> */}
                       </div>
                       <div className="relative col-span-2">
@@ -192,7 +228,7 @@ export const ModalProduct: FC<Props> = ({ open, setOpen, children }) => {
                           minLength: { value: 2, message: 'Mínimo 2 caracteres' }
                         })} />
                         <div>
-                          {errors.description && <span className="text-xs md:text-sm text-orange-500">{errors.description.message}</span>}
+                          {errors.description && <span className="text-xs md:text-sm text-pink-500">{errors.description.message}</span>}
                         </div>
                       </div>
                       <div className="relative col-span-1">
@@ -204,7 +240,7 @@ export const ModalProduct: FC<Props> = ({ open, setOpen, children }) => {
                           min: { value: 0, message: 'Mínimo de valor cero' }
                         })} />
                         <div>
-                          {errors.price && <span className="text-xs md:text-sm text-orange-500">{errors.price.message}</span>}
+                          {errors.price && <span className="text-xs md:text-sm text-pink-500">{errors.price.message}</span>}
                         </div>
                       </div>
                       <div className="relative col-span-1">
@@ -216,7 +252,7 @@ export const ModalProduct: FC<Props> = ({ open, setOpen, children }) => {
                           min: { value: 0, message: 'Mínimo de valor cero' }
                         })} />
                         <div>
-                          {errors.discountPrice && <span className="text-xs md:text-sm text-orange-500">{errors.discountPrice.message}</span>}
+                          {errors.discountPrice && <span className="text-xs md:text-sm text-pink-500">{errors.discountPrice.message}</span>}
                         </div>
                       </div>
                       <div className="relative col-span-1">
@@ -228,7 +264,7 @@ export const ModalProduct: FC<Props> = ({ open, setOpen, children }) => {
                           min: { value: 0, message: 'Mínimo de valor cero' }
                         })} />
                         <div>
-                          {errors.inStock && <span className="text-xs md:text-sm text-orange-500">{errors.inStock.message}</span>}
+                          {errors.inStock && <span className="text-xs md:text-sm text-pink-500">{errors.inStock.message}</span>}
                         </div>
                       </div>
                     </div>
@@ -236,7 +272,7 @@ export const ModalProduct: FC<Props> = ({ open, setOpen, children }) => {
                     {/* <div className=" bg-white text-right mt-3">
                       <button
                         type="submit"
-                        className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-xs md:text-sm font-medium rounded-md text-white bg-orange-500 hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500"
+                        className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-xs md:text-sm font-medium rounded-md text-white bg-pink-500 hover:bg-pink-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500"
                       >
                         {
                           `Crear`
@@ -246,14 +282,14 @@ export const ModalProduct: FC<Props> = ({ open, setOpen, children }) => {
                   <div className=" px-0 py-3 sm:px-0 sm:flex sm:flex-row-reverse">
                   <button
                     type="submit"
-                    className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-orange-600 text-base font-medium text-white hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 sm:ml-3 sm:w-auto sm:text-sm"
+                    className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-pink-600 text-base font-medium text-white hover:bg-pink-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500 sm:ml-3 sm:w-auto sm:text-sm"
                     onClick={() => setOpen(false)}
                   >
                     Create
                   </button>
                   <button
                     type="button"
-                    className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
+                    className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
                     onClick={() => setOpen(false)}
                     ref={cancelButtonRef}
                   >

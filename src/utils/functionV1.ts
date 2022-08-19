@@ -86,3 +86,7 @@ export const paths = (site: Site) => {
 export const productPaths = (gifts: Wear[]) => {
   return gifts.map(data => `/detalles/${data.article.slug}`)
 }
+
+export const productDashboardPaths = (type: string, products: Wear[]) => {
+  return products.map(data => `/dashboard/products/${type}/${data.article.slug}`)
+}

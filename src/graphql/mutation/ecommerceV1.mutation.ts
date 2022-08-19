@@ -8,3 +8,11 @@ export const CREATE_WEAR_PRODUCT = gql`
     }
   }
 `;
+export const CREATE_FURNITURE_PRODUCT = gql`
+  mutation CreateFurniture($input: CreateProductInput!) {
+    createFurniture(input: $input) {
+      _id
+      site
+    }
+  }
+`;
