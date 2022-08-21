@@ -3,72 +3,38 @@ import { ChangeEvent, FC, Fragment, useRef, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { useRouter } from 'next/router';
 import { useForm } from 'react-hook-form';
-import { AddProductImage, CreateProductInput, ImageProduct } from '../../interfaces/ecommerceV1';
-import { CREATE_WEAR_PRODUCT } from '../../graphql/mutation/ecommerceV1.mutation';
+import { AddProductImage, CreateProductInput, ImageProduct, Wear } from '../../interfaces/ecommerceV1';
+import { CREATE_WEAR_PRODUCT, ADD_IMAGES_PRODUCT } from '../../graphql/mutation/ecommerceV1.mutation';
 import { useSWRConfig } from 'swr';
 import { WEARS } from '../../graphql/query/ecommerceV1.query';
 import Image from 'next/image';
-
+import axios from "axios";
+import { graphQLClient } from '../../swr/graphQLClient';
 interface Props {
   openMI: boolean
   setOpenMI: React.Dispatch<React.SetStateAction<boolean>>
   images: ImageProduct[];
+  product: Wear;
 }
-const product = [
-  {
-    uid: "product1",
-    src: "adidas",
-    alt: "adisa"
-  }
-]
-const routes = [
-  {
-    value: 'ropa',
-    label: 'ropa',
-    children: [
-      {
-        value: 'hombre',
-        label: 'hombre',
-        children: [
-          {
-            value: 'chamarra',
-            label: 'chamarra',
-          },
-        ],
-      },
-      {
-        value: 'mujer',
-        label: 'mujer',
-        children: [
-          {
-            value: 'chamarra',
-            label: 'chamarra',
-          },
-          {
-            value: 'chaquetas',
-            label: 'chaquetas',
-          },
-        ],
-      },
-    ],
-  },
 
-
-]
-export const ModalProductImage: FC<Props> = ({ openMI, setOpenMI, images }) => {
+export const ModalProductImage: FC<Props> = ({ openMI, setOpenMI, images, product }) => {
   const { asPath, query } = useRouter()
+  const [image, setImage] = useState(images)
   const { mutate } = useSWRConfig()
-  console.log(images);
+  console.log(product);
 
   const { register, handleSubmit, formState: { errors }, getValues, setValue, watch } = useForm<AddProductImage>({
-    defaultValues: {}
+    defaultValues: { }
   })
+  // console.log(getValues());
+  // console.log('image', image);
+  
   const cancelButtonRef = useRef(null)
   const onSubmit = async (form: AddProductImage) => {
-    const data = { ...form, }
-    // console.log(data);
-    // await graphQLClientS.request(CREATE_WEAR_PRODUCT, { input: data })
-    // mutate([WEARS, { site: query.slug![2] }])
+    // const data = { ...form, }
+    
+    await graphQLClient.request(ADD_IMAGES_PRODUCT, { _id: product._id, input: image })
+    
   }
   const filter = (inputValue: string, path: any[]) =>
     path.some(
@@ -77,21 +43,23 @@ export const ModalProductImage: FC<Props> = ({ openMI, setOpenMI, images }) => {
     );
 
   const onFileSelected = async ({ target }: ChangeEvent<HTMLInputElement>) => {
-    console.log('hi');
+    // console.log('hi');
+    if (!target.files || target.files.length === 0) {
+      return;
+    }
+    try {
+      for (const file of target.files) {
+        const formData = new FormData();
+        formData.append('file', file);
 
-    // if (!target.files || target.files.length === 0) {
-    //   return;
-    // }
-    // try {
-    //   for (const file of target.files) {
-    //     const formData = new FormData();
-    //     formData.append('file', file);
-    //     const { data } = await axios.post(`${process.env.APIUP_URL}/api/upload/image`, formData)
-    //     setValue('imageSrc', (getValues('imageSrc'), data.url), { shouldValidate: true })
-    //   }
-    // } catch (error) {
-    //   console.log({ error })
-    // }
+        const { data } = await axios.post(`${process.env.APIUP_URL}/api/upload/image`, formData)
+        setImage([...image, {src: `${data.url}`, alt: `image of ${product.article.title}`}])
+        // setValue(images, [...getValues(), {src:data.url, alt: 'description image'}], { shouldValidate: true })
+      }
+    } catch (error) {
+      console.log({ error })
+    }
+
   }
   // const [route, setRoute] = useState(getValues('route'))
   return (
@@ -123,8 +91,8 @@ export const ModalProductImage: FC<Props> = ({ openMI, setOpenMI, images }) => {
               <Dialog.Panel className="relative bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:max-w-lg sm:w-full">
                 <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                   <div className="sm:flex sm:items-start">
-                    {/* <div className="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-orange-100 sm:mx-0 sm:h-10 sm:w-10">
-                      <ExclamationIcon className="h-6 w-6 text-orange-600" aria-hidden="true" />
+                    {/* <div className="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-pink-100 sm:mx-0 sm:h-10 sm:w-10">
+                      <ExclamationIcon className="h-6 w-6 text-pink-600" aria-hidden="true" />
                     </div> */}
                     <div className="mt-3 text-center sm:mt-0 sm:text-left">
                       <Dialog.Title as="h3" className="text-lg leading-6 font-medium text-gray-900">
@@ -141,16 +109,16 @@ export const ModalProductImage: FC<Props> = ({ openMI, setOpenMI, images }) => {
                           <div className="flex items-center">
                             <div className=" rounded-lg overflow-hidden leading-none grid grid-cols-3 gap-3">
                               {
-                                images.map((image, i) => (
+                                image.map((image, i) => (
+                                    <Image
+                                      key={i}
+                                      src={image.src}
+                                      alt={image.alt}
+                                      height={300}
+                                      width={300}
+                                      objectFit="cover"
+                                    />
 
-                                  <Image
-                                    key={i}
-                                    src={image.src}
-                                    alt={image.alt}
-                                    height={300}
-                                    width={300}
-                                    objectFit="cover"
-                                  />
                                 ))
                               }
                               <div className="flex justify-center p-4 border-2 border-gray-300 border-dashed rounded-md ">
@@ -192,7 +160,7 @@ export const ModalProductImage: FC<Props> = ({ openMI, setOpenMI, images }) => {
                     {/* <div className=" bg-white text-right mt-3">
                       <button
                         type="submit"
-                        className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-xs md:text-sm font-medium rounded-md text-white bg-orange-500 hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500"
+                        className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-xs md:text-sm font-medium rounded-md text-white bg-pink-500 hover:bg-pink-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500"
                       >
                         {
                           `Crear`
@@ -202,14 +170,14 @@ export const ModalProductImage: FC<Props> = ({ openMI, setOpenMI, images }) => {
                     <div className=" px-0 py-3 sm:px-0 sm:flex sm:flex-row-reverse">
                       <button
                         type="submit"
-                        className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-orange-600 text-base font-medium text-white hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 sm:ml-3 sm:w-auto sm:text-sm"
+                        className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-pink-600 text-base font-medium text-white hover:bg-pink-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500 sm:ml-3 sm:w-auto sm:text-sm"
                         onClick={() => setOpenMI(false)}
                       >
-                        Update
+                        Save
                       </button>
                       <button
                         type="button"
-                        className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
+                        className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
                         onClick={() => setOpenMI(false)}
                         ref={cancelButtonRef}
                       >

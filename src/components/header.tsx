@@ -417,7 +417,7 @@ export const Header: FC<Header> = ({ site }) => {
                                             className="mt-6 space-y-6 sm:mt-4 sm:space-y-4"
                                           >
                                             {children1.children.map((children2, i) => (
-                                              <li key={i} className="flex" onClick={() => setOpen(false)}>
+                                              <li key={i} className="flex">
                                                 <Link href={`/${children0.head.href}/${children1.head.href}/${children2.head.href}`} >
                                                   <a className="hover:text-gray-800" >
                                                     {children2.head.name}
@@ -443,7 +443,7 @@ export const Header: FC<Header> = ({ site }) => {
                     <Link
                       href={`/${page.href}`}
                       key={page.name}
-                      onClick={() => setOpen(false)}
+                      // onClick={() => setOpen(false)}
                     >
                       <a
                         className="flex items-center text-sm font-medium text-gray-700 hover:text-gray-800"

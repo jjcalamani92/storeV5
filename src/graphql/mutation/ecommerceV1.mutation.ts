@@ -16,3 +16,11 @@ export const CREATE_FURNITURE_PRODUCT = gql`
     }
   }
 `;
+
+export const ADD_IMAGES_PRODUCT = gql`
+mutation AddImagesFurniture($_id: ID!, $input: [AddImagesInput!]!) {
+  addImagesFurniture(_id: $_id, input: $input) {
+    _id
+  }
+}
+`;

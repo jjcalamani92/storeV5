@@ -148,7 +148,7 @@ export const HeadingDashboardProduct: FC<HeadingDashboardProduct> = ({ title, pr
         </Transition>
       </Menu>
       {/* <ModalProduct open={open} setOpen={setOpen} /> */}
-      <ModalProductImage openMI={openMI} setOpenMI={setOpenMI} images={product.article.image} />
+      <ModalProductImage openMI={openMI} setOpenMI={setOpenMI} images={product.article.image} product={product} />
       {/* <ModalH open={open} setOpen={setOpen}>
         <form onSubmit={handleSubmit(onSubmit)} >
           <div className="grid grid-cols-2 gap-3 ">

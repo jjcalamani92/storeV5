@@ -12,7 +12,7 @@ export interface Article {
   image: ImageProduct[]
 }
 export interface ImageProduct {
-  uid: string;
+  uid?: string;
   src: string;
   alt: string;
 }
@@ -37,7 +37,7 @@ export interface CreateProductInput {
   route:string[];
 }
 export interface AddProductImage {
-  uid:string
+  uid?:string
   src: string;
   alt: string;
 }
