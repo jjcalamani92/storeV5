@@ -7,7 +7,7 @@ import { Wear } from '../interfaces/ecommerceV1'
 import { Site } from '../interfaces/siteV1'
 import { Layout, Routes } from '../layouts'
 import { graphQLClient } from '../swr/graphQLClient'
-import { paths, seo } from '../utils/functionV1'
+import { childrenPaths2, paths, seo } from '../utils/functionV1'
 
 interface Props {
   site: Site
@@ -19,7 +19,9 @@ const Slug: FC<Props> = ({site, furnitures, gifts}) => {
   const { query, asPath } = useRouter()
   // console.log(site);
   // console.log(furnitures);
-  // console.log(gifts);
+  console.log(childrenPaths2(site));
+  console.log(paths(site));
+  
   
   return (
     <Layout head={seo(site, query)}  site={site}>
