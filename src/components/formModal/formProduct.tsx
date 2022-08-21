@@ -86,35 +86,35 @@ const routes = [
       },
     ],
   },
-  
-  
+
+
 ]
 export const ModalProduct: FC<Props> = ({ open, setOpen, children }) => {
   const { asPath, query } = useRouter()
   const { mutate } = useSWRConfig()
   // console.log(query.slug![2]);
-  
+
   const { register, handleSubmit, formState: { errors }, getValues, setValue, watch } = useForm<CreateProductInput>({
     defaultValues: { ...product }
   })
   const cancelButtonRef = useRef(null)
   const onSubmit = async (form: CreateProductInput) => {
-    const data = {...form, price: Number(form.price), discountPrice: Number(form.discountPrice), inStock: Number(form.inStock), route: `/${route.join('/')}`, site: process.env.API_SITE}
+    const data = { ...form, price: Number(form.price), discountPrice: Number(form.discountPrice), inStock: Number(form.inStock), route: `/${route.join('/')}`, site: process.env.API_SITE }
     // console.log(data);
     await graphQLClient.request(CREATE_FURNITURE_PRODUCT, { input: data })
     mutate([FURNITURIES, { site: process.env.API_SITE }])
   }
   const filter = (inputValue: string, path: any[]) =>
-  path.some(
-    (option) =>
-      option.label.toLowerCase().indexOf(inputValue.toLowerCase()) > -1
-  );
+    path.some(
+      (option) =>
+        option.label.toLowerCase().indexOf(inputValue.toLowerCase()) > -1
+    );
   const onChangeRoute = (value: any, selectedOptions: any) => {
     {
       selectedOptions
     }
     console.log(`/${value.join('/')}`)
-    
+
     setRoute(value);
   };
   const [route, setRoute] = useState(getValues('route'))
@@ -204,16 +204,16 @@ export const ModalProduct: FC<Props> = ({ open, setOpen, children }) => {
                           placeholder="Selecciona la ruta"
                           size={"large"}
                           allowClear={false}
-                          fieldNames={{label: "label", value: "value", children: "children"}}
+                          fieldNames={{ label: "label", value: "value", children: "children" }}
                           defaultValue={route}
-                          style={{width: "100%", marginTop:1, paddingTop:2, fontSize: 15}}
+                          style={{ width: "100%", marginTop: 1, paddingTop: 2, fontSize: 15 }}
                           // className={'w-auto text-xs md:text-sm'}
                           showSearch={{
-                              filter
-                            }}
-                            onSearch={(value) => console.log(value)}
-                            onChange={onChangeRoute}
-                            
+                            filter
+                          }}
+                          onSearch={(value) => console.log(value)}
+                          onChange={onChangeRoute}
+
                         />
                         {/* <div>
                           {errors.section && <span className="text-xs md:text-sm text-pink-500">{errors.section.message}</span>}
@@ -221,7 +221,7 @@ export const ModalProduct: FC<Props> = ({ open, setOpen, children }) => {
                       </div>
                       <div className="relative col-span-2">
                         <label htmlFor="description" className="input-label">Description</label>
-                        <textarea rows={3}  className="input-form peer" placeholder=" " {...register('description', {
+                        <textarea rows={3} className="input-form peer" placeholder=" " {...register('description', {
                           onChange: (e) => { },
                           onBlur: (e) => { },
                           required: 'Este campo es requerido',
@@ -279,26 +279,26 @@ export const ModalProduct: FC<Props> = ({ open, setOpen, children }) => {
                         }
                       </button>
                     </div> */}
-                  <div className=" px-0 py-3 sm:px-0 sm:flex sm:flex-row-reverse">
-                  <button
-                    type="submit"
-                    className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-pink-600 text-base font-medium text-white hover:bg-pink-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500 sm:ml-3 sm:w-auto sm:text-sm"
-                    onClick={() => setOpen(false)}
-                  >
-                    Create
-                  </button>
-                  <button
-                    type="button"
-                    className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
-                    onClick={() => setOpen(false)}
-                    ref={cancelButtonRef}
-                  >
-                    Cancel
-                  </button>
-                </div>
+                    {/* <div className=" px-0 py-3 sm:px-0 sm:flex sm:flex-row-reverse">
+                      <button
+                        type="submit"
+                        className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-pink-600 text-base font-medium text-white hover:bg-pink-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500 sm:ml-3 sm:w-auto sm:text-sm"
+                        onClick={() => setOpen(false)}
+                      >
+                        Create
+                      </button>
+                      <button
+                        type="button"
+                        className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
+                        onClick={() => setOpen(false)}
+                        ref={cancelButtonRef}
+                      >
+                        Cancel
+                      </button>
+                    </div> */}
                   </form>
                 </div>
-                
+
               </Dialog.Panel>
             </Transition.Child>
           </div>

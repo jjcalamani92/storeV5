@@ -19,8 +19,8 @@ const Slug: FC<Props> = ({site, furnitures, gifts}) => {
   const { query, asPath } = useRouter()
   // console.log(site);
   // console.log(furnitures);
-  console.log(childrenPaths2(site));
-  console.log(paths(site));
+  // console.log(childrenPaths2(site));
+  // console.log(paths(site));
   
   
   return (
