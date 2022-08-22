@@ -1,4 +1,4 @@
-import { ChartBarIcon, DesktopComputerIcon, GlobeAltIcon, ShieldCheckIcon, ViewGridIcon, MenuIcon, MenuAlt1Icon, MenuAlt2Icon, MenuAlt3Icon, MenuAlt4Icon, SupportIcon, BookmarkIcon, BookmarkAltIcon, QuestionMarkCircleIcon, DotsVerticalIcon, CodeIcon, PhoneIcon, DotsHorizontalIcon } from '@heroicons/react/outline';
+import { ChartBarIcon, DesktopComputerIcon, GlobeAltIcon, ShieldCheckIcon, ViewGridIcon, MenuIcon, MenuAlt1Icon, MenuAlt2Icon, MenuAlt3Icon, MenuAlt4Icon, SupportIcon, BookmarkIcon, BookmarkAltIcon, QuestionMarkCircleIcon, DotsVerticalIcon, CodeIcon, PhoneIcon, DotsHorizontalIcon, PhotographIcon, XIcon } from '@heroicons/react/outline';
 import { FC } from "react"
 import { ChevronDownIcon } from '@heroicons/react/solid';
 
@@ -11,15 +11,16 @@ export const Icon: FC<Icon> = ({ icon, className ="flex-shrink-0 h-6 w-6 text-or
 
   switch (icon) {
     
+    case 'x':
+      return <XIcon className={className} />;
+    case 'photograph':
+      return <PhotographIcon className={className} />;
     case 'phone-icon':
-      return (
-        <PhoneIcon className={className} />);
+      return <PhoneIcon className={className} />;
     case 'chevron-down':
-      return (
-        <ChevronDownIcon className={className} />);
+      return <ChevronDownIcon className={className} />;
     case 'code-icon':
-      return (
-        <CodeIcon className={className} />);
+      return <CodeIcon className={className} />;
     case 'dots-horizontal':
       return (
         <DotsHorizontalIcon className={className} />);

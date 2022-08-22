@@ -10,6 +10,7 @@ import { WEARS } from '../../graphql/query/ecommerceV1.query';
 import Image from 'next/image';
 import axios from "axios";
 import { graphQLClient } from '../../swr/graphQLClient';
+import { Icon } from '../icon';
 interface Props {
   openMI: boolean
   setOpenMI: React.Dispatch<React.SetStateAction<boolean>>
@@ -17,24 +18,23 @@ interface Props {
 }
 
 export const ModalProductImage: FC<Props> = ({ openMI, setOpenMI, product }) => {
-  const { asPath, query } = useRouter()
+  const { asPath, query, push } = useRouter()
   const [image, setImage] = useState(product.article.image)
   const { mutate } = useSWRConfig()
-  console.log(product);
+  console.log(image);
 
   const { register, handleSubmit, formState: { errors }, getValues, setValue, watch } = useForm<AddProductImage>({
-    defaultValues: { }
+    defaultValues: {}
   })
-  // console.log(getValues());
-  // console.log('image', image);
-  
+
   const cancelButtonRef = useRef(null)
   const onSubmit = async (form: AddProductImage) => {
     // const data = { ...form, }
-    
+
     await graphQLClient.request(ADD_IMAGES_PRODUCT, { _id: product._id, input: image })
-    
+    push(`/dashboard/products/furniture/${product.article.slug}`)
   }
+
   const filter = (inputValue: string, path: any[]) =>
     path.some(
       (option) =>
@@ -52,15 +52,16 @@ export const ModalProductImage: FC<Props> = ({ openMI, setOpenMI, product }) => 
         formData.append('file', file);
 
         const { data } = await axios.post(`${process.env.APIUP_URL}/api/upload/image`, formData)
-        setImage([...image, {src: `${data.url}`, alt: `image of ${product.article.title}`}])
+        setImage([...image, { src: `${data.url}`, alt: `image of ${product.article.title}` }])
         // setValue(images, [...getValues(), {src:data.url, alt: 'description image'}], { shouldValidate: true })
       }
     } catch (error) {
       console.log({ error })
     }
-
   }
-  // const [route, setRoute] = useState(getValues('route'))
+  const onDeleteImage = (i: number) => {
+    setImage(image.splice(i,1))
+  }
   return (
     <Transition.Root show={openMI} as={Fragment}>
       <Dialog as="div" className="relative z-30" initialFocus={cancelButtonRef} onClose={setOpenMI}>
@@ -108,37 +109,30 @@ export const ModalProductImage: FC<Props> = ({ openMI, setOpenMI, product }) => 
                           <div className="flex items-center">
                             <div className=" rounded-lg overflow-hidden leading-none grid grid-cols-3 gap-3">
                               {
-                                image?
-                                image.map((image, i) => (
-                                    <Image
-                                      key={i}
-                                      src={image.src}
-                                      alt={image.alt}
-                                      height={300}
-                                      width={300}
-                                      objectFit="cover"
-                                    />
+                                image ?
+                                  image.map((image, i) => (
+                                    <div key={i} className="relative border-2">
 
-                                ))
-                                :
-                                null
+                                      <Image
+                                        src={image.src}
+                                        alt={image.alt}
+                                        height={300}
+                                        width={300}
+                                        objectFit="cover"
+                                      />
+                                      <div onClick={() => onDeleteImage(i)}>
+                                        <Icon icon="x" className='text-xs md:text-sm leading-none mx-1 text-gray-600 hover:text-gray-900 rounded focus:outline-none absolute bottom-1 right-1 w-5 h-5' />
+                                      </div>
+                                    </div>
+
+                                  ))
+                                  :
+                                  null
                               }
-                              <div className="flex justify-center p-4 border-2 border-gray-300 border-dashed rounded-md ">
+                              <div className="flex justify-center p-3 border-2 border-gray-300 border-dashed rounded-md ">
                                 <div className="space-y-1 text-center">
-                                  <svg
-                                    className="mx-auto h-12 w-12 text-gray-400"
-                                    stroke="currentColor"
-                                    fill="none"
-                                    viewBox="0 0 48 48"
-                                    aria-hidden="true"
-                                  >
-                                    <path
-                                      d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
-                                      strokeWidth={2}
-                                      strokeLinecap="round"
-                                      strokeLinejoin="round"
-                                    />
-                                  </svg>
+                                  <Icon icon="photograph" className='mx-auto h-12 w-12 text-gray-400' />
+
                                   <div className="flex flex-col text-xs md:text-sm text-gray-600">
                                     <label
                                       htmlFor="file-upload"
