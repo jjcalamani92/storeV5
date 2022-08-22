@@ -111,10 +111,9 @@ export const HeadingDashboardProduct: FC<HeadingDashboardProduct> = ({ title, pr
 
       <Menu as="div" className="relative z-10 text-left flex w-auto">
         <Menu.Button className=" justify-center  text-sm font-medium text-gray-700 hover:text-gray-900">
-          {/* <Icon icon="dots-vertical" /> */}
-          <button className="inline-block text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:ring-4 focus:outline-none focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-1.5" >
+          <div className="inline-block text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:ring-4 focus:outline-none focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-1.5" >
             <Icon icon='dots-vertical' className="w-6 h-6" />
-          </button>
+          </div>
         </Menu.Button>
         <Transition
           as={Fragment}
@@ -147,50 +146,7 @@ export const HeadingDashboardProduct: FC<HeadingDashboardProduct> = ({ title, pr
           </Menu.Items>
         </Transition>
       </Menu>
-      {/* <ModalProduct open={open} setOpen={setOpen} /> */}
-      <ModalProductImage openMI={openMI} setOpenMI={setOpenMI} images={product.article.image} product={product} />
-      {/* <ModalH open={open} setOpen={setOpen}>
-        <form onSubmit={handleSubmit(onSubmit)} >
-          <div className="grid grid-cols-2 gap-3 ">
-            <div className="relative col-span-2">
-              <label htmlFor="title" className="input-label">Nombre</label>
-              <input type="text" id="floating_filled" className="input-form peer" placeholder=" " {...register('title', {
-                onChange: (e) => { },
-                onBlur: (e) => { },
-                required: 'Este campo es requerido',
-                minLength: { value: 2, message: 'Mínimo 2 caracteres' }
-              })} />
-              <div>
-                {errors.title && <span className="text-xs md:text-sm text-orange-500">{errors.title.message}</span>}
-              </div>
-            </div>
-            <div className="relative col-span-2">
-              <label htmlFor="mark" className="input-label">Marca</label>
-              <input type="text" id="floating_filled" className="input-form peer" placeholder=" " {...register('mark', {
-                onChange: (e) => { },
-                onBlur: (e) => { },
-                required: 'Este campo es requerido',
-                minLength: { value: 2, message: 'Mínimo 2 caracteres' }
-              })} />
-              <div>
-                {errors.mark && <span className="text-xs md:text-sm text-orange-500">{errors.mark.message}</span>}
-              </div>
-            </div>
-          </div>
-
-          <div className=" bg-white text-right mt-3">
-            <button
-              type="submit"
-              className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-xs md:text-sm font-medium rounded-md text-white bg-orange-500 hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500"
-            >
-              {
-                `Crear`
-              }
-            </button>
-          </div>
-        </form>
-
-      </ModalH> */}
+      <ModalProductImage openMI={openMI} setOpenMI={setOpenMI} product={product} />
     </div>
   )
 }

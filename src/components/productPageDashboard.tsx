@@ -39,35 +39,35 @@ export const ProductPageDashboard: FC<ProductPage> = ({ item, products }) => {
   // console.log(products);
   return (
     <section className='py-10'>
-      <HeadingDashboardProducts title='Products' />
+      {/* <HeadingDashboardProducts title='Products' /> */}
       {/* <h2 className="text-2xl font-bold tracking-tight text-gray-900">Products</h2> */}
       {
         isValidating
           ?
           <div className={`grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 md:gap-6`}>
-            {["1", "2", "3", "4", "5", "6","7","8","9","10"].map(i => (
+            {["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"].map(i => (
               <Card key={i} />
             ))}
           </div>
           :
           <div className="grid grid-cols-1 gap-y-10 sm:grid-cols-2 gap-x-6 lg:grid-cols-3 xl:grid-cols-5 xl:gap-x-8 mt-6 ">
-            {data.furnitures.map((product:Wear) => (
+            {data.furnitures.map((product: Wear) => (
               <Link href={`/dashboard/products/furniture/${product.article.slug}`} key={product._id}>
-              <a  className="group">
-                <div className="w-full aspect-w-1 aspect-h-1 bg-gray-200 rounded-lg overflow-hidden xl:aspect-w-7 xl:aspect-h-8">
-                  <Image
-                    src={product.article.image ? product.article.image[0].src : "https://res.cloudinary.com/dvcyhn0lj/image/upload/v1655217461/14.1_no-image.jpg_gkwtld.jpg"}
-                    alt={product.article.image ? product.article.image[0].alt : "description image"}
-                    width={500}
-                    height={600}
-                    objectFit='cover'
+                <a className="group">
+                  <div className="w-full aspect-w-1 aspect-h-1 bg-gray-200 rounded-lg overflow-hidden xl:aspect-w-7 xl:aspect-h-8">
+                    <Image
+                      src={product.article.image ? product.article.image[0].src : "https://res.cloudinary.com/dvcyhn0lj/image/upload/v1655217461/14.1_no-image.jpg_gkwtld.jpg"}
+                      alt={product.article.image ? product.article.image[0].alt : "description image"}
+                      width={500}
+                      height={600}
+                      objectFit='cover'
                     // onError={() => setSrc('/assets/image-error.png')}
-                  />
-                </div>
-                <h3 className="mt-4 text-sm text-gray-700">{product.article.title}</h3>
-                {/* <p className="mt-1 text-lg font-medium text-gray-900">{product.article.price} Bs.</p> */}
-              </a>
-                    </Link>
+                    />
+                  </div>
+                  <h3 className="mt-4 text-sm text-gray-700">{product.article.title}</h3>
+                  {/* <p className="mt-1 text-lg font-medium text-gray-900">{product.article.price} Bs.</p> */}
+                </a>
+              </Link>
             ))}
           </div>
       }

@@ -13,13 +13,12 @@ import { graphQLClient } from '../../swr/graphQLClient';
 interface Props {
   openMI: boolean
   setOpenMI: React.Dispatch<React.SetStateAction<boolean>>
-  images: ImageProduct[];
   product: Wear;
 }
 
-export const ModalProductImage: FC<Props> = ({ openMI, setOpenMI, images, product }) => {
+export const ModalProductImage: FC<Props> = ({ openMI, setOpenMI, product }) => {
   const { asPath, query } = useRouter()
-  const [image, setImage] = useState(images)
+  const [image, setImage] = useState(product.article.image)
   const { mutate } = useSWRConfig()
   console.log(product);
 
@@ -109,6 +108,7 @@ export const ModalProductImage: FC<Props> = ({ openMI, setOpenMI, images, produc
                           <div className="flex items-center">
                             <div className=" rounded-lg overflow-hidden leading-none grid grid-cols-3 gap-3">
                               {
+                                image?
                                 image.map((image, i) => (
                                     <Image
                                       key={i}
@@ -120,6 +120,8 @@ export const ModalProductImage: FC<Props> = ({ openMI, setOpenMI, images, produc
                                     />
 
                                 ))
+                                :
+                                null
                               }
                               <div className="flex justify-center p-4 border-2 border-gray-300 border-dashed rounded-md ">
                                 <div className="space-y-1 text-center">
@@ -157,17 +159,7 @@ export const ModalProductImage: FC<Props> = ({ openMI, setOpenMI, images, produc
 
                     </div>
 
-                    {/* <div className=" bg-white text-right mt-3">
-                      <button
-                        type="submit"
-                        className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-xs md:text-sm font-medium rounded-md text-white bg-pink-500 hover:bg-pink-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500"
-                      >
-                        {
-                          `Crear`
-                        }
-                      </button>
-                    </div> */}
-                    {/* <div className=" px-0 py-3 sm:px-0 sm:flex sm:flex-row-reverse">
+                    <div className=" px-0 py-3 sm:px-0 sm:flex sm:flex-row-reverse">
                       <button
                         type="submit"
                         className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-pink-600 text-base font-medium text-white hover:bg-pink-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500 sm:ml-3 sm:w-auto sm:text-sm"
@@ -183,7 +175,7 @@ export const ModalProductImage: FC<Props> = ({ openMI, setOpenMI, images, produc
                       >
                         Cancel
                       </button>
-                    </div> */}
+                    </div>
                   </form>
                 </div>
 

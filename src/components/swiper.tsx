@@ -80,21 +80,21 @@ export const SwiperDetail: FC<Props2> = ({ image }) => {
 				{image.map((data, i) => (
 					<SwiperSlide key={i}>
 						<Image
-							src={data.src}
+							src={data.src ? data.src : "https://res.cloudinary.com/dvcyhn0lj/image/upload/v1655217461/14.1_no-image.jpg_gkwtld.jpg"}
 							width={500}
 							height={500}
 							layout="responsive"
 							objectFit="cover"
-							alt={data.alt}
+							alt={data.alt ? data.alt : "description image"}
 						/>
 						{/* <img src={`${images}`} width="100%" alt="" /> */}
 					</SwiperSlide>
 				))}
 			</Swiper>
 			{
-				image.length <= 3 
-					? null 
-					: 
+				image.length <= 3
+					? null
+					:
 					(
 						<Swiper
 							onSwiper={setActiveThumb}
@@ -110,14 +110,14 @@ export const SwiperDetail: FC<Props2> = ({ image }) => {
 									{/* <img src={`${images}`} alt="" /> */}
 									<div className="border">
 										<Image
-											src={data.src}
+											src={data.src ? data.src : "https://res.cloudinary.com/dvcyhn0lj/image/upload/v1655217461/14.1_no-image.jpg_gkwtld.jpg"}
 											width={500}
 											height={500}
 											layout="responsive"
 											objectFit="cover"
-											alt={data.alt}
-											// className={ `${activeThumb ? 'border border-gray-900' : ''}`}
-											// className="border border-gray-900"
+											alt={data.alt ? data.alt : 'description image'}
+										// className={ `${activeThumb ? 'border border-gray-900' : ''}`}
+										// className="border border-gray-900"
 										/>
 									</div>
 								</SwiperSlide>
@@ -145,7 +145,7 @@ export const SwiperHome: FC<Props> = ({ image }) => {
 					disableOnInteraction: false
 				}}
 				modules={[Autoplay, Pagination, Navigation]}
-				
+
 			>
 				{image.map((images, i) => (
 					<SwiperSlide key={i}>
@@ -163,3 +163,49 @@ export const SwiperHome: FC<Props> = ({ image }) => {
 		</>
 	);
 };
+interface SwiperPaginationDynamic{
+	images: ImageProduct[]
+}
+
+export const SwiperPaginationDynamic:FC<SwiperPaginationDynamic> = ({images}) => {
+	const [ src, setSrc ] = useState(images)
+	return (
+		<Swiper
+        pagination={{
+          dynamicBullets: true,
+        }}
+        modules={[Pagination]}
+        className="mySwiper"
+      >
+
+        {
+					images ?
+
+				images.map((data, i) => (
+					<SwiperSlide key={i}>
+						<Image
+							src={data ? data.src : "https://res.cloudinary.com/dvcyhn0lj/image/upload/v1655217461/14.1_no-image.jpg_gkwtld.jpg"}
+							width={700}
+							height={700}
+							// layout="responsive"
+							objectFit="cover"
+							alt={data ? data.alt : "description image"}
+						/>
+					</SwiperSlide>
+				))
+				:
+				<SwiperSlide >
+						<Image
+							src={"https://res.cloudinary.com/dvcyhn0lj/image/upload/v1655217461/14.1_no-image.jpg_gkwtld.jpg"}
+							width={700}
+							height={700}
+							// layout="responsive"
+							objectFit="cover"
+							alt={"description image"}
+						/>
+					</SwiperSlide>
+				}
+      </Swiper>
+    
+	)
+}

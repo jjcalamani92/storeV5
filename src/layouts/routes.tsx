@@ -28,7 +28,7 @@ export const Routes: FC<Routes> = ({ site, products }) => {
   const { asPath, query } = useRouter()
   const { data, isValidating, error } = useSWR(SITES)
   // console.log(productPaths(products.gifts));
-  console.log();
+  console.log(products.furnitures);
   
   // console.log(productPaths(products.furnitures));
   
@@ -48,6 +48,7 @@ export const Routes: FC<Routes> = ({ site, products }) => {
     case '/dashboard/products':
       return <ProductPageDashboard products={products.furnitures} />
     case productDashboardPaths('furniture', products.furnitures).find(data => data === asPath):
+      // return <h1>Hola</h1>
       return <ProductOverviewDashboard products={products.furnitures}/>
 
     default:

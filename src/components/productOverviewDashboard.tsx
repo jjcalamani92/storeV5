@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { useRouter } from 'next/router';
 import { Wear } from "../interfaces/ecommerceV1";
-import { SwiperDetail } from "./swiper";
+import { SwiperDetail, SwiperPaginationDynamic } from './swiper';
 import { HeadingDashboardProduct } from "./heading";
 
 interface Props {
@@ -11,13 +11,16 @@ interface Props {
 export const ProductOverviewDashboard: FC<Props> = ({ products }) => {
 	const {asPath, query} = useRouter()
 	const product = products.find(data => data.article.slug === query.slug![3])!
+	console.log(product.article.image);
+	
 	return (
 		<>
 			<section className="bg-white " >
       <HeadingDashboardProduct title='Product' product={product}/>
 				<div className="max-w-2xl mx-auto py-0 px-4 sm:px-0 lg:max-w-7xl lg:py-0 lg:px-8 grid grid-cols-1 lg:gap-6 lg:grid-cols-5">
 					<div className="col-span-3" >
-						<SwiperDetail image={product.article.image} />
+						{/* <SwiperDetail image={product.article.image} /> */}
+						<SwiperPaginationDynamic images={product.article.image} />
 					</div>
 					<div className="col-span-2 mt-3 lg:mt-0" >
 						<div className="mb-4">

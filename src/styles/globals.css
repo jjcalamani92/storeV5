@@ -116,17 +116,18 @@
 
 .swiper-button-prev {
 	/* left: 30; */
-	color: orange !important;
+	color: pink !important;
 }
 .swiper-button-next {
 	/* left: 30; */
-	color: orange !important;
+	color: pink !important;
 }
 .swiper-pagination-bullet {
-	background: orange !important;
+	background: pink !important;
 }
 .swiper-pagination-bullet-active {
-	background: orange !important;
+  background: pink !important;
+
 }
 
 .spinner {
