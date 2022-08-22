@@ -19,7 +19,7 @@ interface Props {
 }
 
 export const ModalProductImage: FC<Props> = ({ openMI, setOpenMI, product }) => {
-  const { asPath, query, push } = useRouter()
+  const { asPath, query, push, replace } = useRouter()
   const [image, setImage] = useState(product.article.image)
   const { mutate } = useSWRConfig()
   // console.log();
@@ -33,7 +33,7 @@ export const ModalProductImage: FC<Props> = ({ openMI, setOpenMI, product }) => 
     // const data = { ...form, }
 
     await graphQLClient.request(ADD_IMAGES_PRODUCT, { _id: product._id, input: image })
-    push(`${getURL(asPath)}/${product.article.slug}`)
+    replace(`${getURL(asPath)}/${product.article.slug}`)
   }
 
   const filter = (inputValue: string, path: any[]) =>
