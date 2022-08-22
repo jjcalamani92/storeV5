@@ -11,6 +11,7 @@ import Image from 'next/image';
 import axios from "axios";
 import { graphQLClient } from '../../swr/graphQLClient';
 import { Icon } from '../icon';
+import { getURL } from '../../utils/function';
 interface Props {
   openMI: boolean
   setOpenMI: React.Dispatch<React.SetStateAction<boolean>>
@@ -21,7 +22,7 @@ export const ModalProductImage: FC<Props> = ({ openMI, setOpenMI, product }) => 
   const { asPath, query, push } = useRouter()
   const [image, setImage] = useState(product.article.image)
   const { mutate } = useSWRConfig()
-  console.log(image);
+  // console.log();
 
   const { register, handleSubmit, formState: { errors }, getValues, setValue, watch } = useForm<AddProductImage>({
     defaultValues: {}
@@ -32,7 +33,7 @@ export const ModalProductImage: FC<Props> = ({ openMI, setOpenMI, product }) => 
     // const data = { ...form, }
 
     await graphQLClient.request(ADD_IMAGES_PRODUCT, { _id: product._id, input: image })
-    push(`/dashboard/products/furniture/${product.article.slug}`)
+    push(`${getURL(asPath)}/${product.article.slug}`)
   }
 
   const filter = (inputValue: string, path: any[]) =>
@@ -60,7 +61,8 @@ export const ModalProductImage: FC<Props> = ({ openMI, setOpenMI, product }) => 
     }
   }
   const onDeleteImage = (i: number) => {
-    setImage(image.splice(i,1))
+    image.splice(i,1);
+    setImage([...image]);
   }
   return (
     <Transition.Root show={openMI} as={Fragment}>
