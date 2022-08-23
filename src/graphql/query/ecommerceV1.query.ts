@@ -77,10 +77,18 @@ export const FURNITURIES = gql`
         title
         slug
         price
+        discountPrice
+        inStock
         route
+        mark
+        description
         image{
           src
           alt
+        }
+        featured{
+          name
+          href
         }
       }
     }

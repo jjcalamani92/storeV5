@@ -3,20 +3,22 @@ import { useRouter } from 'next/router';
 import { Wear } from "../interfaces/ecommerceV1";
 import { SwiperDetail, SwiperPaginationDynamic } from './swiper';
 import { HeadingDashboardProduct } from "./heading";
+import { Site } from "../interfaces/siteV1";
 
 interface Props {
 	products: Wear[];
+	site:Site
 }
 
-export const ProductOverviewDashboard: FC<Props> = ({ products }) => {
+export const ProductOverviewDashboard: FC<Props> = ({ products, site }) => {
 	const {asPath, query} = useRouter()
 	const product = products.find(data => data.article.slug === query.slug![3])!
-	console.log(product.article.image);
+	// console.log(product.article.image);
 	
 	return (
 		<>
 			<section className="bg-white " >
-      <HeadingDashboardProduct title='Product' product={product}/>
+      <HeadingDashboardProduct title='Product' product={product} site={site}/>
 				<div className="max-w-2xl mx-auto py-0 px-4 sm:px-0 lg:max-w-7xl lg:py-0 lg:px-8 grid grid-cols-1 lg:gap-6 lg:grid-cols-5">
 					<div className="col-span-3" >
 						{/* <SwiperDetail image={product.article.image} /> */}

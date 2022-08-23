@@ -1,3 +1,7 @@
+export interface Product {
+  _id: string;
+  article: Article;
+}
 export interface Wear {
   _id: string;
   article: Article;
@@ -5,11 +9,19 @@ export interface Wear {
 export interface Article {
   title: string;
   slug: string;
+  mark: string;
   description:string
   price:number
+  inStock:number
   discountPrice:number
   route:string
+  featured: FeaturedProduct
   image: ImageProduct[]
+}
+
+export interface FeaturedProduct {
+  name: string;
+  href: string;
 }
 export interface ImageProduct {
   uid?: string;
@@ -17,15 +29,10 @@ export interface ImageProduct {
   alt: string;
 }
 export interface CreateProductInput {
-  // _id: string;
   title: string;
   mark: string;
   description: string;
   featured: string;
-  // section: string;
-  // category: string;
-  // subCategory: string;
-  // item: string;
   inStock: number;
   price: number;
   discountPrice: number;
@@ -34,7 +41,7 @@ export interface CreateProductInput {
   // specs:string[];
   // imageSrc:any[];
   // tags:string[];
-  route:string[];
+  route:string;
 }
 export interface AddProductImage {
   uid?:string

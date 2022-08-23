@@ -1,6 +1,7 @@
 import { Site } from '../interfaces/siteV1';
 import { ParsedUrlQuery } from 'querystring';
 import { Wear } from '../interfaces/ecommerceV1';
+import { Option } from '../components/formModal/formProduct';
 export const childrens0 = (site: Site) => {
   return site?.children;
 };
@@ -83,10 +84,13 @@ export const paths = (site: Site) => {
     ])
   ]).flat(5).filter(data => data !== null)
 }
+
 export const productPaths = (gifts: Wear[]) => {
   return gifts.map(data => `/detalles/${data.article.slug}`)
 }
-
+export const routes = (site:Site):Option[] => {
+  return site.children.filter(data => data.type === "ecommerce").map(data0 => ({value: data0.head.href, label: data0.head.name, children: data0.children && data0.children.map(data1 => ({value: data1.head.href, label: data1.head.name, children: data1.children && data1.children.map(data2 => ({value: data2.head.href, label: data2.head.name}))}))}))
+}
 export const productDashboardPaths = (type: string, products: Wear[]) => {
-  return products.map(data => `/dashboard/products/${type}/${data.article.slug}`)
+  return products.map(data =>  `/dashboard/products/${type}/${data.article.slug}`)
 }

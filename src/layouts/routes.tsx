@@ -5,7 +5,7 @@ import useSWR from 'swr';
 import { SITES } from '../graphql';
 import { Site } from '../interfaces/siteV1';
 import { Children0 } from './children0';
-import { childrens0, childrens1, childrens2, childrenPaths0, childrenPaths1, childrenPaths2, seo, children0, paths, productPaths, productDashboardPaths} from '../utils/functionV1';
+import { childrens0, childrens1, childrens2, childrenPaths0, childrenPaths1, childrenPaths2, seo, children0, paths, productPaths, productDashboardPaths, routes} from '../utils/functionV1';
 import { Children1 } from './children1';
 import { Children2 } from './children2';
 import { Wear } from '../interfaces/ecommerceV1';
@@ -28,7 +28,6 @@ export const Routes: FC<Routes> = ({ site, products }) => {
   const { asPath, query } = useRouter()
   const { data, isValidating, error } = useSWR(SITES)
   // console.log(productPaths(products.gifts));
-  console.log(products.furnitures);
   
   // console.log(productPaths(products.furnitures));
   
@@ -46,10 +45,10 @@ export const Routes: FC<Routes> = ({ site, products }) => {
     case '/dashboard/pages':
       return <ChildrenPageDashboard item={site.children} />
     case '/dashboard/products':
-      return <ProductPageDashboard products={products.furnitures} />
+      return <ProductPageDashboard products={products.furnitures} site={site}/>
     case productDashboardPaths('furniture', products.furnitures).find(data => data === asPath):
       // return <h1>Hola</h1>
-      return <ProductOverviewDashboard products={products.furnitures}/>
+      return <ProductOverviewDashboard products={products.furnitures} site={site}/>
 
     default:
       return <Page404 />

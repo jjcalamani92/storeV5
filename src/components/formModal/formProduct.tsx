@@ -3,106 +3,70 @@ import { FC, Fragment, useRef, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { useRouter } from 'next/router';
 import { useForm } from 'react-hook-form';
-import { CreateProductInput } from '../../interfaces/ecommerceV1';
+import { CreateProductInput, Product } from '../../interfaces/ecommerceV1';
 import { Cascader } from 'antd';
 
 import { graphQLClient } from '../../swr/graphQLClient';
-import { CREATE_FURNITURE_PRODUCT, CREATE_WEAR_PRODUCT } from '../../graphql/mutation/ecommerceV1.mutation';
+import { CREATE_FURNITURE_PRODUCT, CREATE_WEAR_PRODUCT, UPDATE_FURNITURE_PRODUCT } from '../../graphql/mutation/ecommerceV1.mutation';
 import { useSWRConfig } from 'swr';
 import { FURNITURIES, WEARS } from '../../graphql/query/ecommerceV1.query';
+import { Site } from '../../interfaces/siteV1';
+import { routes } from '../../utils/functionV1';
+import { getURL, slug } from '../../utils/function';
 // import 'antd/lib/cascader/style/index.less'
 // import 'antd/lib/cascader/style/index.css';
 // import 'antd/dist/antd.css'
-
+export interface Option {
+  value: string;
+  label: string;
+  children?: Option[];
+}
 
 interface Props {
-  open: boolean
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>
+  openMP: boolean
+  setOpenMP: React.Dispatch<React.SetStateAction<boolean>>
   children?: React.ReactNode;
+  product?: Product
+  site:Site
 }
-const product = {
-  title: "product1",
-  mark: "adidas",
-  route: ['ropa', 'hombre', 'chamarra']
-}
-const routes = [
-  {
-    value: 'tienda',
-    label: 'tienda',
-    children: [
-      {
-        value: 'muebles',
-        label: 'muebles',
-        children: [
-          {
-            value: 'para-el-hogar',
-            label: 'para el hogar',
-          },
-        ],
-      },
-      {
-        value: 'mujer',
-        label: 'mujer',
-        children: [
-          {
-            value: 'chamarra',
-            label: 'chamarra',
-          },
-          {
-            value: 'chaquetas',
-            label: 'chaquetas',
-          },
-        ],
-      },
-    ],
-  },
-  {
-    value: 'ropa',
-    label: 'ropa',
-    children: [
-      {
-        value: 'hombre',
-        label: 'hombre',
-        children: [
-          {
-            value: 'chamarra',
-            label: 'chamarra',
-          },
-        ],
-      },
-      {
-        value: 'mujer',
-        label: 'mujer',
-        children: [
-          {
-            value: 'chamarra',
-            label: 'chamarra',
-          },
-          {
-            value: 'chaquetas',
-            label: 'chaquetas',
-          },
-        ],
-      },
-    ],
-  },
 
-
-]
-export const ModalProduct: FC<Props> = ({ open, setOpen, children }) => {
-  const { asPath, query } = useRouter()
+export const ModalProduct: FC<Props> = ({ openMP, setOpenMP, children, product, site }) => {
+  const { asPath, query, push, replace } = useRouter()
   const { mutate } = useSWRConfig()
   // console.log(query.slug![2]);
 
+  const routesss:Option[] = routes(site) 
+  // console.log('product', product);
+  
   const { register, handleSubmit, formState: { errors }, getValues, setValue, watch } = useForm<CreateProductInput>({
-    defaultValues: { ...product }
+    defaultValues: { 
+      title: product ? product?.article.title : "", 
+      mark: product ?  product?.article.mark : "",  
+      featured: product ?  product?.article.featured.name : "", 
+      route: product ?  product?.article.route : "", 
+      description: product ?  product?.article.description : "", 
+      price: product ?  product?.article.price : 0, 
+      discountPrice: product ?  product?.article.discountPrice : 0, 
+      inStock: product ?  product?.article.inStock : 0, 
+    }
   })
+  // console.log(getValues('route').slice(1).split('/'));
+  
   const cancelButtonRef = useRef(null)
   const onSubmit = async (form: CreateProductInput) => {
-    const data = { ...form, price: Number(form.price), discountPrice: Number(form.discountPrice), inStock: Number(form.inStock), route: `/${route.join('/')}`, site: process.env.API_SITE }
+    const data = { ...form, price: Number(form.price), discountPrice: Number(form.discountPrice), inStock: Number(form.inStock), route: route, site: process.env.API_SITE }
     // console.log(data);
-    await graphQLClient.request(CREATE_FURNITURE_PRODUCT, { input: data })
-    mutate([FURNITURIES, { site: process.env.API_SITE }])
+    if (product) {
+      // console.log('product exists', data);
+      await graphQLClient.request(UPDATE_FURNITURE_PRODUCT, {_id: product._id, input: data })
+      // mutate([FURNITURIES, { site: process.env.API_SITE }])
+      replace(`${getURL(asPath)}/${slug(form.title)}`)
+    } else {
+      // console.log('product not exists', data);
+      
+      await graphQLClient.request(CREATE_FURNITURE_PRODUCT, { input: data })
+      mutate([FURNITURIES, { site: process.env.API_SITE }])
+    }
   }
   const filter = (inputValue: string, path: any[]) =>
     path.some(
@@ -113,14 +77,16 @@ export const ModalProduct: FC<Props> = ({ open, setOpen, children }) => {
     {
       selectedOptions
     }
-    console.log(`/${value.join('/')}`)
-
-    setRoute(value);
+    // console.log(`/${value.join('/')}`)
+    setRoute(`/${value.join('/')}`);
   };
   const [route, setRoute] = useState(getValues('route'))
+  console.log(getValues('route'));
+  // console.log(getValues('route').slice(1).split('/'));
+  
   return (
-    <Transition.Root show={open} as={Fragment}>
-      <Dialog as="div" className="relative z-30" initialFocus={cancelButtonRef} onClose={setOpen}>
+    <Transition.Root show={openMP} as={Fragment}>
+      <Dialog as="div" className="relative z-30" initialFocus={cancelButtonRef} onClose={setOpenMP}>
         <Transition.Child
           as={Fragment}
           enter="ease-out duration-300"
@@ -199,15 +165,14 @@ export const ModalProduct: FC<Props> = ({ open, setOpen, children }) => {
                         <label htmlFor="route" className="block text-xs md:text-sm font-medium text-gray-700">
                           Ruta
                         </label>
-                        <Cascader
-                          options={routes}
+                        <Cascader    
+                          options={routesss}
                           placeholder="Selecciona la ruta"
                           size={"large"}
                           allowClear={false}
                           fieldNames={{ label: "label", value: "value", children: "children" }}
-                          defaultValue={route}
+                          defaultValue={getValues('route').slice(1).split('/')}
                           style={{ width: "100%", marginTop: 1, paddingTop: 2, fontSize: 15 }}
-                          // className={'w-auto text-xs md:text-sm'}
                           showSearch={{
                             filter
                           }}
@@ -279,23 +244,26 @@ export const ModalProduct: FC<Props> = ({ open, setOpen, children }) => {
                         }
                       </button>
                     </div> */}
-                    {/* <div className=" px-0 py-3 sm:px-0 sm:flex sm:flex-row-reverse">
+                    <div className=" px-0 py-3 sm:px-0 sm:flex sm:flex-row-reverse">
                       <button
                         type="submit"
                         className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-pink-600 text-base font-medium text-white hover:bg-pink-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500 sm:ml-3 sm:w-auto sm:text-sm"
-                        onClick={() => setOpen(false)}
+                        onClick={() => setOpenMP(false)}
                       >
-                        Create
+                        {
+                        product ? 'Updated'
+                        : 'Created'
+                        }
                       </button>
                       <button
                         type="button"
                         className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
-                        onClick={() => setOpen(false)}
+                        onClick={() => setOpenMP(false)}
                         ref={cancelButtonRef}
                       >
                         Cancel
                       </button>
-                    </div> */}
+                    </div>
                   </form>
                 </div>
 

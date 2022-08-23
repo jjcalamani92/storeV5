@@ -7,10 +7,13 @@ import { Icon } from "./icon";
 import { classNames } from "../utils/function";
 import { ModalProduct } from "./formModal/formProduct";
 import { ModalProductImage } from "./formModal/formProductImage";
+import { Site } from "../interfaces/siteV1";
 
 
 interface HeadingDashboardProducts {
   title: string;
+  product?:Wear
+  site:Site
 }
 const product = {
   title: "product1"
@@ -21,14 +24,12 @@ const form = [
   // { name: 'Delete Site', href: 'delete', current: true },
 
 ]
-export const HeadingDashboardProducts: FC<HeadingDashboardProducts> = ({ title }) => {
-  const { register, handleSubmit, formState: { errors }, getValues, setValue, watch } = useForm<CreateProductInput>({
-    defaultValues: { ...product }
-  })
+export const HeadingDashboardProducts: FC<HeadingDashboardProducts> = ({ title, product, site }) => {
+
   const { asPath, push, query } = useRouter()
-  const [open, setOpen] = useState(false)
+  const [openMP, setOpenMP] = useState(false)
   const click = () => {
-    setOpen(true)
+    setOpenMP(true)
   }
   const onSubmit = async (form: CreateProductInput) => {
     console.log(form);
@@ -41,9 +42,9 @@ export const HeadingDashboardProducts: FC<HeadingDashboardProducts> = ({ title }
       <Menu as="div" className="relative z-10 text-left flex w-auto">
         <Menu.Button className=" justify-center  text-sm font-medium text-gray-700 hover:text-gray-900">
           {/* <Icon icon="dots-vertical" /> */}
-          <button className="inline-block text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:ring-4 focus:outline-none focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-1.5" >
+          <div className="inline-block text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:ring-4 focus:outline-none focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-1.5" >
             <Icon icon='dots-vertical' className="w-6 h-6" />
-          </button>
+          </div>
         </Menu.Button>
         <Transition
           as={Fragment}
@@ -76,7 +77,7 @@ export const HeadingDashboardProducts: FC<HeadingDashboardProducts> = ({ title }
           </Menu.Items>
         </Transition>
       </Menu>
-      <ModalProduct open={open} setOpen={setOpen} />
+      <ModalProduct openMP={openMP} setOpenMP={setOpenMP} site={site} />
       
     </div>
   )
@@ -84,11 +85,12 @@ export const HeadingDashboardProducts: FC<HeadingDashboardProducts> = ({ title }
 interface HeadingDashboardProduct {
   title: string;
   product:Wear
+  site:Site
 }
 const formProduct = [
-  { name: 'Update Product', href: 'new', current: true },
-  { name: 'Add Images', href: 'new', current: true },
-  { name: 'Add Tags', href: 'new', current: true },
+  { name: 'Update Product', href: 'update-product', current: true },
+  { name: 'Add Images', href: 'update-image', current: true },
+  { name: 'Add Tags', href: 'update-tag', current: true },
   { name: 'Add Specs', href: 'new', current: true },
   { name: 'Add Colors', href: 'new', current: true },
   { name: 'Add Sizes', href: 'new', current: true },
@@ -96,13 +98,23 @@ const formProduct = [
   // { name: 'Delete Site', href: 'delete', current: true },
 
 ]
-export const HeadingDashboardProduct: FC<HeadingDashboardProduct> = ({ title, product }) => {
+export const HeadingDashboardProduct: FC<HeadingDashboardProduct> = ({ title, product, site }) => {
   
   const { asPath, push, query } = useRouter()
   // const [open, setOpen] = useState(false)
   const [openMI, setOpenMI] = useState(false)
-  const click = () => {
-    setOpenMI(true)
+  const [openMP, setOpenMP] = useState(false)
+  const click = (data: string) => {
+    if (data === 'update-product') {
+      // console.log('update-product');
+      setOpenMP(true)
+    } else if (data === 'update-image') {
+      setOpenMI(true)
+      // console.log('update-image');
+      
+    } else {
+      null
+    }
   }
   
   return (
@@ -130,7 +142,7 @@ export const HeadingDashboardProduct: FC<HeadingDashboardProduct> = ({ title, pr
                 <Menu.Item key={i}>
                   {({ active }) => (
                     <div
-                      onClick={() => click()}
+                      onClick={() => click(data.href)}
                       className={classNames(
                         data.current ? 'font-medium text-gray-900' : 'text-gray-500',
                         active ? 'bg-gray-100' : '',
@@ -147,6 +159,7 @@ export const HeadingDashboardProduct: FC<HeadingDashboardProduct> = ({ title, pr
         </Transition>
       </Menu>
       <ModalProductImage openMI={openMI} setOpenMI={setOpenMI} product={product} />
+      <ModalProduct openMP={openMP} setOpenMP={setOpenMP} product={product} site={site} />
     </div>
   )
 }
