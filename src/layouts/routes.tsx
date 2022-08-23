@@ -43,7 +43,7 @@ export const Routes: FC<Routes> = ({ site, products }) => {
     case productPaths(products.gifts).find(data => data === asPath):
       return <ProductOverviewFurniture products={products.gifts}/>
     case '/dashboard/pages':
-      return <ChildrenPageDashboard item={site.children} />
+      return <ChildrenPageDashboard item={site.children} site={site}/>
     case '/dashboard/products':
       return <ProductPageDashboard products={products.furnitures} site={site}/>
     case productDashboardPaths('furniture', products.furnitures).find(data => data === asPath):

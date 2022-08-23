@@ -2,7 +2,7 @@
 import { FC } from 'react';
 import Image from "next/image"
 
-import { Children } from '../interfaces/siteV1';
+import { Children, Site } from '../interfaces/siteV1';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { HeadingDashboardProducts } from './heading';
@@ -25,14 +25,15 @@ import { HeadingDashboardProducts } from './heading';
 
 interface ChildrenPage {
   item: Children[]
+  site: Site
 }
-export const ChildrenPageDashboard: FC<ChildrenPage> = ({ item }) => {
+export const ChildrenPageDashboard: FC<ChildrenPage> = ({ item, site }) => {
   // console.log(item);
   const {asPath} = useRouter()
 
   return (
     <section className='py-10'>
-      <HeadingDashboardProducts title='Products' />
+      <HeadingDashboardProducts title='Products' site={site} />
       <h2 className="text-2xl font-bold text-gray-900">Pages</h2>
       <div className="mt-6 space-y-12 md:space-y-0 md:grid md:grid-cols-3 md:gap-6 lg:grid-cols-5">
         {item.map((data, i) => (
