@@ -21,7 +21,7 @@ export const ProductOverview: FC<ProductOverview> = ({ products, site }) => {
 
 	return (
 		<>
-			<section className="bg-white">
+			<section className="bg-white mt-3">
 				{
 					query.slug![0] ==='dashboard' ?
 					<HeadingDashboardProduct title='Product' product={product} site={site}/>
