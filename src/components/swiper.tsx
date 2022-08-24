@@ -185,8 +185,8 @@ export const SwiperPaginationDynamic:FC<SwiperPaginationDynamic> = ({images}) =>
 					<SwiperSlide key={i}>
 						<Image
 							src={data ? data.src : "https://res.cloudinary.com/dvcyhn0lj/image/upload/v1655217461/14.1_no-image.jpg_gkwtld.jpg"}
-							width={700}
-							height={700}
+							width={800}
+							height={800}
 							// layout="responsive"
 							objectFit="cover"
 							alt={data ? data.alt : "description image"}
@@ -197,8 +197,8 @@ export const SwiperPaginationDynamic:FC<SwiperPaginationDynamic> = ({images}) =>
 				<SwiperSlide >
 						<Image
 							src={"https://res.cloudinary.com/dvcyhn0lj/image/upload/v1655217461/14.1_no-image.jpg_gkwtld.jpg"}
-							width={700}
-							height={700}
+							width={800}
+							height={800}
 							// layout="responsive"
 							objectFit="cover"
 							alt={"description image"}

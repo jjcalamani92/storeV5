@@ -7,6 +7,8 @@ import { HeadingDashboardProduct } from "./heading";
 import { Site } from "../interfaces/siteV1";
 import Description from './antd/description';
 import Link from "next/link";
+import MoreProduct from "./moreProducts";
+import BreadcrumbAntd from "./antd/breadcrumb";
 
 
 interface ProductOverview {
@@ -21,13 +23,13 @@ export const ProductOverview: FC<ProductOverview> = ({ products, site }) => {
 
 	return (
 		<>
-			<section className="bg-white mt-3">
+			<section className="bg-white">
 				{
 					query.slug![0] ==='dashboard' ?
 					<HeadingDashboardProduct title='Product' product={product} site={site}/>
-					: null
+					: <BreadcrumbAntd />
 				}
-				<div className="max-w-2xl mx-auto py-0 px-4 sm:px-0 lg:max-w-7xl lg:py-0 lg:px-8 grid grid-cols-1 lg:gap-6 lg:grid-cols-5">
+				<div className="max-w-2xl mx-auto py-0 px-4 sm:px-0 lg:max-w-7xl lg:py-0 lg:px-0 grid grid-cols-1 lg:gap-6 lg:grid-cols-5">
 					<div className="col-span-3" >
 						{/* <SwiperDetail image={product.article.image} /> */}
 						<SwiperPaginationDynamic images={product?.article.image} />
@@ -179,6 +181,11 @@ export const ProductOverview: FC<ProductOverview> = ({ products, site }) => {
 					</div>
 
 				</div>
+				{
+					query.slug![0] ==='dashboard' ?
+					 null
+					: <MoreProduct />
+				}
 			</section>
 		</>
 	)
