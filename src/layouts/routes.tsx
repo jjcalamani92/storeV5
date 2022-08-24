@@ -9,11 +9,10 @@ import { childrens0, childrens1, childrens2, childrenPaths0, childrenPaths1, chi
 import { Children1 } from './children1';
 import { Children2 } from './children2';
 import { Wear } from '../interfaces/ecommerceV1';
-import { ProductOverviewFurniture } from '../components/productOverviewFurniture';
+import { ProductOverview } from '../components/productOverview';
 import { ChildrenPage } from '../components/childrenPage';
 import { ChildrenPageDashboard } from '../components/childrenPageDashboard';
 import { ProductPageDashboard } from '../components/productPageDashboard';
-import { ProductOverviewDashboard } from '../components/productOverviewDashboard';
 
 interface Routes {
   site: Site
@@ -37,16 +36,15 @@ export const Routes: FC<Routes> = ({ site, products }) => {
     case childrenPaths2(site).find(data => data === asPath):
       return <Children2 site={site} products={products}/>
     case productPaths(products.furnitures).find(data => data === asPath):
-      return <ProductOverviewFurniture products={products.furnitures}/>
+      return <ProductOverview products={products.furnitures} site={site}/>
     case productPaths(products.gifts).find(data => data === asPath):
-      return <ProductOverviewFurniture products={products.gifts}/>
+      return <ProductOverview products={products.gifts} site={site}/>
     case '/dashboard/pages':
       return <ChildrenPageDashboard item={site.children} site={site}/>
     case '/dashboard/products':
       return <ProductPageDashboard products={products.furnitures} site={site}/>
     case productDashboardPaths('furniture', products.furnitures).find(data => data === asPath):
-      // return <h1>Hola</h1>
-      return <ProductOverviewDashboard products={products.furnitures} site={site}/>
+      return <ProductOverview products={products.furnitures} site={site}/>
 
     default:
       return <Page404 />

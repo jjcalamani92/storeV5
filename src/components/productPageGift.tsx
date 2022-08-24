@@ -9,12 +9,12 @@ import useSWR from 'swr';
 import { FURNITURIES, FURNITURIES1, GIFTS } from '../graphql/query/ecommerceV1.query';
 import Skeleton from "react-loading-skeleton";
 import 'react-loading-skeleton/dist/skeleton.css'
-import { Wear } from '../interfaces/ecommerceV1';
+import { Product, Wear } from '../interfaces/ecommerceV1';
 
 
 interface ProductPage {
   item: Children
-  products: Wear[]
+  products: Product[]
 
 }
 export const ProductPageGift: FC<ProductPage> = ({ item, products }) => {

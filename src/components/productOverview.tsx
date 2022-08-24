@@ -1,57 +1,65 @@
 import { FC } from "react";
 import { useRouter } from 'next/router';
-import { Wear } from "../interfaces/ecommerceV1";
+import { FacebookOutlined, WhatsAppOutlined, InstagramOutlined } from '@ant-design/icons';
+import { Product, Wear } from "../interfaces/ecommerceV1";
 import { SwiperDetail, SwiperPaginationDynamic } from './swiper';
 import { HeadingDashboardProduct } from "./heading";
 import { Site } from "../interfaces/siteV1";
+import Description from './antd/description';
+import Link from "next/link";
 
-interface Props {
-	products: Wear[];
+
+interface ProductOverview {
+	products: Product[];
 	site:Site
 }
 
-export const ProductOverviewDashboard: FC<Props> = ({ products, site }) => {
+export const ProductOverview: FC<ProductOverview> = ({ products, site }) => {
 	const {asPath, query} = useRouter()
-	const product = products.find(data => data.article.slug === query.slug![3])!
-	// console.log(product.article.image);
-	
+	// const product = query.slug![0] ==='dashboard' ? products.find(data => data.article.slug === query.slug![1])! : products.find(data => data.article.slug === query.slug![3])!
+	const product = products.find(data => (query.slug![0] ==='dashboard') ? data.article.slug === query.slug![3] : data.article.slug === query.slug![1])! 
+
 	return (
 		<>
-			<section className="bg-white " >
-      <HeadingDashboardProduct title='Product' product={product} site={site}/>
+			<section className="bg-white">
+				{
+					query.slug![0] ==='dashboard' ?
+					<HeadingDashboardProduct title='Product' product={product} site={site}/>
+					: null
+				}
 				<div className="max-w-2xl mx-auto py-0 px-4 sm:px-0 lg:max-w-7xl lg:py-0 lg:px-8 grid grid-cols-1 lg:gap-6 lg:grid-cols-5">
 					<div className="col-span-3" >
 						{/* <SwiperDetail image={product.article.image} /> */}
-						<SwiperPaginationDynamic images={product.article.image} />
+						<SwiperPaginationDynamic images={product?.article.image} />
 					</div>
 					<div className="col-span-2 mt-3 lg:mt-0" >
 						<div className="mb-4">
 							<h1 className="text-2xl font-extrabold tracking-tight text-gray-900 sm:text-3xl">
-								{product.article.title}
+								{product?.article.title}
 							</h1>
 						</div>
 						<div className="mb-4">
 							{
-								product.article.discountPrice
+								product?.article.discountPrice
 								? 
 								<div className='flex '>
-									<p className="text-3xl text-gray-500 line-through mr-2">{product.article.price}.00 Bs </p>
-									<p className="font-semibold text-3xl text-gray-900 ">{product.article.discountPrice}.00 Bs </p>
+									<p className="text-3xl text-gray-500 line-through mr-2">{product?.article.price}.00 Bs </p>
+									<p className="font-semibold text-3xl text-gray-900 ">{product?.article.discountPrice}.00 Bs </p>
 								</div>
 								:
-								<p className="text-3xl text-gray-900 ">{product.article.price}.00 Bs </p>
+								<p className="text-3xl text-gray-900 ">{product?.article.price}.00 Bs </p>
 							}
 							
 						</div>
 						<div className="mb-4">
 						<form >
 							<div className="mt-6">
-                <div className="flex items-center justify-between">
+                {/* <div className="flex items-center justify-between">
                   <h3 className="text-sm text-gray-900 font-medium">Tallas</h3>
                   <a href="#" className="text-sm font-medium text-pink-700 hover:text-pink-600">
                     Guia de tallas
                   </a>
-                </div>
+                </div> */}
 
                 {/* <RadioGroup value={selectedSize} onChange={setSelectedSize} className="mt-4">
                   <RadioGroup.Label className="sr-only">Choose a size</RadioGroup.Label>
@@ -130,73 +138,43 @@ export const ProductOverviewDashboard: FC<Props> = ({ products, site }) => {
 							</a>
 						</div>
 						<div className="mb-4">
-							<h2 className="text-sm font-medium text-gray-900">Detalles</h2>
+							<h2 className="text-md font-bold text-gray-900">Descripción</h2>
 							<div className="mt-4 space-y-3">
-								<p className="text-xs md:text-sm text-gray-600">{product.article.description}</p>
+								<p className="text-xs md:text-sm text-gray-600">{product?.article.description}</p>
 							</div>
 						</div>
 						<div className="mb-4">
-							<h2 className="text-sm font-medium text-gray-900 mb-4">Compartir</h2>
-							{/* <div className="grid grid-cols-7 gap-2 text-pink-600 ">
+							{/* <h2 className="text-sm font-medium text-gray-900">Detalles</h2> */}
+							<h2 className="text-md font-bold text-gray-900">Detalles</h2>
 
-								<Link href={`https://www.facebook.com/sharer.php?u=https://${site.domain}${router.asPath}`}>
-									<a target={'_blank'}>
-										<FontAwesomeIcon
-											className="w-6 h-6 hover:text-pink-700"
-											icon={faFacebookF}
-										/>
-									</a>
-								</Link>
-								<Link href={'#'}>
-									<a target={'_blank'}>
-										<FontAwesomeIcon
-											className="w-6 h-6 hover:text-pink-700"
-											icon={faInstagram}
-										/>
-									</a>
-								</Link>
-								<Link href={'#'}>
-									<a target={'_blank'}>
-										<FontAwesomeIcon
-											className="w-6 h-6 hover:text-pink-700"
-											icon={faTwitter}
-										/>
-									</a>
-								</Link>
-								<Link href={'#'}>
-									<a target={'_blank'}>
-										<FontAwesomeIcon
-											className="w-6 h-6 hover:text-pink-700"
-											icon={faLinkedin}
-										/>
-									</a>
-								</Link>
-								<Link href={'#'}>
-									<a target={'_blank'}>
-										<FontAwesomeIcon
-											className="w-6 h-6 hover:text-pink-700"
-											icon={faPinterest}
-										/>
-									</a>
-								</Link>
-								<Link href={'#'}>
-									<a target={'_blank'}>
-										<FontAwesomeIcon
-											className="w-6 h-6 hover:text-pink-700"
-											icon={faWhatsapp}
-										/>
-									</a>
-								</Link>
-								<Link href={'#'}>
-									<a target={'_blank'}>
-										<FontAwesomeIcon
-											className="w-6 h-6 hover:text-pink-700"
-											icon={faTelegram}
-										/>
-									</a>
-								</Link>
+							<Description />
+						</div>
 
-							</div> */}
+						<div className="mb-4">
+						<h2 className="text-md font-bold text-gray-900">Compartir</h2>
+							<div className="grid grid-cols-7 gap-2 text-pink-600 mt-4">
+								<Link href={`https://www.facebook.com`}>
+								{/* <Link href={`https://www.facebook.com/sharer.php?u=https://${site.domain}${router.asPath}`}> */}
+									<a target={'_blank'} >
+										<FacebookOutlined style={{ fontSize: '30px'}} className="text-pink-600 "/>
+									</a>
+								</Link>
+								<Link href={`#`}>
+								{/* <Link href={`https://www.facebook.com/sharer.php?u=https://${site.domain}${router.asPath}`}> */}
+									<a target={'_blank'} >
+										<WhatsAppOutlined style={{ fontSize: '30px'}} className="text-pink-600 "/>
+										{/* <WhatsAppOutlined /> */}
+									</a>
+								</Link>
+								<Link href={`#`}>
+								{/* <Link href={`https://www.facebook.com/sharer.php?u=https://${site.domain}${router.asPath}`}> */}
+									<a target={'_blank'} >
+										<InstagramOutlined style={{ fontSize: '30px'}} className="text-pink-600 "/>
+										{/* <WhatsAppOutlined /> */}
+									</a>
+								</Link>
+							</div>
+							
 						</div>
 					</div>
 
