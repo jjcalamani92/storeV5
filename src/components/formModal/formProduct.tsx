@@ -81,7 +81,7 @@ export const ModalProduct: FC<Props> = ({ openMP, setOpenMP, children, product, 
     setRoute(`/${value.join('/')}`);
   };
   const [route, setRoute] = useState(getValues('route'))
-  console.log(getValues('route'));
+  // console.log(getValues('route'));
   // console.log(getValues('route').slice(1).split('/'));
   
   return (

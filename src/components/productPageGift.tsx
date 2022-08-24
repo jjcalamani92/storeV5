@@ -10,22 +10,7 @@ import { FURNITURIES, FURNITURIES1, GIFTS } from '../graphql/query/ecommerceV1.q
 import Skeleton from "react-loading-skeleton";
 import 'react-loading-skeleton/dist/skeleton.css'
 import { Wear } from '../interfaces/ecommerceV1';
-/*
-  This example requires Tailwind CSS v2.0+ 
-  
-  This example requires some changes to your config:
-  
-  ```
-  // tailwind.config.js
-  module.exports = {
-    // ...
-    plugins: [
-      // ...
-      require('@tailwindcss/aspect-ratio'),
-    ],
-  }
-  ```
-*/
+
 
 interface ProductPage {
   item: Children

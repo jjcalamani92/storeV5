@@ -17,7 +17,6 @@ export const Children0: FC<Props> = ({ site }) => {
       return <Hero />
     case '/tienda':
       return <ChildrenPage item={children0(site, query)!} />
-      
     // case getPathsC0(sites, asPath):
     //   return (
     //     <>

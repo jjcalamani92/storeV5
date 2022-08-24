@@ -12,7 +12,7 @@ interface Layout {
 	site?: Site
 }
 
-export const Layout: FC<Layout> = ({
+export const LayoutPages: FC<Layout> = ({
 	head,
 	children,
 	site

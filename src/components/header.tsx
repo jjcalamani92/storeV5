@@ -419,7 +419,9 @@ export const Header: FC<Header> = ({ site }) => {
                                             {children1.children.map((children2, i) => (
                                               <li key={i} className="flex">
                                                 <Link href={`/${children0.head.href}/${children1.head.href}/${children2.head.href}`} >
-                                                  <a className="hover:text-gray-800" >
+                                                  <a className="hover:text-gray-800" 
+                                                  style={{color: "inherit"}}
+                                                  >
                                                     {children2.head.name}
                                                   </a>
                                                 </Link>

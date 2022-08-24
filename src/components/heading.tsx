@@ -8,6 +8,8 @@ import { classNames } from "../utils/function";
 import { ModalProduct } from "./formModal/formProduct";
 import { ModalProductImage } from "./formModal/formProductImage";
 import { Site } from "../interfaces/siteV1";
+import { ModalProductAntd } from './formModal/formProductAntd';
+import { ModalProductImageAntd } from "./formModal/formProductImageAntd";
 
 
 interface HeadingDashboardProducts {
@@ -77,7 +79,7 @@ export const HeadingDashboardProducts: FC<HeadingDashboardProducts> = ({ title, 
           </Menu.Items>
         </Transition>
       </Menu>
-      <ModalProduct openMP={openMP} setOpenMP={setOpenMP} site={site} />
+      <ModalProductAntd openMP={openMP} setOpenMP={setOpenMP} site={site} />
       
     </div>
   )
@@ -158,8 +160,8 @@ export const HeadingDashboardProduct: FC<HeadingDashboardProduct> = ({ title, pr
           </Menu.Items>
         </Transition>
       </Menu>
-      <ModalProductImage openMI={openMI} setOpenMI={setOpenMI} product={product} />
-      <ModalProduct openMP={openMP} setOpenMP={setOpenMP} product={product} site={site} />
+      <ModalProductImageAntd openMI={openMI} setOpenMI={setOpenMI} product={product} />
+      <ModalProductAntd openMP={openMP} setOpenMP={setOpenMP} product={product} site={site} />
     </div>
   )
 }

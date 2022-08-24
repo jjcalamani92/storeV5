@@ -1,13 +1,13 @@
 import { FC, useContext, useState, } from "react";
 import { useRouter } from 'next/router';
 import { RadioGroup } from '@headlessui/react';
-import { Wear } from "../interfaces/ecommerceV1";
+import { Product } from "../interfaces/ecommerceV1";
 import { SwiperDetail } from "./swiper";
 
 
 
 interface Props {
-	products: Wear[];
+	products: Product[];
 }
 
 export const ProductOverviewFurniture: FC<Props> = ({ products }) => {

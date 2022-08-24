@@ -5,7 +5,8 @@ import { SITE } from '../graphql'
 import { FURNITURIES, GIFTS } from '../graphql/query/ecommerceV1.query'
 import { Wear } from '../interfaces/ecommerceV1'
 import { Site } from '../interfaces/siteV1'
-import { Layout, Routes } from '../layouts'
+import { LayoutPages, Routes } from '../layouts'
+import { LayoutDashboard } from '../layouts/layout_dashboard'
 import { graphQLClient } from '../swr/graphQLClient'
 import { childrenPaths2, paths, seo } from '../utils/functionV1'
 
@@ -17,16 +18,22 @@ interface Props {
 
 const Slug: FC<Props> = ({site, furnitures, gifts}) => {
   const { query, asPath } = useRouter()
-  // console.log(site);
-  // console.log(furnitures);
-  // console.log(childrenPaths2(site));
-  // console.log(paths(site));
-  
+  console.log(query);
   
   return (
-    <Layout head={seo(site, query)}  site={site}>
-      <Routes site={site} products={{furnitures, gifts} } />
-    </Layout>
+    <>
+    {
+      query.slug && query.slug[0] === "dashboard" 
+      ?
+      <LayoutDashboard >
+        <Routes site={site} products={{furnitures, gifts} } />
+      </LayoutDashboard>
+      :
+      <LayoutPages head={seo(site, query)}  site={site}>
+        <Routes site={site} products={{furnitures, gifts} } />
+      </LayoutPages>
+    }
+    </>
     )
 }
 
@@ -43,7 +50,11 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   const { furnitures } = await graphQLClient.request(FURNITURIES, { site: process.env.API_SITE })
   const { gifts } = await graphQLClient.request(GIFTS, { site: process.env.API_SITE })
   return {
-    props: { site, furnitures, gifts },
+    props: { site, furnitures, gifts, 
+    //   fallback: {
+    //   [FURNITURIES]:
+    // },
+  },
     revalidate: 20,
   }
 }

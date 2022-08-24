@@ -27,9 +27,7 @@ export const Routes: FC<Routes> = ({ site, products }) => {
   
   const { asPath, query } = useRouter()
   const { data, isValidating, error } = useSWR(SITES)
-  // console.log(productPaths(products.gifts));
-  
-  // console.log(productPaths(products.furnitures));
+  // console.log(childrenPaths0(site));
   
   switch (asPath) {
     case childrenPaths0(site).find(data => data === asPath):
