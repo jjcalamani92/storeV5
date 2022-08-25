@@ -1,19 +1,16 @@
 import type { GetStaticPaths, GetStaticProps } from 'next'
 import { useRouter } from 'next/router'
 import { FC } from 'react'
-import { SITE } from '../graphql'
-import { FURNITURIES, GIFTS } from '../graphql/query/ecommerceV1.query'
-import { Wear } from '../interfaces/ecommerceV1'
-import { Site } from '../interfaces/siteV1'
-import { LayoutPages, Routes } from '../layouts'
-import { LayoutDashboard } from '../layouts/layout_dashboard'
+import { SITE, FURNITURIES, GIFTS } from '../graphql'
+import { Product, Site } from '../interfaces'
+import { LayoutPages, Routes, LayoutDashboard } from '../layouts'
 import { graphQLClient } from '../swr/graphQLClient'
-import { childrenPaths2, paths, seo } from '../utils/functionV1'
+import { paths, seo } from '../utils/functionV1'
 
 interface Props {
   site: Site
-  furnitures: Wear[]
-  gifts: Wear[]
+  furnitures: Product[]
+  gifts: Product[]
 }
 
 const Slug: FC<Props> = ({site, furnitures, gifts}) => {

@@ -6,6 +6,7 @@ import { classNames, getQuery, slug } from '../utils/function';
 import { Main } from '../components/main'
 import { useRouter } from 'next/router'
 import Link from 'next/link';
+import Head from 'next/head';
 
 const user = {
   name: 'Tom Cook',
@@ -41,6 +42,17 @@ export const LayoutDashboard: FC<LayoutDashboard> = ({ children }) => {
     <>
 
       <div className="min-h-full">
+      <Head>
+			<title>Dashboard</title>
+				<meta name="keywords" />
+				{/* <meta name="description" content={head ? head.description : 'description'} />
+				<meta property="og:title" content={head ? head.name : 'title'} />
+				<meta property="og:description" content={head ? head.description : 'description'} />
+				<meta property="og:type" content="og:product" />
+				{head && head.image && <meta property="og:image" content={head ? head?.image.src :'image'} />}
+				 */}
+         <link rel="icon" href={"https://regalosterrakota.com/wp-content/uploads/2021/11/cropped-icono-web-hhh-180x180.jpg"} />
+			</Head>
         <Disclosure as="nav" className="bg-gray-800">
           {({ open }) => (
             <>
@@ -50,7 +62,7 @@ export const LayoutDashboard: FC<LayoutDashboard> = ({ children }) => {
                     <div className="flex-shrink-0">
                       <img
                         className="h-8 w-8"
-                        src="https://tailwindui.com/img/logos/workflow-mark.svg?color=indigo&shade=500"
+                        src="https://regalosterrakota.com/wp-content/uploads/2021/11/cropped-icono-web-hhh-180x180.jpg"
                         alt="Workflow"
                       />
                     </div>

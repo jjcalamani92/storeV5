@@ -9,10 +9,8 @@ import { childrens0, childrens1, childrens2, childrenPaths0, childrenPaths1, chi
 import { Children1 } from './children1';
 import { Children2 } from './children2';
 import { Wear } from '../interfaces/ecommerceV1';
-import { ProductOverview } from '../components/productOverview';
-import { ChildrenPage } from '../components/childrenPage';
 import { ChildrenPageDashboard } from '../components/childrenPageDashboard';
-import { ProductPageDashboard } from '../components/productPageDashboard';
+import { ProductPage, ProductOverview } from '../components';
 
 interface Routes {
   site: Site
@@ -42,7 +40,7 @@ export const Routes: FC<Routes> = ({ site, products }) => {
     case '/dashboard/pages':
       return <ChildrenPageDashboard item={site.children} site={site}/>
     case '/dashboard/products':
-      return <ProductPageDashboard products={products.furnitures} site={site}/>
+      return <ProductPage products={products.furnitures} site={site}/>
     case productDashboardPaths('furniture', products.furnitures).find(data => data === asPath):
       return <ProductOverview products={products.furnitures} site={site}/>
 

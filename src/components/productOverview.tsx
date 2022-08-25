@@ -26,7 +26,7 @@ export const ProductOverview: FC<ProductOverview> = ({ products, site }) => {
 			<section className="bg-white">
 				{
 					query.slug![0] ==='dashboard' ?
-					<HeadingDashboardProduct title='Product' product={product} site={site}/>
+					<HeadingDashboardProduct title='Product Edit' product={product} site={site}/>
 					: <BreadcrumbAntd />
 				}
 				<div className="max-w-2xl mx-auto py-0 px-4 sm:px-0 lg:max-w-7xl lg:py-0 lg:px-0 grid grid-cols-1 lg:gap-6 lg:grid-cols-5">

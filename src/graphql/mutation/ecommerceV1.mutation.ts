@@ -24,6 +24,11 @@ export const UPDATE_FURNITURE_PRODUCT = gql`
     }
   }
 `;
+export const DELETE_FURNITURE_PRODUCT = gql`
+  mutation RemoveFurniture($_id: ID!) {
+    removeFurniture(_id: $_id) 
+  }
+`;
 
 export const ADD_IMAGES_PRODUCT = gql`
 mutation AddImagesFurniture($_id: ID!, $input: [AddImagesInput!]!) {

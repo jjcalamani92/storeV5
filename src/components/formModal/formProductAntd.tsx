@@ -217,10 +217,10 @@ export const ModalProductAntd: FC<Props> = ({ openMP, setOpenMP, children, produ
                       <span className="ant-form-text"> unidades</span>
                     </Form.Item>
 
-                  <div className=" col-span-2 px-0 py-3 sm:px-0 flex  justify-end">
+                  <div className=" col-span-2 flex  justify-end gap-3">
                       <button
                         type="submit"
-                        className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-pink-600 text-base font-medium text-white hover:bg-pink-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500 sm:ml-3 sm:w-auto sm:text-sm"
+                        className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-pink-600 text-base font-medium text-white hover:bg-pink-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500  sm:w-auto sm:text-sm"
                         onClick={() => setOpenMP(false)}
                       >
                         {
@@ -230,7 +230,7 @@ export const ModalProductAntd: FC<Props> = ({ openMP, setOpenMP, children, produ
                       </button>
                       <button
                         type="button"
-                        className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
+                        className=" w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500  sm:w-auto sm:text-sm"
                         onClick={() => setOpenMP(false)}
                         ref={cancelButtonRef}
                       >
