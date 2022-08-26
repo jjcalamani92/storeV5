@@ -4,7 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import React, { FC } from 'react';
 import { useSWRConfig } from 'swr';
-import { CREATE_GIFT_PRODUCT, DELETE_FURNITURE_PRODUCT } from '../../graphql/mutation/ecommerceV1.mutation';
+import { CREATE_GIFT_PRODUCT, DELETE_FURNITURE_PRODUCT, DELETE_GIFT_PRODUCT } from '../../graphql/mutation/ecommerceV1.mutation';
 import { FURNITURIES, GIFTS } from '../../graphql/query/ecommerceV1.query';
 import { Product } from '../../interfaces/ecommerceV1';
 import { graphQLClient } from '../../swr/graphQLClient';
@@ -47,7 +47,7 @@ export const CardComponent:FC<CardComponent> = ({product}) => {
             REMOVE = DELETE_FURNITURE_PRODUCT
             PRODUCTS = FURNITURIES
           } else {
-            REMOVE = CREATE_GIFT_PRODUCT
+            REMOVE = DELETE_GIFT_PRODUCT
             PRODUCTS = GIFTS
           }
         await graphQLClient.request(REMOVE,  {_id: product._id})
