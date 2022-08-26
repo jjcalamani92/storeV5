@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import { FC, Fragment, useState } from "react";
-import { CreateProductInput, Wear } from "../interfaces/ecommerceV1";
+import { CreateProductInput, Product } from "../interfaces/ecommerceV1";
 import { Menu, Transition, Dialog, Disclosure } from '@headlessui/react';
 import { Icon } from "./icon";
 import { classNames } from "../utils/function";
@@ -11,7 +11,7 @@ import { ModalProductImageAntd } from "./formModal/formProductImageAntd";
 
 interface HeadingDashboardProducts {
   title: string;
-  product?:Wear
+  product?:Product
   site:Site
 }
 
@@ -75,7 +75,7 @@ export const HeadingDashboardProducts: FC<HeadingDashboardProducts> = ({ title, 
 }
 interface HeadingDashboardProduct {
   title: string;
-  product:Wear
+  product:Product
   site:Site
 }
 const formProduct = [

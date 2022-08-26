@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { useRouter } from 'next/router';
 import { FacebookOutlined, WhatsAppOutlined, InstagramOutlined } from '@ant-design/icons';
-import { Product, Wear } from "../interfaces/ecommerceV1";
+import { Product } from "../interfaces/ecommerceV1";
 import { SwiperDetail, SwiperPaginationDynamic } from './swiper';
 import { HeadingDashboardProduct } from "./heading";
 import { Site } from "../interfaces/siteV1";

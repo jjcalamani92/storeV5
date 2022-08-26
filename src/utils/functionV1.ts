@@ -1,6 +1,6 @@
 import { Site } from "../interfaces/siteV1";
 import { ParsedUrlQuery } from "querystring";
-import { Product, Wear } from "../interfaces/ecommerceV1";
+import { Product } from "../interfaces/ecommerceV1";
 import { Option } from "../components/formModal/formProduct";
 import { getQuery } from "./function";
 
@@ -132,8 +132,6 @@ export const getProduct = (products: Product[], query: ParsedUrlQuery) => {
 
 export const getProductRoute = (site: Site, product: Product) => {
   const url = getQuery(product.article.route);
-  // const children3 = childrens3(site).filter((data) => data.slug === url[3]);
-  // const children4 = childrens4(site).filter((data) => data.slug === url[4]);
   if (url[2]) {
     const children0 = childrens0(site).filter((data) => data.slug === url[0]);
     const children1 = childrens1(site).filter((data) => data.slug === url[1]);
@@ -201,8 +199,8 @@ export const getProductRoute = (site: Site, product: Product) => {
   }
   // return children0.map(children0 => [{name: children0.head.name, href: children0.head.href}, children0.children && children0.children.filter(data => data.slug === url[1]).map(children1 => [{name: children1.head.name, href: children1.head.href}]) ]).flat(5)
 };
-export const productPaths = (gifts: Wear[]) => {
-  return gifts.map((data) => `/detalles/${data.article.slug}`);
+export const productPaths = (products: Product[]) => {
+  return products.map((data) => `/detalles/${data.article.slug}`);
 };
 export const routes = (site: Site): Option[] => {
   return site.children
@@ -224,7 +222,7 @@ export const routes = (site: Site): Option[] => {
         })),
     }));
 };
-export const productDashboardPaths = (type: string, products: Wear[]) => {
+export const productDashboardPaths = (type: string, products: Product[]) => {
   return products.map(
     (data) => `/dashboard/products/${type}/${data.article.slug}`
   );

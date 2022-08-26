@@ -1,30 +1,22 @@
-import { useRouter } from 'next/router';
 import { FC } from "react"
-import { Page404 } from '../components/404';
-import useSWR from 'swr';
-import { SITES } from '../graphql';
+import { useRouter } from 'next/router';
 import { Site } from '../interfaces/siteV1';
-import { Children0 } from './children0';
+import { Children0, Children1, Children2 } from './';
 import { childrens0, childrens1, childrens2, childrenPaths0, childrenPaths1, childrenPaths2, seo, children0, paths, productPaths, productDashboardPaths, routes} from '../utils/functionV1';
-import { Children1 } from './children1';
-import { Children2 } from './children2';
-import { Wear } from '../interfaces/ecommerceV1';
-import { ChildrenPageDashboard } from '../components/childrenPageDashboard';
-import { ProductPage, ProductOverview } from '../components';
-import { ProductDashboard } from '../components/productDashboard';
+import { Product } from '../interfaces/ecommerceV1';
+import { ProductPageSWR, ProductOverview, ProductDashboard, ChildrenPageDashboard, Page404} from '../components';
 
 interface Routes {
   site: Site
   products: {
-    furnitures: Wear[]
-    gifts: Wear[]
+    furnitures: Product[]
+    gifts: Product[]
   }
 }
 export const Routes: FC<Routes> = ({ site, products }) => {
   // console.log(products);
   
   const { asPath, query } = useRouter()
-  const { data, isValidating, error } = useSWR(SITES)
   // console.log(childrenPaths0(site));
   
   switch (asPath) {
@@ -43,9 +35,9 @@ export const Routes: FC<Routes> = ({ site, products }) => {
     case '/dashboard/products':
       return <ProductDashboard  site={site}/>
     case '/dashboard/products/furniture':
-      return <ProductPage products={products.furnitures} site={site}/>
+      return <ProductPageSWR products={products.furnitures} site={site}/>
     case '/dashboard/products/gift':
-      return <ProductPage products={products.gifts} site={site}/>
+      return <ProductPageSWR products={products.gifts} site={site}/>
     case productDashboardPaths('furniture', products.furnitures).find(data => data === asPath):
       return <ProductOverview products={products.furnitures} site={site}/>
     case productDashboardPaths('gift', products.gifts).find(data => data === asPath):

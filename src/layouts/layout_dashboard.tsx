@@ -3,7 +3,7 @@ import { FC, Fragment } from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { BellIcon, MenuIcon, XIcon } from '@heroicons/react/outline'
 import { classNames, getQuery, slug } from '../utils/function';
-import { Main } from '../components/main'
+import { Main } from '../components'
 import { useRouter } from 'next/router'
 import Link from 'next/link';
 import Head from 'next/head';

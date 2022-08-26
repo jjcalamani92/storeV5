@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import { FC } from "react"
 import { Site } from "../interfaces/siteV1";
 import { Hero } from "../components/hero";
-import { ChildrenPage } from '../components/childrenPage';
+import { ChildrenPage } from '../components';
 import { children0 } from '../utils/functionV1';
 
 interface Props {

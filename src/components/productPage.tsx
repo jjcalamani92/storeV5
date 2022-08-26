@@ -1,16 +1,15 @@
 
-import { FC } from 'react';
+import { FC, Key } from 'react';
+import Image from "next/image"
 
-import { Children, Site } from '../interfaces/siteV1';
+import { Children } from '../interfaces/siteV1';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import useSWR from 'swr';
-import { FURNITURIES, GIFTS } from '../graphql/query/ecommerceV1.query';
+import { FURNITURIES } from '../graphql/query/ecommerceV1.query';
 import Skeleton from "react-loading-skeleton";
 import 'react-loading-skeleton/dist/skeleton.css'
-import { Product, Wear } from '../interfaces/ecommerceV1';
-import { HeadingDashboardProducts } from './heading';
-import { CardComponent } from './antd/card';
-import { lastElement, slug } from '../utils/function';
+import { Product } from '../interfaces/ecommerceV1';
 /*
   This example requires Tailwind CSS v2.0+ 
   
@@ -29,63 +28,77 @@ import { lastElement, slug } from '../utils/function';
 */
 
 interface ProductPage {
-  item?: Children
+  item: Children
   products: Product[]
-  site: Site
 }
-export const ProductPage: FC<ProductPage> = ({ item, products, site }) => {
+export const ProductPage: FC<ProductPage> = ({ item, products }) => {
   const { asPath, query } = useRouter()
-  let PRODUCTS
-  if (lastElement(asPath) ==='furniture') {
-    PRODUCTS = FURNITURIES
-  } else {
-    PRODUCTS = GIFTS
-  }
-  const { data, isValidating, error } = useSWR([ PRODUCTS, { site: process.env.API_SITE }])
-  const productss = lastElement(asPath) ==='furniture' ? data?.furnitures : data?.gifts
-  
-  const card = []
-  for (let i = 0; i < 10; i++) {
-    card.push(<Card key={i} />)
-  }
-  // console.log(data.furnitures.sort((a,b) => a.));
-  // console.log(lastElement(asPath));
-  
+  // const { data, isValidating, error } = useSWR([FURNITURIES, { site: process.env.API_SITE }])
+  // console.log('products', products);
+
   return (
-    <section className=''>
-      <HeadingDashboardProducts title={lastElement(asPath)} site={site} />
-      {
+    <section className='py-10'>
+      <h2 className="text-2xl font-bold tracking-tight text-gray-900">{item.head.name}</h2>
+      {/* {
         isValidating
           ?
-          //   <div className="h-min flex justify-center">
-          //     <div className="flex items-center ">
-
-          //         <Spinner01 />
-          //     </div>
-          // </div>
-          <div className={`grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-5 gap-6 `}>
-            { card }
-          </div>
-          :
-          
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 lg:grid-cols-5 ">
-            {/* { card } */}
-            {productss.map((product: Product, i:number) => (
-              <CardComponent key={i} product={product} />
+          <div className={`grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6`}>
+            {["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"].map(i => (
+              <Card key={i} />
             ))}
           </div>
-      }
+          :
+          <div className="grid grid-cols-1 gap-y-10 sm:grid-cols-2 gap-x-6 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8 mt-6 ">
+            {data.furnitures.filter((data: Wear) => data.article.route === asPath).map((product: Wear) => (
+              <Link href={`/detalles/${product.article.slug}`} key={product._id}>
+                <a className="group">
+                  <div className="w-full aspect-w-1 aspect-h-1 bg-gray-200 rounded-lg overflow-hidden xl:aspect-w-7 xl:aspect-h-8">
+                    <Image
+                      src={product.article.image ? product.article.image[0].src : "https://res.cloudinary.com/dvcyhn0lj/image/upload/v1655217461/14.1_no-image.jpg_gkwtld.jpg"}
+                      alt={product.article.image ? product.article.image[0].alt : "description image"}
+                      width={500}
+                      height={600}
+                      objectFit='cover'
+                    />
+                  </div>
+                  <h3 className="mt-4 text-sm text-gray-700">{product.article.title}</h3>
+                  <p className="mt-1 text-lg font-medium text-gray-900">{product.article.price} Bs.</p>
+                </a>
+              </Link>
+            ))}
+          </div>
+      } */}
+          <div className="grid grid-cols-1 gap-y-10 sm:grid-cols-2 gap-x-6 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8 mt-6 ">
+            {products.filter(data => data.article.route === asPath).map(product => (
+              <Link href={`/detalles/${product.article.slug}`} key={product._id}>
+                <a className="group">
+                  <div className="w-full aspect-w-1 aspect-h-1 bg-gray-200 rounded-lg overflow-hidden xl:aspect-w-7 xl:aspect-h-8">
+                    <Image
+                      src={product.article.image ? product.article.image[0].src : "https://res.cloudinary.com/dvcyhn0lj/image/upload/v1655217461/14.1_no-image.jpg_gkwtld.jpg"}
+                      alt={product.article.image ? product.article.image[0].alt : "description image"}
+                      width={500}
+                      height={600}
+                      objectFit='cover'
+                    />
+                  </div>
+                  <h3 className="mt-4 text-sm text-gray-700">{product.article.title}</h3>
+                  <p className="mt-1 text-lg font-medium text-gray-900">{product.article.price} Bs.</p>
+                </a>
+              </Link>
+            ))}
+          </div>
+
     </section>
+
   )
 }
 const Card = () => {
   return (
-    <div className="shadow-lg">
-      {/* <Skeleton.Image active={true} style={{  width: '100%' }}/> */}
+    <div className="shadow-lg ">
       <Skeleton
-        height={220} />
-      <Skeleton height={70} />
-      <Skeleton height={50} />
+        height={365} />
+      <Skeleton height={30} />
+      <Skeleton height={30} />
     </div>
   )
 }

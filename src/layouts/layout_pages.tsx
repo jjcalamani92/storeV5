@@ -3,8 +3,7 @@ import { useRouter } from "next/router";
 import { FC } from "react";
 // import { Footer } from "../components/footer";
 import { Data, HeadV1, Site } from "../interfaces/siteV1";
-import { Main } from '../components/main';
-import { Header } from '../components/header';
+import { Main, Header } from '../components';
 
 interface Layout {
 	head?: HeadV1;

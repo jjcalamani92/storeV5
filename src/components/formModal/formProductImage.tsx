@@ -3,7 +3,7 @@ import { ChangeEvent, FC, Fragment, useRef, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { useRouter } from 'next/router';
 import { useForm } from 'react-hook-form';
-import { AddProductImage, CreateProductInput, ImageProduct, Wear } from '../../interfaces/ecommerceV1';
+import { AddProductImage, CreateProductInput, ImageProduct, Product } from '../../interfaces/ecommerceV1';
 import { CREATE_WEAR_PRODUCT, ADD_IMAGES_FURNITURE } from '../../graphql/mutation/ecommerceV1.mutation';
 import { useSWRConfig } from 'swr';
 import { WEARS } from '../../graphql/query/ecommerceV1.query';
@@ -15,7 +15,7 @@ import { getURL } from '../../utils/function';
 interface Props {
   openMI: boolean
   setOpenMI: React.Dispatch<React.SetStateAction<boolean>>
-  product: Wear;
+  product: Product;
 }
 
 export const ModalProductImage: FC<Props> = ({ openMI, setOpenMI, product }) => {

@@ -2,10 +2,10 @@ export interface Product {
   _id: string;
   article: Article;
 }
-export interface Wear {
-  _id: string;
-  article: Article;
-}
+// export interface Wear {
+//   _id: string;
+//   article: Article;
+// }
 export interface Article {
   title: string;
   slug: string;
@@ -28,6 +28,7 @@ export interface ImageProduct {
   src: string;
   alt: string;
 }
+
 export interface CreateProductInput {
   title: string;
   mark: string;
