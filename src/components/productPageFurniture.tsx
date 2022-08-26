@@ -6,7 +6,7 @@ import { Children } from '../interfaces/siteV1';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import useSWR from 'swr';
-import { FURNITURIES, FURNITURIES1 } from '../graphql/query/ecommerceV1.query';
+import { FURNITURIES } from '../graphql/query/ecommerceV1.query';
 import Skeleton from "react-loading-skeleton";
 import 'react-loading-skeleton/dist/skeleton.css'
 import { Wear } from '../interfaces/ecommerceV1';
