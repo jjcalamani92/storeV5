@@ -52,7 +52,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     //   [FURNITURIES]:
     // },
   },
-    revalidate: 20,
+    revalidate: 10,
   }
 }
 export default Slug
