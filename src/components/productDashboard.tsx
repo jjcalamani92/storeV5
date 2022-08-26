@@ -3,10 +3,14 @@ import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/router"
 import { FC, useState } from "react"
+import { Site } from "../interfaces"
+import { lastElement } from "../utils/function"
 import { HeadingDashboardProducts } from "./heading"
 
-
-export const ProductDashboard = () => {
+interface ProductDashboard {
+  site: Site
+}
+export const ProductDashboard:FC<ProductDashboard> = ({site}) => {
   const date = [
     {
       title: 'Muebles',
@@ -30,15 +34,11 @@ export const ProductDashboard = () => {
     // },
   ]
   const { asPath } = useRouter()
-console.log(asPath);
+// console.log(asPath);
 
   return (
     <>
-      <div className="flex items-baseline justify-between py-6">
-        <h1 className="text-4xl font-extrabold tracking-tight text-gray-900">Products</h1>
-      </div>
-
-
+      <HeadingDashboardProducts title={lastElement(asPath)} site={site} />
       <div className=" grid grid-cols-1 sm:grid-cols-3 gap-6 lg:grid-cols-5 ">
         {
           date.map(data => (

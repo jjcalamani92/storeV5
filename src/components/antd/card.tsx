@@ -18,10 +18,11 @@ interface CardComponent {
 }
 
 export const CardComponent:FC<CardComponent> = ({product}) => {
-  const { push } = useRouter()
+  const { push, asPath } = useRouter()
+  
   const { mutate } = useSWRConfig()
   const onEdit = () => {
-    push(`/dashboard/products/furniture/${product.article.slug}`)
+    push(`${asPath}/${product.article.slug}`)
   }
   const onDelete =  async() => {
     Swal.fire({
@@ -73,33 +74,3 @@ export const CardComponent:FC<CardComponent> = ({product}) => {
       
   )
 }
-const CardAntd: React.FC = () => (
-
-  <Card
-    // style={{ width: 300 }}
-    size="small"
-    cover={
-      <Image
-        width={400}
-        height={400}
-        alt="example"
-        src="https://res.cloudinary.com/dno4gyfgn/image/upload/v1661313191/2022-08-24T03:53:11.310Z.jpg"
-      />
-    }
-    actions={[
-      // <SettingOutlined key="setting"  />,
-      <DeleteOutlined key="delete" />,
-      // <EditOutlined key="edit" />,
-      // <EllipsisOutlined key="ellipsis" />,
-    ]}
-  >
-    <Meta
-      // avatar={<Avatar src="https://joeschmoe.io/api/v1/random" />}
-      title="Card title"
-      description="This is the description"
-
-    />
-  </Card>
-);
-
-export default CardAntd;

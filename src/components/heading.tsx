@@ -1,12 +1,9 @@
 import { useRouter } from "next/router";
 import { FC, Fragment, useState } from "react";
-import { useForm } from "react-hook-form";
 import { CreateProductInput, Wear } from "../interfaces/ecommerceV1";
 import { Menu, Transition, Dialog, Disclosure } from '@headlessui/react';
 import { Icon } from "./icon";
 import { classNames } from "../utils/function";
-import { ModalProduct } from "./formModal/formProduct";
-import { ModalProductImage } from "./formModal/formProductImage";
 import { Site } from "../interfaces/siteV1";
 import { ModalProductAntd } from './formModal/formProductAntd';
 import { ModalProductImageAntd } from "./formModal/formProductImageAntd";
@@ -17,14 +14,9 @@ interface HeadingDashboardProducts {
   product?:Wear
   site:Site
 }
-const product = {
-  title: "product1"
-}
+
 const form = [
   { name: 'Created Product', href: 'new', current: true },
-  // { name: 'Updated Site', href: 'updated', current: true },
-  // { name: 'Delete Site', href: 'delete', current: true },
-
 ]
 export const HeadingDashboardProducts: FC<HeadingDashboardProducts> = ({ title, product, site }) => {
   const { asPath, push, query } = useRouter()

@@ -2,9 +2,9 @@ import { gql } from "graphql-request";
 
 export const ALL_WEARS = gql`
   query AllWears {
-    allWears{
+    allWears {
       _id
-			article{
+      article {
         title
         slug
       }
@@ -12,10 +12,10 @@ export const ALL_WEARS = gql`
   }
 `;
 export const WEARS = gql`
-  query Wears($site:String!) {
-    wears(site:$site) {
+  query Wears($site: String!) {
+    wears(site: $site) {
       _id
-			article{
+      article {
         title
         slug
       }
@@ -23,16 +23,16 @@ export const WEARS = gql`
   }
 `;
 export const WEAR = gql`
-  query Wear($_id:ID!) {
-    wear(_id:$_id) {
+  query Wear($_id: ID!) {
+    wear(_id: $_id) {
       _id
-			article{
+      article {
         title
         slug
         description
         price
         discountPrice
-        image{
+        image {
           src
           alt
         }
@@ -41,40 +41,40 @@ export const WEAR = gql`
   }
 `;
 
-export const ALL_FURNITURIES = gql`
-  query AllFurnitures {
-    allFurnitures{
-      _id
-			article{
-        title
-        slug
-      }
-    }
-  }
-`;
-export const FURNITURIES1 = gql`
-  query Furnitures1($site:String!, $route:String!) {
-    furnitures1(site:$site, route:$route) {
-      _id
-			article{
-        title
-        slug
-        price
-        route
-        image{
-          src
-          alt
-        }
-      }
-    }
-  }
-`;
+// export const ALL_FURNITURIES = gql`
+//   query AllFurnitures {
+//     allFurnitures{
+//       _id
+// 			article{
+//         title
+//         slug
+//       }
+//     }
+//   }
+// `;
+// export const FURNITURIES1 = gql`
+//   query Furnitures1($site:String!, $route:String!) {
+//     furnitures1(site:$site, route:$route) {
+//       _id
+// 			article{
+//         title
+//         slug
+//         price
+//         route
+//         image{
+//           src
+//           alt
+//         }
+//       }
+//     }
+//   }
+// `;
 export const FURNITURIES = gql`
-  query Furnitures($site:String!) {
-    furnitures(site:$site) {
+  query Furnitures($site: String!) {
+    furnitures(site: $site) {
       _id
-      updatedAt
-			article{
+
+      article {
         title
         slug
         price
@@ -83,11 +83,11 @@ export const FURNITURIES = gql`
         route
         mark
         description
-        image{
+        image {
           src
           alt
         }
-        featured{
+        featured {
           name
           href
         }
@@ -95,37 +95,45 @@ export const FURNITURIES = gql`
     }
   }
 `;
-export const FURNITURIE = gql`
-  query Furniture($_id:ID!) {
-    furniture(_id:$_id) {
+// export const FURNITURIE = gql`
+//   query Furniture($_id:ID!) {
+//     furniture(_id:$_id) {
+//       _id
+// 			article{
+//         title
+//         slug
+//         description
+//         price
+//         discountPrice
+//         image{
+//           src
+//           alt
+//         }
+//         route
+//       }
+//     }
+//   }
+// `;
+export const GIFTS = gql`
+  query Gifts($site: String!) {
+    gifts(site: $site) {
       _id
-			article{
+      article {
         title
         slug
-        description
         price
         discountPrice
-        image{
+        inStock
+        route
+        mark
+        description
+        image {
           src
           alt
         }
-        route
-      }
-    }
-  }
-`;
-export const GIFTS = gql`
-  query Gifts($site:String!) {
-    gifts(site:$site) {
-      _id
-			article{
-        title
-        slug
-        price
-        route
-        image{
-          src
-          alt
+        featured {
+          name
+          href
         }
       }
     }

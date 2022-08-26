@@ -41,11 +41,15 @@ export const Routes: FC<Routes> = ({ site, products }) => {
     case '/dashboard/pages':
       return <ChildrenPageDashboard item={site.children} site={site}/>
     case '/dashboard/products':
-      return <ProductDashboard />
+      return <ProductDashboard  site={site}/>
     case '/dashboard/products/furniture':
       return <ProductPage products={products.furnitures} site={site}/>
+    case '/dashboard/products/gift':
+      return <ProductPage products={products.gifts} site={site}/>
     case productDashboardPaths('furniture', products.furnitures).find(data => data === asPath):
       return <ProductOverview products={products.furnitures} site={site}/>
+    case productDashboardPaths('gift', products.gifts).find(data => data === asPath):
+      return <ProductOverview products={products.gifts} site={site}/>
 
     default:
       return <Page404 />
