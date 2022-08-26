@@ -19,12 +19,12 @@ import {
 } from 'antd';
 const { Option } = Select;
 import { graphQLClient } from '../../swr/graphQLClient';
-import { CREATE_FURNITURE_PRODUCT, CREATE_WEAR_PRODUCT, UPDATE_FURNITURE_PRODUCT } from '../../graphql/mutation/ecommerceV1.mutation';
+import { CREATE_FURNITURE_PRODUCT, CREATE_GIFT_PRODUCT, CREATE_WEAR_PRODUCT, UPDATE_FURNITURE_PRODUCT, UPDATE_GIFT_PRODUCT } from '../../graphql/mutation/ecommerceV1.mutation';
 import { useSWRConfig } from 'swr';
-import { FURNITURIES, WEARS } from '../../graphql/query';
+import { FURNITURIES, GIFTS, WEARS } from '../../graphql/query';
 import { Site } from '../../interfaces/siteV1';
 import { routes } from '../../utils/functionV1';
-import { getQuery, getURL, slug } from '../../utils/function';
+import { getQuery, getURL, lastElement, slug } from '../../utils/function';
 import type { DefaultOptionType } from 'antd/es/cascader';
 import Swal from 'sweetalert2';
 
@@ -48,6 +48,7 @@ export const ModalProductAntd: FC<Props> = ({ openMP, setOpenMP, children, produ
   const { mutate } = useSWRConfig()
   const route: Option[] = routes(site)
   // console.log(getQuery(product!.article.route));
+console.log(query.slug![2]);
 
   
   const cancelButtonRef = useRef(null)
@@ -64,8 +65,14 @@ export const ModalProductAntd: FC<Props> = ({ openMP, setOpenMP, children, produ
         showConfirmButton: false,
         timer: 1500
       })
-      
-      await graphQLClient.request(UPDATE_FURNITURE_PRODUCT, { _id: product._id, input: data })
+      let UPDATE
+      if (query.slug![2] ==='furniture') {
+        UPDATE = UPDATE_FURNITURE_PRODUCT
+      } else {
+        UPDATE = UPDATE_GIFT_PRODUCT
+      }
+      await graphQLClient.request(UPDATE, { _id: product._id, input: data })
+
       replace(`${getURL(asPath)}/${slug(values.title)}`)
     } else {
       Swal.fire({
@@ -75,8 +82,18 @@ export const ModalProductAntd: FC<Props> = ({ openMP, setOpenMP, children, produ
         showConfirmButton: false,
         timer: 1500
       })
-      await graphQLClient.request(CREATE_FURNITURE_PRODUCT, { input: data })
-      mutate([FURNITURIES, { site: process.env.API_SITE }])
+      let CREATED
+      let PRODUCTS
+      if (query.slug![2] ==='furniture') {
+        CREATED = CREATE_FURNITURE_PRODUCT
+        PRODUCTS = FURNITURIES
+      } else {
+        CREATED = CREATE_GIFT_PRODUCT
+        PRODUCTS = GIFTS
+      }
+      await graphQLClient.request(CREATED, { input: data })
+
+      mutate([PRODUCTS, { site: process.env.API_SITE }])
     }
   };
   const filter = (inputValue: string, path: DefaultOptionType[]) =>

@@ -21,14 +21,12 @@ import {
 } from 'antd';
 const { Option } = Select;
 import { graphQLClient } from '../../swr/graphQLClient';
-import { ADD_IMAGES_PRODUCT, CREATE_FURNITURE_PRODUCT, CREATE_WEAR_PRODUCT, UPDATE_FURNITURE_PRODUCT } from '../../graphql/mutation/ecommerceV1.mutation';
+import { ADD_IMAGES_FURNITURE, ADD_IMAGES_GIFT} from '../../graphql/mutation/ecommerceV1.mutation';
 import { useSWRConfig } from 'swr';
-import { FURNITURIES, WEARS } from '../../graphql/query/ecommerceV1.query';
-import { Site } from '../../interfaces/siteV1';
-import { routes } from '../../utils/functionV1';
 import { getURL, slug } from '../../utils/function';
 import ImgCrop from 'antd-img-crop';
 import type { RcFile, UploadFile, UploadProps } from 'antd/es/upload/interface';
+import { uuidv3 } from '../../utils/index';
 
 export interface Option {
   value: string;
@@ -48,7 +46,7 @@ export const ModalProductImageAntd: FC<Props> = ({ openMI, setOpenMI, children, 
   const { mutate } = useSWRConfig()
   const cancelButtonRef = useRef(null)
   // console.log(product?.article.image);
-  const file = product?.article.image ?  product?.article.image.map(data => ({uid: '1', name:"1", url:data.src})) : []
+  const file = product?.article.image ?  product?.article.image.map(data => ({uid: uuidv3(), name:"1", url:data.src})) : []
   // console.log(file);
   const [image, setImage] = useState(product?.article.image ? product.article.image : [])
   // console.log('image', image.filter(data => data.src !== 'undefined'));
@@ -112,8 +110,15 @@ export const ModalProductImageAntd: FC<Props> = ({ openMI, setOpenMI, children, 
   const onFinish = async (values: any) => {
     // console.log();
     const data = image.filter(data => data.src !== 'undefined')
-    await graphQLClient.request(ADD_IMAGES_PRODUCT, { _id: product?._id, input: data })
+    let IMAGES
+    if (query.slug![2] ==='furniture') {
+      IMAGES = ADD_IMAGES_FURNITURE
+    } else {
+      IMAGES = ADD_IMAGES_GIFT
+    }
+    await graphQLClient.request(IMAGES, { _id: product?._id, input: data })
     replace(`${getURL(asPath)}/${product?.article.slug}`)
+
     // console.log('Received values of form: ', values);
   };
   return (
