@@ -27,19 +27,16 @@ const form = [
 
 ]
 export const HeadingDashboardProducts: FC<HeadingDashboardProducts> = ({ title, product, site }) => {
-
   const { asPath, push, query } = useRouter()
   const [openMP, setOpenMP] = useState(false)
   const click = () => {
     setOpenMP(true)
   }
   const onSubmit = async (form: CreateProductInput) => {
-    // console.log(form);
-
   }
   return (
     <div className="flex items-baseline justify-between py-6">
-      <h1 className="text-4xl font-extrabold tracking-tight text-gray-900">{title}</h1>
+      <h1 className="text-4xl font-extrabold tracking-tight text-gray-900 capitalize">{title}</h1>
 
       <Menu as="div" className="relative z-10 text-left flex w-auto">
         <Menu.Button className=" justify-center  text-sm font-medium text-gray-700 hover:text-gray-900">

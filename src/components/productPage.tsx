@@ -14,6 +14,7 @@ import { HeadingDashboardProducts } from './heading';
 import useState from 'react';
 import CardAntd, { CardComponent } from './antd/card';
 import { Spinner00, Spinner01 } from './spinner';
+import { lastElement } from '../utils/function';
 /*
   This example requires Tailwind CSS v2.0+ 
   
@@ -45,10 +46,11 @@ export const ProductPage: FC<ProductPage> = ({ item, products, site }) => {
     card.push(<Card key={i} />)
   }
   // console.log(data.furnitures.sort((a,b) => a.));
+  console.log(lastElement(asPath));
   
   return (
     <section className=''>
-      <HeadingDashboardProducts title='Products' site={site} />
+      <HeadingDashboardProducts title={lastElement(asPath)} site={site} />
       {
         isValidating
           ?
