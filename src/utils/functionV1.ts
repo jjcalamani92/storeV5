@@ -1,6 +1,6 @@
 import { Site } from "../interfaces/siteV1";
 import { ParsedUrlQuery } from "querystring";
-import { Wear } from "../interfaces/ecommerceV1";
+import { Product, Wear } from "../interfaces/ecommerceV1";
 import { Option } from "../components/formModal/formProduct";
 import { getQuery } from "./function";
 
@@ -122,49 +122,82 @@ export const paths = (site: Site) => {
     .flat(5)
     .filter((data) => data !== null);
 };
-export const getProductRoute = (asPath: string, site: Site, title: string) => {
-  const url = getQuery(asPath);
-  const children0 = childrens0(site).filter((data) => data.slug === url[0]);
-  const children1 = childrens1(site).filter((data) => data.slug === url[1]);
-  const children2 = childrens2(site).filter((data) => data.slug === url[2]);
+export const getProduct = (products: Product[], query: ParsedUrlQuery) => {
+  return products.find((data) =>
+    query.slug![0] === "dashboard"
+      ? data.article.slug === query.slug![3]
+      : data.article.slug === query.slug![1]
+  )!;
+};
+
+export const getProductRoute = (site: Site, product: Product) => {
+  const url = getQuery(product.article.route);
   // const children3 = childrens3(site).filter((data) => data.slug === url[3]);
   // const children4 = childrens4(site).filter((data) => data.slug === url[4]);
   if (url[2]) {
+    const children0 = childrens0(site).filter((data) => data.slug === url[0]);
+    const children1 = childrens1(site).filter((data) => data.slug === url[1]);
+    const children2 = childrens2(site).filter((data) => data.slug === url[2]);
     return [
-      children0.map((children0) => ({
-        name: children0.head.name,
-        href: children0.head.href,
-      })),
-      children1.map((children1) => ({
-        name: children1.head.name,
-        href: children1.head.href,
-      })),
-      children2.map((children2) => ({
-        name: children2.head.name,
-        href: children2.head.href,
-      })),
-      {name: title},
-    ].flat(1);
+      children0.map((children0) => [
+        {
+          name: children0.head.name,
+          href: `/${children0.head.href}`,
+        },
+        children0.children &&
+          children1.map((children1) => [
+            {
+              name: children1.head.name,
+              href: `/${children0.head.href}/${children1.head.href}`,
+            },
+            children1.children &&
+              children2.map((children2) => [
+                {
+                  name: children2.head.name,
+                  href: `/${children0.head.href}/${children1.head.href}/${children2.head.href}`,
+                },
+              ]),
+          ]),
+          {
+            name: product.article.title,
+          }
+      ]),
+    ].flat(6);
   } else if (url[1]) {
+    const children0 = childrens0(site).filter((data) => data.slug === url[0]);
+    const children1 = childrens1(site).filter((data) => data.slug === url[1]);
     return [
-      children0.map((children0) => ({
-        name: children0.head.name,
-        href: children0.head.href,
-      })),
-      children1.map((children1) => ({
-        name: children1.head.name,
-        href: children1.head.href,
-      })),
-      {name: title}
-    ].flat(1);
+      children0.map((children0) => [
+        {
+          name: children0.head.name,
+          href: `/${children0.head.href}`,
+        },
+        children0.children &&
+          children1.map((children1) => [
+            {
+              name: children1.head.name,
+              href: `/${children0.head.href}/${children1.head.href}`,
+            }
+          ]),
+          {
+            name: product.article.title,
+          }
+      ]),
+    ].flat(6);
   } else {
+    const children0 = childrens0(site).filter((data) => data.slug === url[0]);
     return [
-      children0.map((children0) => ({
-        name: children0.head.name,
-        href: children0.head.href,
-      })),
-      {name: title}
-  ];
+      children0.map((children0) => [
+        {
+          name: children0.head.name,
+          href: `/${children0.head.href}`,
+        },
+        
+          {
+            name: product.article.title,
+          }
+      ]),
+    ].flat(6);
   }
   // return children0.map(children0 => [{name: children0.head.name, href: children0.head.href}, children0.children && children0.children.filter(data => data.slug === url[1]).map(children1 => [{name: children1.head.name, href: children1.head.href}]) ]).flat(5)
 };

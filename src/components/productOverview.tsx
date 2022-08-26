@@ -9,8 +9,7 @@ import Description from './antd/description';
 import Link from "next/link";
 import MoreProduct from "./moreProducts";
 import { BreadcrumbComponent } from "./antd/breadcrumb";
-import { getProductRoute } from "../utils/functionV1";
-import { getQuery } from "../utils/function";
+import { getProduct, getProductRoute } from "../utils/functionV1";
 
 
 interface ProductOverview {
@@ -20,11 +19,9 @@ interface ProductOverview {
 
 export const ProductOverview: FC<ProductOverview> = ({ products, site }) => {
 	const {asPath, query} = useRouter()
-	// const product = query.slug![0] ==='dashboard' ? products.find(data => data.article.slug === query.slug![1])! : products.find(data => data.article.slug === query.slug![3])!
-	const product = products.find(data => (query.slug![0] ==='dashboard') ? data.article.slug === query.slug![3] : data.article.slug === query.slug![1])! 
-	console.log(product);
-  console.log(getProductRoute(product.article.route, site, product.article.title ));
-	// console.log(getQuery(product.article.route));
+	const product = getProduct(products, query)
+	// console.log(product);
+  // console.log(getProductRoute( site, product ));
 	
 	return (
 		<>
@@ -32,7 +29,7 @@ export const ProductOverview: FC<ProductOverview> = ({ products, site }) => {
 				{
 					query.slug![0] ==='dashboard' ?
 					<HeadingDashboardProduct title='Product Edit' product={product} site={site}/>
-					: <BreadcrumbComponent route = {getProductRoute(product.article.route, site, product.article.title )}/>
+					: <BreadcrumbComponent route = {getProductRoute(site, product )}/>
 				}
 				<div className="max-w-2xl mx-auto py-0 px-4 sm:px-0 lg:max-w-7xl lg:py-0 lg:px-0 grid grid-cols-1 lg:gap-6 lg:grid-cols-5">
 					<div className="col-span-3" >
