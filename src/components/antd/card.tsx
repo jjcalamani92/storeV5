@@ -44,7 +44,7 @@ export const CardComponent:FC<CardComponent> = ({product}) => {
           let REMOVE
           let PRODUCTS
           if (query.slug![2] ==='furniture') {
-            REMOVE = DELETE_FURNITURE_PRODUCT
+            REMOVE = DELETE_FURNITURE_PRODUCT 
             PRODUCTS = FURNITURIES
           } else {
             REMOVE = DELETE_GIFT_PRODUCT
