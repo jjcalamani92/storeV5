@@ -4,7 +4,7 @@ import { Dialog, Transition } from '@headlessui/react'
 import { useRouter } from 'next/router';
 import { useForm } from 'react-hook-form';
 import { AddProductImage, CreateProductInput, ImageProduct, Wear } from '../../interfaces/ecommerceV1';
-import { CREATE_WEAR_PRODUCT, ADD_IMAGES_PRODUCT } from '../../graphql/mutation/ecommerceV1.mutation';
+import { CREATE_WEAR_PRODUCT, ADD_IMAGES_FURNITURE } from '../../graphql/mutation/ecommerceV1.mutation';
 import { useSWRConfig } from 'swr';
 import { WEARS } from '../../graphql/query/ecommerceV1.query';
 import Image from 'next/image';
@@ -32,7 +32,7 @@ export const ModalProductImage: FC<Props> = ({ openMI, setOpenMI, product }) => 
   const onSubmit = async (form: AddProductImage) => {
     // const data = { ...form, }
 
-    await graphQLClient.request(ADD_IMAGES_PRODUCT, { _id: product._id, input: image })
+    await graphQLClient.request(ADD_IMAGES_FURNITURE, { _id: product._id, input: image })
     replace(`${getURL(asPath)}/${product.article.slug}`)
   }
 
