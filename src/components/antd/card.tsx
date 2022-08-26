@@ -4,12 +4,11 @@ import Image from 'next/image';
 import Link from 'next/link';
 import React, { FC } from 'react';
 import { useSWRConfig } from 'swr';
-import { DELETE_FURNITURE_PRODUCT } from '../../graphql/mutation/ecommerceV1.mutation';
-import { FURNITURIES } from '../../graphql/query/ecommerceV1.query';
+import { CREATE_GIFT_PRODUCT, DELETE_FURNITURE_PRODUCT } from '../../graphql/mutation/ecommerceV1.mutation';
+import { FURNITURIES, GIFTS } from '../../graphql/query/ecommerceV1.query';
 import { Product } from '../../interfaces/ecommerceV1';
 import { graphQLClient } from '../../swr/graphQLClient';
 import { useRouter } from 'next/router';
-import { PopConfirmComponent } from './popConfirm';
 import Swal from "sweetalert2";
 
 const { Meta } = Card;
@@ -18,7 +17,7 @@ interface CardComponent {
 }
 
 export const CardComponent:FC<CardComponent> = ({product}) => {
-  const { push, asPath } = useRouter()
+  const { push, asPath, query} = useRouter()
   
   const { mutate } = useSWRConfig()
   const onEdit = () => {
@@ -41,9 +40,18 @@ export const CardComponent:FC<CardComponent> = ({product}) => {
 						icon: 'success',
 						timer: 1000,
 						showConfirmButton: false,
-					}),
-        await graphQLClient.request(DELETE_FURNITURE_PRODUCT,  {_id: product._id})
-        mutate([FURNITURIES, { site: process.env.API_SITE }])
+					})
+          let REMOVE
+          let PRODUCTS
+          if (query.slug![2] ==='furniture') {
+            REMOVE = DELETE_FURNITURE_PRODUCT
+            PRODUCTS = FURNITURIES
+          } else {
+            REMOVE = CREATE_GIFT_PRODUCT
+            PRODUCTS = GIFTS
+          }
+        await graphQLClient.request(REMOVE,  {_id: product._id})
+        mutate([PRODUCTS, { site: process.env.API_SITE }])
 			}
 		})
   }

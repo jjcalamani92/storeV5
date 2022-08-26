@@ -45,6 +45,11 @@ export const DELETE_FURNITURE_PRODUCT = gql`
     removeFurniture(_id: $_id) 
   }
 `;
+export const DELETE_GIFT_PRODUCT = gql`
+  mutation RemoveGift($_id: ID!) {
+    removeGift(_id: $_id) 
+  }
+`;
 
 export const ADD_IMAGES_FURNITURE = gql`
 mutation AddImagesFurniture($_id: ID!, $input: [AddImagesInput!]!) {
