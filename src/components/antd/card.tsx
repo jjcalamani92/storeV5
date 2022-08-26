@@ -9,6 +9,8 @@ import { FURNITURIES } from '../../graphql/query/ecommerceV1.query';
 import { Product } from '../../interfaces/ecommerceV1';
 import { graphQLClient } from '../../swr/graphQLClient';
 import { useRouter } from 'next/router';
+import { PopConfirmComponent } from './popConfirm';
+import Swal from "sweetalert2";
 
 const { Meta } = Card;
 interface CardComponent {
@@ -22,8 +24,27 @@ export const CardComponent:FC<CardComponent> = ({product}) => {
     push(`/dashboard/products/furniture/${product.article.slug}`)
   }
   const onDelete =  async() => {
-    await graphQLClient.request(DELETE_FURNITURE_PRODUCT,  {_id: product._id})
-    mutate([FURNITURIES, { site: process.env.API_SITE }])
+    Swal.fire({
+			title: 'Está seguro?',
+			text: "No podrás revertir esto!",
+			icon: 'warning',
+			showCancelButton: true,
+			confirmButtonColor: '#3085d6',
+			cancelButtonColor: '#d33',
+			confirmButtonText: 'Si, bórralo!'
+		}).then( async (result) => {
+			if (result.isConfirmed ) {
+				Swal.fire({ 
+						title: 'Eliminado!',
+						text: 'El producto ha sido eliminado.',
+						icon: 'success',
+						timer: 1000,
+						showConfirmButton: false,
+					}),
+        await graphQLClient.request(DELETE_FURNITURE_PRODUCT,  {_id: product._id})
+        mutate([FURNITURIES, { site: process.env.API_SITE }])
+			}
+		})
   }
   return (
         <Card
@@ -39,6 +60,7 @@ export const CardComponent:FC<CardComponent> = ({product}) => {
           actions={[
             <EditOutlined key="edit" onClick={onEdit} />,
             <DeleteOutlined key="delete" onClick={() => onDelete()} />,
+            // <PopConfirmComponent key="remove" />
           ]}
         >
           <Meta

@@ -13,6 +13,7 @@ import { Product, Wear } from '../interfaces/ecommerceV1';
 import { HeadingDashboardProducts } from './heading';
 import useState from 'react';
 import CardAntd, { CardComponent } from './antd/card';
+import { Spinner00, Spinner01 } from './spinner';
 /*
   This example requires Tailwind CSS v2.0+ 
   
@@ -43,17 +44,27 @@ export const ProductPage: FC<ProductPage> = ({ item, products, site }) => {
   for (let i = 0; i < 10; i++) {
     card.push(<Card key={i} />)
   }
+  // console.log(data.furnitures.sort((a,b) => a.));
+  
   return (
-    <section className='py-10'>
+    <section className=''>
       <HeadingDashboardProducts title='Products' site={site} />
       {
         isValidating
           ?
-          <div className={`grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 md:gap-6`}>
+          //   <div className="h-min flex justify-center">
+          //     <div className="flex items-center ">
+
+          //         <Spinner01 />
+          //     </div>
+          // </div>
+          <div className={`grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-5 gap-6 `}>
             { card }
           </div>
           :
-          <div className="grid grid-cols-1 gap-y-10 sm:grid-cols-2 gap-x-6 lg:grid-cols-3 xl:grid-cols-5 xl:gap-x-8 mt-6 ">
+          
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 lg:grid-cols-5 ">
+            {/* { card } */}
             {data.furnitures.map((product: Product, i:number) => (
               <CardComponent key={i} product={product} />
             ))}
@@ -64,11 +75,12 @@ export const ProductPage: FC<ProductPage> = ({ item, products, site }) => {
 }
 const Card = () => {
   return (
-    <div className="shadow-lg ">
+    <div className="shadow-lg">
+      {/* <Skeleton.Image active={true} style={{  width: '100%' }}/> */}
       <Skeleton
-        height={250} />
-      <Skeleton height={30} />
-      <Skeleton height={30} />
+        height={220} />
+      <Skeleton height={70} />
+      <Skeleton height={50} />
     </div>
   )
 }

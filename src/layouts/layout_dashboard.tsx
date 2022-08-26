@@ -34,8 +34,8 @@ interface LayoutDashboard {
 
 export const LayoutDashboard: FC<LayoutDashboard> = ({ children }) => {
   const { query, asPath } = useRouter()
-  console.log(query.slug);
-  console.log(getQuery(asPath)[1]);
+  // console.log(query.slug);
+  // console.log(getQuery(asPath)[1]);
 
 
   return (

@@ -73,6 +73,7 @@ export const FURNITURIES = gql`
   query Furnitures($site:String!) {
     furnitures(site:$site) {
       _id
+      updatedAt
 			article{
         title
         slug

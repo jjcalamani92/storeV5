@@ -21,28 +21,13 @@ const { Option } = Select;
 import { graphQLClient } from '../../swr/graphQLClient';
 import { CREATE_FURNITURE_PRODUCT, CREATE_WEAR_PRODUCT, UPDATE_FURNITURE_PRODUCT } from '../../graphql/mutation/ecommerceV1.mutation';
 import { useSWRConfig } from 'swr';
-import { FURNITURIES, WEARS } from '../../graphql/query/ecommerceV1.query';
+import { FURNITURIES, WEARS } from '../../graphql/query';
 import { Site } from '../../interfaces/siteV1';
 import { routes } from '../../utils/functionV1';
-import { getURL, slug } from '../../utils/function';
-// import 'antd/lib/cascader/style/index.less'
-// import 'antd/lib/form/style/index.css';
-// import 'antd/lib/input/style/index.css';
-// import 'antd/lib/cascader/style/index.css';
-// import 'antd/lib/select/style/index.css';
+import { getQuery, getURL, slug } from '../../utils/function';
+import type { DefaultOptionType } from 'antd/es/cascader';
+import Swal from 'sweetalert2';
 
-// import 'antd/lib/affix/style/index.css';
-// import 'antd/lib/menu/style/index.css';
-// import 'antd/lib/modal/style/index.css';
-// import 'antd/lib/list/style/index.css';
-// import 'antd/lib/layout/style/index.css';
-// import 'antd/lib/popconfirm/style/index.css';
-// import 'antd/lib/transfer/style/index.css';
-// import 'antd/lib/rate/style/index.css';
-// import 'antd/lib/empty/style/index.css';
-// import 'antd/lib/collapse/style/index.css';
-// import 'antd/lib/back-top/style/index.css';
-// import 'antd/lib/config-provider/style/index.css';
 
 export interface Option {
   value: string;
@@ -61,7 +46,10 @@ interface Props {
 export const ModalProductAntd: FC<Props> = ({ openMP, setOpenMP, children, product, site }) => {
   const { asPath, query, push, replace } = useRouter()
   const { mutate } = useSWRConfig()
-  const routesss: Option[] = routes(site)
+  const route: Option[] = routes(site)
+  // console.log(getQuery(product!.article.route));
+
+  
   const cancelButtonRef = useRef(null)
 
   const [form] = Form.useForm();
@@ -69,14 +57,32 @@ export const ModalProductAntd: FC<Props> = ({ openMP, setOpenMP, children, produ
     const data = { ...values, route: `/${values.route.join('/')}`, site: process.env.API_SITE }
 
     if (product) {
+      Swal.fire({
+        position: 'center',
+        icon: 'success',
+        title: 'Updated Product',
+        showConfirmButton: false,
+        timer: 1500
+      })
+      
       await graphQLClient.request(UPDATE_FURNITURE_PRODUCT, { _id: product._id, input: data })
       replace(`${getURL(asPath)}/${slug(values.title)}`)
     } else {
+      Swal.fire({
+        position: 'center',
+        icon: 'success',
+        title: 'Created Product',
+        showConfirmButton: false,
+        timer: 1500
+      })
       await graphQLClient.request(CREATE_FURNITURE_PRODUCT, { input: data })
       mutate([FURNITURIES, { site: process.env.API_SITE }])
     }
-    // console.log('Received values of form: ', data);
   };
+  const filter = (inputValue: string, path: DefaultOptionType[]) =>
+  path.some(
+    option => (option.label as string).toLowerCase().indexOf(inputValue.toLowerCase()) > -1,
+  );
   return (
     <Transition.Root show={openMP} as={Fragment}>
       <Dialog as="div" className="relative z-30" initialFocus={cancelButtonRef} onClose={setOpenMP}>
@@ -125,7 +131,7 @@ export const ModalProductAntd: FC<Props> = ({ openMP, setOpenMP, children, produ
                       title: product ? product?.article.title : "",
                       mark: product ? product?.article.mark : "",
                       featured: product ? product?.article.featured.name : "",
-                      route: product ? product?.article.route : "",
+                      route: product ? getQuery(product?.article.route) : [],
                       description: product ? product?.article.description : "",
                       price: product ? product?.article.price : 0,
                       discountPrice: product ? product?.article.discountPrice : 0,
@@ -187,7 +193,10 @@ export const ModalProductAntd: FC<Props> = ({ openMP, setOpenMP, children, produ
                         { type: 'array', required: true, message: 'Please select your route!' },
                       ]}
                     >
-                      <Cascader options={routesss} />
+                      <Cascader 
+                      options={route} 
+                      showSearch={{ filter }}
+                      />
                     </Form.Item>
                     <Form.Item
                       name="description"

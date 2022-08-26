@@ -34,7 +34,7 @@ interface ProductPage {
 export const ProductPageFurniture: FC<ProductPage> = ({ item, products }) => {
   const { asPath, query } = useRouter()
   const { data, isValidating, error } = useSWR([FURNITURIES, { site: process.env.API_SITE }])
-  console.log('products', products);
+  // console.log('products', products);
 
   return (
     <section className='py-10'>

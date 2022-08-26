@@ -15,7 +15,7 @@ interface Props {
 
 const Slug: FC<Props> = ({site, furnitures, gifts}) => {
   const { query, asPath } = useRouter()
-  console.log(query);
+  // console.log(query);
   
   return (
     <>

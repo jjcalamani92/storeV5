@@ -22,7 +22,7 @@ export const ModalProductImage: FC<Props> = ({ openMI, setOpenMI, product }) => 
   const { asPath, query, push, replace } = useRouter()
   const [image, setImage] = useState(product.article.image ? product.article.image : [])
   const { mutate } = useSWRConfig()
-  console.log(product.article.image);
+  // console.log(product.article.image);
 
   const { register, handleSubmit, formState: { errors }, getValues, setValue, watch } = useForm<AddProductImage>({
     defaultValues: {}

@@ -34,7 +34,7 @@ export const HeadingDashboardProducts: FC<HeadingDashboardProducts> = ({ title, 
     setOpenMP(true)
   }
   const onSubmit = async (form: CreateProductInput) => {
-    console.log(form);
+    // console.log(form);
 
   }
   return (
