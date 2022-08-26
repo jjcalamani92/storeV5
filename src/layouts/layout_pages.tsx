@@ -6,7 +6,7 @@ import { Data, HeadV1, Site } from "../interfaces/siteV1";
 import { Main, Header } from '../components';
 
 interface Layout {
-	head?: HeadV1;
+	head: HeadV1 | any;
 	children?: React.ReactNode;
 	site?: Site
 }

@@ -131,10 +131,10 @@ export const ProductOverview: FC<ProductOverview> = ({ products, site }) => {
 									className="mt-4 w-full bg-pink-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-pink-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-400"
 								>
 									Agregar al carrito
-								</button>
+								</button>65525049
 							</form> */}
 							<a
-								href={`https://wa.me/591${`site.numberPhone`}?text=Hola%20me%20interesa%20este%20producto:%20https://${`site.numberPhone`}/detalles/${`site.numberPhone`}`}
+								href={`https://wa.me/59163039181?text=Hola%20me%20interesa%20este%20producto:%20https://terrakota.vercel.app/detalles/${product.article.slug}`}
 								target={'blank'}
 								className="mt-3 w-full bg-pink-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-pink-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-400"
 							>
