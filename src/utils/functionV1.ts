@@ -64,10 +64,13 @@ export const seo = (site: Site, query: ParsedUrlQuery, asPath: string, products:
   furnitures: Product[]
   gifts: Product[]
 }) => {
-  if (productPaths(products.furnitures).includes(asPath)) {
+  if (productPaths(products.gifts).includes(asPath)) {
+    const product = products.gifts.find(data => data.article.slug === query.slug![1])
+    // console.log({name: product?.article.title, href: product?.article.slug, description: product?.article.description, image: product?.article.image[0].src});
+    return {name: product?.article.title, href: product?.article.slug, description: product?.article.description, image: product?.article.image[0].src};
+  } else if (productPaths(products.furnitures).includes(asPath)) {
     const product = products.furnitures.find(data => data.article.slug === query.slug![1])
     // console.log({name: product?.article.title, href: product?.article.slug, description: product?.article.description, image: product?.article.image[0].src});
-    
     return {name: product?.article.title, href: product?.article.slug, description: product?.article.description, image: product?.article.image[0].src};
   } else if (query.slug && query.slug![5]) {
     return children5(site, query)?.head!;
