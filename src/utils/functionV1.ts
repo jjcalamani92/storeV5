@@ -67,11 +67,11 @@ export const seo = (site: Site, query: ParsedUrlQuery, asPath: string, products:
   if (productPaths(products.gifts).includes(asPath)) {
     const product = products.gifts.find(data => data.article.slug === query.slug![1])
     // console.log({name: product?.article.title, href: product?.article.slug, description: product?.article.description, image: product?.article.image[0].src});
-    return {name: product?.article.title, href: product?.article.slug, description: product?.article.description, image: {src: product?.article.image[0].src}};
+    return {name: product?.article.title, href: product?.article.slug, description: product?.article.description, image: {src: product?.article.image[0].src, alt: 'image description'}};
   } else if (productPaths(products.furnitures).includes(asPath)) {
     const product = products.furnitures.find(data => data.article.slug === query.slug![1])
     // console.log({name: product?.article.title, href: product?.article.slug, description: product?.article.description, image: product?.article.image[0].src});
-    return {name: product?.article.title, href: product?.article.slug, description: product?.article.description, image: {src: product?.article.image[0].src}};
+    return {name: product?.article.title, href: product?.article.slug, description: product?.article.description, image: {src: product?.article.image[0].src, alt: 'image description'}};
   } else if (query.slug && query.slug![5]) {
     return children5(site, query)?.head!;
   } else if (query.slug && query.slug![4]) {
