@@ -22,6 +22,7 @@ export const LayoutPages: FC<Layout> = ({
 	// const site = sites.find((site: { _id: string; }) => site._id === process.env.API_SITE)
 	// const hero = site?.route[0].content.body
 	// const header = site?.route .filter((data: { href: string}) => data.href !== 'home')
+	console.log(head.image);
 	
 	
 	
