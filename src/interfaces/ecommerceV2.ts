@@ -1,6 +1,8 @@
+import { SeoV2 } from "./siteV2";
+
 export interface ProductsV2 {
-  furnituries:  ProductV2[]
-  gifts: ProductV2[]
+  furnitures?:  ProductV2[]
+  gifts?: ProductV2[]
 }
 export interface ProductV2 {
   _id: string;
@@ -19,6 +21,7 @@ export interface Article {
   inStock:number
   discountPrice:number
   route:string
+  seo: SeoV2
   featured: FeaturedProduct
   details?: DetailProduct
   image: ImageProduct[]

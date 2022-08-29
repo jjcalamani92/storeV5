@@ -4,7 +4,7 @@ import { Product } from "../interfaces/ecommerceV1";
 import { Option } from "../components/formModal/formProduct";
 import { getQuery, slug } from './function';
 import { SiteV2 } from '../interfaces/siteV2';
-import { ProductV2 } from "../interfaces/ecommerceV2";
+import { ProductV2, ProductsV2 } from '../interfaces/ecommerceV2';
 import { graphQLClientP } from "../react-query/graphQLClient";
 import { FURNITURIES } from "../graphql/query/ecommerceV2.query";
 
@@ -57,9 +57,10 @@ export const children2 = (site: SiteV2, asPath: string) => {
   const query = getQuery(asPath)
   return childrens2(site)?.find((data) => data?.seo.href === query![2]);
 };
-// export const children3 = (site: Site, query: ParsedUrlQuery) => {
-//   return childrens3(site)?.find((data) => data?.head.href === query.slug![3]);
-// };
+export const children3 = (site: SiteV2, asPath: string) => {
+  const query = getQuery(asPath)
+  return childrens3(site)?.find((data) => data?.seo.href === query![3]);
+};
 // export const children4 = (site: Site, query: ParsedUrlQuery) => {
 //   return childrens4(site)?.find((data) => data?.head.href === query.slug![4]);
 // };
@@ -67,9 +68,21 @@ export const children2 = (site: SiteV2, asPath: string) => {
 //   return childrens5(site)?.find((data) => data?.head.href === query.slug![5]);
 // };
 
-export const seoV2 = (site: SiteV2, asPath: string) => {
-
+export const seoV2 = (site: SiteV2, asPath: string, products: ProductsV2) => {
+  const query = getQuery(asPath)
+  if (productPaths(products.furnitures!, 'furniture').includes(asPath)) {
+    return getProduct(products.furnitures!, asPath)?.article.seo
+  } else if (productPaths(products.gifts!, 'gift').includes(asPath)) {
+    return getProduct(products.gifts!, asPath)?.article.seo
+  } else if (query[3]) {
+    return children3(site, asPath)?.seo
+  } else if (query[2]) {
+    return children2(site, asPath)?.seo
+  } else if (query[1]) {
+  return children1(site, asPath)?.seo
+} else {
   return children0(site, asPath)?.seo
+}
 }
 
 // export const seo = (site: Site, query: ParsedUrlQuery, asPath: string, products: {
@@ -147,11 +160,7 @@ export const paths = (site: SiteV2) => {
 };
 export const getProduct = (products: ProductV2[], asPath: string) => {
   const query = getQuery(asPath)
-  return products.find((data) =>
-    query![0] === "dashboard"
-      ? data.article.slug === query![3]
-      : data.article.slug === query![1]
-  )!;
+  return products.find((data) => data.article.slug === query![2])!;
 };
 
 export const getProductRoute =  (site: SiteV2, product: ProductV2) => {

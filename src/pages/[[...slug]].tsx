@@ -7,10 +7,10 @@ import { Product, Site } from '../interfaces'
 import { SiteV2 } from '../interfaces/siteV2'
 import { LayoutPages, Routes, LayoutDashboard } from '../layouts'
 import { graphQLClient, graphQLClientP, graphQLClientS } from '../react-query/graphQLClient'
-import { getSite, useGetSite } from '../react-query/reactQuery'
+import { getSite, useGetProductsFurniture, useGetProductsGift, useGetSite } from '../react-query/reactQuery'
 import { getQuery } from '../utils/function'
 import { children0, childrens0, paths, seoV2 } from '../utils/functionV2';
-import { ProductV2 } from '../interfaces/ecommerceV2';
+import { ProductsV2, ProductV2 } from '../interfaces/ecommerceV2';
 import { dehydrate, QueryClient } from '@tanstack/react-query';
 
 interface Props {
@@ -20,7 +20,10 @@ interface Props {
 const Slug: FC<Props> = () => {
   const { query, asPath } = useRouter()
   const { data, error, isLoading, isSuccess } = useGetSite(process.env.API_SITE!);
-
+  const { data: furnitures } = useGetProductsFurniture(process.env.API_SITE!);
+  const { data: gifts  } = useGetProductsGift(process.env.API_SITE!);
+  const products = {furnitures, gifts}
+  // console.log(products);
   
   return (
     <>
@@ -31,7 +34,7 @@ const Slug: FC<Props> = () => {
         <Routes />
       </LayoutDashboard>
       :
-      <LayoutPages seo={seoV2(data!, asPath)!} site={data!}>
+      <LayoutPages seo={seoV2(data!, asPath, products)!} site={data!}>
         <Routes />
       </LayoutPages>
     }
