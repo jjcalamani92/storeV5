@@ -16,7 +16,7 @@ ConfigProvider.config({
   },
 });
 
-function MyApp({ Component, pageProps }: AppProps) {
+function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   const [queryClient] = useState(() => new QueryClient({
     defaultOptions: {
       queries: {
@@ -25,18 +25,18 @@ function MyApp({ Component, pageProps }: AppProps) {
     },
   }))
   return (
-    <SessionProvider>
+    <SessionProvider session={session}>
 
-    <QueryClientProvider client={queryClient}>
-
-      <Hydrate state={pageProps.dehydratedState}>
       <AuthProvider>
+        <QueryClientProvider client={queryClient}>
 
-        <Component {...pageProps} />
+          <Hydrate state={pageProps.dehydratedState}>
+
+            <Component {...pageProps} />
+            <ReactQueryDevtools initialIsOpen={false} />
+          </Hydrate>
+        </QueryClientProvider>
       </AuthProvider>
-        <ReactQueryDevtools initialIsOpen={false} />
-      </Hydrate>
-    </QueryClientProvider>
     </SessionProvider>
   )
 }

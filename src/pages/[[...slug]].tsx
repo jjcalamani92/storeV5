@@ -3,16 +3,14 @@ import { useRouter } from 'next/router'
 import { FC } from 'react'
 import { FURNITURE_BY_SLUG, FURNITURIES, GIFTS, GIFT_BY_SLUG, JEWELERS, JEWELER_BY_SLUG, TEDDYS, TEDDY_BY_SLUG } from '../graphql/query/ecommerceV2.query'
 import { SITEV2 } from '../graphql/query/siteV2.query'
-import { Product, Site } from '../interfaces'
-import { SiteV2 } from '../interfaces/siteV2'
 import { LayoutPages, Routes, LayoutDashboard } from '../layouts'
 import { graphQLClient, graphQLClientP, graphQLClientS } from '../react-query/graphQLClient'
 import { getSite, useGetProductsFurniture, useGetProductsGift, useGetProductsJeweler, useGetProductsTeddy, useGetSite } from '../react-query/reactQuery'
-import { getQuery } from '../utils/function'
+
 import { children0, childrens0, paths, seoV2 } from '../utils/functionV2';
-import { ProductsV2, ProductV2 } from '../interfaces/ecommerceV2';
 import { dehydrate, QueryClient } from '@tanstack/react-query';
-import { getSession } from 'next-auth/react'
+import { useSession } from 'next-auth/react';
+import { Page404 } from '../components'
 
 interface Props {
   
@@ -26,14 +24,22 @@ const Slug: FC<Props> = () => {
   const { data: teddys  } = useGetProductsTeddy(process.env.API_SITE!);
   const { data: jewelers  } = useGetProductsJeweler(process.env.API_SITE!);
   const products = {furnitures, gifts, teddys, jewelers}
+  const { data: session, status } = useSession()
+  // console.log(session);
+  
   return (
     <>
       {
-      query.slug && query.slug[0] === "dashboard" 
+      query.slug && query.slug[0] === "dashboard"   
       ?
-      <LayoutDashboard >
-        <Routes />
-      </LayoutDashboard>
+      (
+        status === "authenticated" ?
+        <LayoutDashboard >
+          <Routes />
+        </LayoutDashboard>
+        :
+        <Page404 />
+      )
       :
       query.slug && query.slug[0] === "auth" 
       ?
@@ -57,8 +63,10 @@ export const getStaticPaths: GetStaticPaths = async () => {
   };
 }
 
-export const getStaticProps: GetStaticProps = async ({ params }) => {
-
+export const getStaticProps: GetStaticProps = async ({params}) => {
+  // const { params } = ctx
+  // console.log(ctx);
+  
   const { slug = [] } = params as { slug: string[] }
   const _id = process.env.API_SITE!
   const site = process.env.API_SITE
@@ -116,10 +124,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     })
   }
 
-  // const { gifts } = await graphQLClient.request(GIFTS, { site: process.env.API_SITE })
-  // const session = await getSession({req})
-  // console.log('session', session);
-  
+
   return {
     props: {
       dehydratedState: dehydrate(queryClient),

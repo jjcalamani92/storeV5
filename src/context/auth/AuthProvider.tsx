@@ -26,6 +26,7 @@ const AUTH_INITIAL_STATE: AuthState = {
 export const AuthProvider: FC<AuthProvider> = ({ children }) => {
   const router = useRouter()
   const [state, dispatch] = useReducer(authReducer, AUTH_INITIAL_STATE);
+
 	const { data, status } = useSession()
 
   useEffect(() => {
@@ -51,8 +52,6 @@ export const AuthProvider: FC<AuthProvider> = ({ children }) => {
   
   const registerUser = async (username: string, email: string, password: string): Promise<{hasError: boolean; message ?: string} > => {
   try {
-    // const { data } = await axios.post(`${process.env.APIU_URL}/api/user`, { username, email, password })
-
     const {data} = await axios.post(`${process.env.APIU_URL}/api/user`, { username, email, password })
     dispatch({ type: '[Auth] - Register', payload: { _id: data._id, email: data.email, role: data.role, image: data.image } })
     return {

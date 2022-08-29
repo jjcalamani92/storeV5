@@ -7,6 +7,8 @@ import { childrenPaths0, childrenPaths1, childrenPaths2, productDashboardDataBas
 import { useGetProductsFurniture, useGetProductsGift, useGetProductsJeweler, useGetProductsTeddy, useGetSite } from "../react-query/reactQuery";
 import { ProductOverviewDashboard } from "../components/productOverviewDashboard";
 import { Login } from "../components/login";
+import { useSession } from "next-auth/react";
+import Link from "next/link";
 
 interface Routes {
 }
@@ -17,7 +19,7 @@ export const Routes: FC<Routes> = ({  }) => {
   const { data: gifts  } = useGetProductsGift(process.env.API_SITE!);
   const { data: teddys  } = useGetProductsTeddy(process.env.API_SITE!);
   const { data: jewelers  } = useGetProductsJeweler(process.env.API_SITE!);
-
+  const { data: session, status } = useSession()
   // console.log(productPaths(furnitures!, 'furniture'));
   // console.log(productsPaths({furnitures, gifts, teddys, jewelers}, site!));
   // console.log(productsPaths({furnitures, gifts, teddys, jewelers}, site!));
@@ -42,7 +44,7 @@ export const Routes: FC<Routes> = ({  }) => {
     // case '/auth/login?callbackUrl=http%3A%2F%2Flocalhost%3A3000%2Fauth%2Flogin&error=OAuthCallback':
     //   return <Nextauth />
     case '/dashboard/products':
-      return <ProductDashboard  site={site!}/>
+      return status === "authenticated" ? <ProductDashboard  site={site!}/> : <Login/>
     case productDashboardDataBasePaths(site!).find(data => data === asPath):
       return <ProductPageDashboard site={site!}/>
     case productsDashboardPaths({furnitures, gifts, teddys, jewelers}, site!).find(data => data === asPath):
