@@ -38,6 +38,10 @@ export const SITEV2 = gql`
       dataBase{
         name
         type
+        image{
+          src
+          alt
+        }
       }
       children {
         ...children

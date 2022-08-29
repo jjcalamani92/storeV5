@@ -26,7 +26,7 @@ import type { DefaultOptionType } from 'antd/es/cascader';
 import Swal from 'sweetalert2';
 import { SiteV2 } from '../../interfaces/siteV2';
 import { ProductV2 } from '../../interfaces/ecommerceV2';
-import { ADD_FURNITURE_PRODUCT, ADD_GIFT_PRODUCT, UPDATE_FURNITURE_PRODUCT, UPDATE_GIFT_PRODUCT } from '../../graphql/mutation/ecommerceV2.mutation';
+import { ADD_FURNITURE_PRODUCT, ADD_GIFT_PRODUCT, ADD_JEWELER_PRODUCT, ADD_TEDDY_PRODUCT, UPDATE_FURNITURE_PRODUCT, UPDATE_GIFT_PRODUCT, UPDATE_JEWELER_PRODUCT, UPDATE_TEDDY_PRODUCT } from '../../graphql/mutation/ecommerceV2.mutation';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 
@@ -69,17 +69,24 @@ export const ModalProductAntd: FC<Props> = ({ openMP, setOpenMP, children, produ
         showConfirmButton: false,
         timer: 1500
       })
-      let UPDATE
+      let UPDATE!: string
       let PRODUCTS
 
+      if (query.slug![2] ==='jeweler') {
+        UPDATE = UPDATE_JEWELER_PRODUCT
+        PRODUCTS = 'get-product-jeweler-by-slug'
+      } else 
+      if (query.slug![2] ==='teddy') {
+        UPDATE = UPDATE_TEDDY_PRODUCT
+        PRODUCTS = 'get-product-teddy-by-slug'
+      } else 
       if (query.slug![2] ==='furniture') {
         UPDATE = UPDATE_FURNITURE_PRODUCT
         PRODUCTS = 'get-product-furniture-by-slug'
-
-      } else {
+      } else 
+      if (query.slug![2] ==='gift') {
         UPDATE = UPDATE_GIFT_PRODUCT
         PRODUCTS = 'get-product-gift-by-slug'
-
       }
       await graphQLClientP.request(UPDATE, { _id: product._id, input: data })
 
@@ -96,12 +103,21 @@ export const ModalProductAntd: FC<Props> = ({ openMP, setOpenMP, children, produ
         showConfirmButton: false,
         timer: 1500
       })
-      let CREATED
+      let CREATED!: string
       let PRODUCTS
+      if (query.slug![2] ==='teddy') {
+        CREATED = ADD_TEDDY_PRODUCT
+        PRODUCTS = 'get-products-teddy'
+      } else 
+      if (query.slug![2] ==='jeweler') {
+        CREATED = ADD_JEWELER_PRODUCT
+        PRODUCTS = 'get-products-jeweler'
+      } else 
       if (query.slug![2] ==='furniture') {
         CREATED = ADD_FURNITURE_PRODUCT
         PRODUCTS = 'get-products-furniture'
-      } else {
+      } else 
+      if (query.slug![2] ==='gift') {
         CREATED = ADD_GIFT_PRODUCT
         PRODUCTS = 'get-products-gift'
       }

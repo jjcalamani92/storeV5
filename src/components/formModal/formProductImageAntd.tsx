@@ -18,7 +18,7 @@ import {
 } from 'antd';
 const { Option } = Select;
 import { graphQLClient, graphQLClientP } from '../../react-query/graphQLClient';
-import { UPDATE_IMAGES_FURNITURE, UPDATE_IMAGES_GIFT} from '../../graphql/mutation/ecommerceV2.mutation';
+import { UPDATE_IMAGES_FURNITURE, UPDATE_IMAGES_GIFT, UPDATE_IMAGES_JEWELER, UPDATE_IMAGES_TEDDY} from '../../graphql/mutation/ecommerceV2.mutation';
 import ImgCrop from 'antd-img-crop';
 import type { RcFile, UploadFile, UploadProps } from 'antd/es/upload/interface';
 import { uuidv3 } from '../../utils/index';
@@ -108,13 +108,24 @@ export const ModalProductImageAntd: FC<Props> = ({ openMI, setOpenMI, children, 
   const onFinish = async (values: any) => {
     // console.log();
     const data = image.filter(data => data.src !== 'undefined')
-    let IMAGES
+    let IMAGES!: string
     let PRODUCTS
+    if (query.slug![2] ==='jeweler') {
+      IMAGES = UPDATE_IMAGES_JEWELER
+      PRODUCTS = 'get-product-jeweler-by-slug'
+
+    } else 
+    if (query.slug![2] ==='teddy') {
+      IMAGES = UPDATE_IMAGES_TEDDY
+      PRODUCTS = 'get-product-teddy-by-slug'
+
+    } else 
     if (query.slug![2] ==='furniture') {
       IMAGES = UPDATE_IMAGES_FURNITURE
       PRODUCTS = 'get-product-furniture-by-slug'
 
-    } else {
+    } else 
+    if (query.slug![2] ==='gift')  {
       IMAGES = UPDATE_IMAGES_GIFT
       PRODUCTS = 'get-product-gift-by-slug'
 

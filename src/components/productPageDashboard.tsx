@@ -13,7 +13,7 @@ import { CardComponent } from './antd/card';
 import { lastElement, slug } from '../utils/function';
 import { ChildrenV2, SiteV2 } from '../interfaces/siteV2';
 import { ProductV2 } from '../interfaces/ecommerceV2';
-import { useGetProductsFurniture, useGetProductsGift } from '../react-query/reactQuery';
+import { useGetProductsFurniture, useGetProductsGift, useGetProductsJeweler, useGetProductsTeddy } from '../react-query/reactQuery';
 /*
   This example requires Tailwind CSS v2.0+ 
   
@@ -38,10 +38,19 @@ export const ProductPageDashboard: FC<ProductPageDashboard> = ({ site }) => {
   const { asPath, query } = useRouter()
   const { data: furnituries } = useGetProductsFurniture(process.env.API_SITE!);
   const { data: gifts } = useGetProductsGift(process.env.API_SITE!);
-  let products: ProductV2[]
+  const { data: teddys  } = useGetProductsTeddy(process.env.API_SITE!);
+  const { data: jewelers  } = useGetProductsJeweler(process.env.API_SITE!);
+  let products!: ProductV2[]
+  if (query.slug![2] === 'jeweler') {
+    products = jewelers!
+  } else 
+  if (query.slug![2] === 'teddy') {
+    products = teddys!
+  } else 
   if (query.slug![2] === 'furniture') {
     products = furnituries!
-  } else {
+  } else 
+  if (query.slug![2] === 'gifts') {
     products = gifts!
   }
 

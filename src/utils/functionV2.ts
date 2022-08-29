@@ -2,9 +2,9 @@ import { Site } from "../interfaces/siteV1";
 import { ParsedUrlQuery } from "querystring";
 import { Product } from "../interfaces/ecommerceV1";
 import { Option } from "../components/formModal/formProduct";
-import { getQuery, slug } from './function';
-import { SiteV2 } from '../interfaces/siteV2';
-import { ProductV2, ProductsV2 } from '../interfaces/ecommerceV2';
+import { getQuery, slug } from "./function";
+import { SiteV2 } from "../interfaces/siteV2";
+import { ProductV2, ProductsV2 } from "../interfaces/ecommerceV2";
 import { graphQLClientP } from "../react-query/graphQLClient";
 import { FURNITURIES } from "../graphql/query/ecommerceV2.query";
 
@@ -44,21 +44,19 @@ export const childrens5 = (site: SiteV2) => {
 
 //TODO: CHILDREN TODO:
 export const children0 = (site: SiteV2, asPath: string) => {
-  const query = getQuery(asPath)
-  return childrens0(site)?.find((data) =>
-    data?.seo.href === query![0] 
-  );
+  const query = getQuery(asPath);
+  return childrens0(site)?.find((data) => data?.seo.href === query![0]);
 };
 export const children1 = (site: SiteV2, asPath: string) => {
-  const query = getQuery(asPath)
+  const query = getQuery(asPath);
   return childrens1(site)?.find((data) => data?.seo.href === query![1]);
 };
 export const children2 = (site: SiteV2, asPath: string) => {
-  const query = getQuery(asPath)
+  const query = getQuery(asPath);
   return childrens2(site)?.find((data) => data?.seo.href === query![2]);
 };
 export const children3 = (site: SiteV2, asPath: string) => {
-  const query = getQuery(asPath)
+  const query = getQuery(asPath);
   return childrens3(site)?.find((data) => data?.seo.href === query![3]);
 };
 // export const children4 = (site: Site, query: ParsedUrlQuery) => {
@@ -69,21 +67,21 @@ export const children3 = (site: SiteV2, asPath: string) => {
 // };
 
 export const seoV2 = (site: SiteV2, asPath: string, products: ProductsV2) => {
-  const query = getQuery(asPath)
-  if (productPaths(products.furnitures!, 'furniture').includes(asPath)) {
-    return getProduct(products.furnitures!, asPath)?.article.seo
-  } else if (productPaths(products.gifts!, 'gift').includes(asPath)) {
-    return getProduct(products.gifts!, asPath)?.article.seo
+  const query = getQuery(asPath);
+  if (productPaths(products.furnitures!, "furniture").includes(asPath)) {
+    return getProduct(products.furnitures!, asPath)?.article.seo;
+  } else if (productPaths(products.gifts!, "gift").includes(asPath)) {
+    return getProduct(products.gifts!, asPath)?.article.seo;
   } else if (query[3]) {
-    return children3(site, asPath)?.seo
+    return children3(site, asPath)?.seo;
   } else if (query[2]) {
-    return children2(site, asPath)?.seo
+    return children2(site, asPath)?.seo;
   } else if (query[1]) {
-  return children1(site, asPath)?.seo
-} else {
-  return children0(site, asPath)?.seo
-}
-}
+    return children1(site, asPath)?.seo;
+  } else {
+    return children0(site, asPath)?.seo;
+  }
+};
 
 // export const seo = (site: Site, query: ParsedUrlQuery, asPath: string, products: {
 //   furnitures: Product[]
@@ -159,16 +157,16 @@ export const paths = (site: SiteV2) => {
     .filter((data) => data !== null);
 };
 export const getProduct = (products: ProductV2[], asPath: string) => {
-  const query = getQuery(asPath)
+  const query = getQuery(asPath);
   return products.find((data) => data.article.slug === query![2])!;
 };
 
-export const getProductRoute =  (site: SiteV2, product: ProductV2) => {
+export const getProductRoute = (site: SiteV2, product: ProductV2) => {
   // const { furnitures } = await graphQLClientP.request(FURNITURIES, { site: process.env.API_SITE })
   // console.log('furnitures', furnitures);
-  
+
   const url = getQuery(product?.article.route);
-  if ( url[2] ) {
+  if (url[2]) {
     const children0 = childrens0(site).filter((data) => data.slug === url[0]);
     const children1 = childrens1(site).filter((data) => data.slug === url[1]);
     const children2 = childrens2(site).filter((data) => data.slug === url[2]);
@@ -192,9 +190,9 @@ export const getProductRoute =  (site: SiteV2, product: ProductV2) => {
                 },
               ]),
           ]),
-          {
-            name: product.article.name,
-          }
+        {
+          name: product.article.name,
+        },
       ]),
     ].flat(6);
   } else if (url[1]) {
@@ -211,11 +209,11 @@ export const getProductRoute =  (site: SiteV2, product: ProductV2) => {
             {
               name: children1.seo.name,
               href: `/${children0.seo.href}/${children1.seo.href}`,
-            }
+            },
           ]),
-          {
-            name: product.article.name,
-          }
+        {
+          name: product.article.name,
+        },
       ]),
     ].flat(6);
   } else {
@@ -226,10 +224,10 @@ export const getProductRoute =  (site: SiteV2, product: ProductV2) => {
           name: children0.seo.name,
           href: `/${children0.seo.href}`,
         },
-        
-          {
-            name: product.article.name,
-          }
+
+        {
+          name: product.article.name,
+        },
       ]),
     ].flat(6);
   }
@@ -237,10 +235,56 @@ export const getProductRoute =  (site: SiteV2, product: ProductV2) => {
 export const productPaths = (products: ProductV2[], type: string) => {
   return products.map((data) => `/detalles/${type}/${data.article.slug}`);
 };
-export const productDashboardDataBasePaths = (site: SiteV2) => {
-  return site.dataBase.map(
-    (data) => `/dashboard/products/${data.type}`
+export const productsPaths = (products: ProductsV2, site: SiteV2) => {
+  const productsPaths = site.dataBase!.map((data) =>
+    data.type === "furniture"
+      ? products.furnitures!.map(
+          (product) => `/detalles/${data.type}/${product.article.slug}`
+        )
+      : data.type === "gift"
+      ? products.gifts!.map(
+          (product) => `/detalles/${data.type}/${product.article.slug}`
+        )
+      : data.type === "teddy"
+      ? products.teddys!.map(
+          (product) => `/detalles/${data.type}/${product.article.slug}`
+        )
+      : data.type === "jeweler"
+      ? products.jewelers!.map(
+          (product) => `/detalles/${data.type}/${product.article.slug}`
+        )
+      : null
   );
+
+  return productsPaths.flat(1);
+  // return products.furnitures!.map((data) => `/detalles/furniture/${data.article.slug}`);
+};
+export const productsDashboardPaths = (products: ProductsV2, site: SiteV2) => {
+  const productsPaths = site.dataBase!.map((data) =>
+    data.type === "furniture"
+      ? products.furnitures!.map(
+          (product) => `/dashboard/products/${data.type}/${product.article.slug}`
+        )
+      : data.type === "gift"
+      ? products.gifts!.map(
+          (product) => `/dashboard/products/${data.type}/${product.article.slug}`
+        )
+      : data.type === "teddy"
+      ? products.teddys!.map(
+          (product) => `/dashboard/products/${data.type}/${product.article.slug}`
+        )
+      : data.type === "jeweler"
+      ? products.jewelers!.map(
+          (product) => `/dashboard/products/${data.type}/${product.article.slug}`
+        )
+      : null
+  );
+
+  return productsPaths.flat(1);
+  // return products.furnitures!.map((data) => `/detalles/furniture/${data.article.slug}`);
+};
+export const productDashboardDataBasePaths = (site: SiteV2) => {
+  return site.dataBase.map((data) => `/dashboard/products/${data.type}`);
 };
 export const productDashboardPaths = (type: string, products: ProductV2[]) => {
   return products.map(

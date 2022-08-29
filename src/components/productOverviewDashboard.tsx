@@ -9,7 +9,7 @@ import MoreProduct from "./moreProducts";
 import { BreadcrumbComponent } from "./antd/breadcrumb";
 import { getProduct, getProductRoute } from "../utils/functionV2";
 import { SiteV2 } from "../interfaces/siteV2";
-import { useGetProductFurnitureBySlug, useGetProductGiftBySlug } from "../react-query/reactQuery";
+import { useGetProductFurnitureBySlug, useGetProductGiftBySlug, useGetProductJewelerBySlug, useGetProductTeddyBySlug } from "../react-query/reactQuery";
 import { ProductV2 } from "../interfaces/ecommerceV2";
 
 interface ProductOverviewDashboard {
@@ -20,10 +20,19 @@ export const ProductOverviewDashboard: FC<ProductOverviewDashboard> = ({ site })
 	const { asPath, query } = useRouter()
   const { data:furniture } = useGetProductFurnitureBySlug(query.slug![3]);
   const { data:gift } = useGetProductGiftBySlug(query.slug![3]);
-	let product: ProductV2
-  if (query.slug![2] === 'furniture') {
+  const { data:teddy } = useGetProductTeddyBySlug(query.slug![3]);
+  const { data:jeweler } = useGetProductJewelerBySlug(query.slug![3]);
+	let product!: ProductV2
+  if (query.slug![2] === 'jeweler') {
+    product = jeweler!
+  } else 
+  if (query.slug![2] === 'teddy') {
+    product = teddy!
+  } else 
+	if (query.slug![2] === 'furniture') {
     product = furniture!
-  } else {
+  } else 
+	if (query.slug![2] === 'gift') {
     product = gift!
   }
 	// const product= furniture!;

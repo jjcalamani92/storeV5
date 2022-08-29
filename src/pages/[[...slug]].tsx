@@ -1,13 +1,13 @@
 import type { GetStaticPaths, GetStaticProps } from 'next'
 import { useRouter } from 'next/router'
 import { FC } from 'react'
-import { FURNITURE_BY_SLUG, FURNITURIES, GIFTS, GIFT_BY_SLUG } from '../graphql/query/ecommerceV2.query'
+import { FURNITURE_BY_SLUG, FURNITURIES, GIFTS, GIFT_BY_SLUG, JEWELERS, JEWELER_BY_SLUG, TEDDYS, TEDDY_BY_SLUG } from '../graphql/query/ecommerceV2.query'
 import { SITEV2 } from '../graphql/query/siteV2.query'
 import { Product, Site } from '../interfaces'
 import { SiteV2 } from '../interfaces/siteV2'
 import { LayoutPages, Routes, LayoutDashboard } from '../layouts'
 import { graphQLClient, graphQLClientP, graphQLClientS } from '../react-query/graphQLClient'
-import { getSite, useGetProductsFurniture, useGetProductsGift, useGetSite } from '../react-query/reactQuery'
+import { getSite, useGetProductsFurniture, useGetProductsGift, useGetProductsJeweler, useGetProductsTeddy, useGetSite } from '../react-query/reactQuery'
 import { getQuery } from '../utils/function'
 import { children0, childrens0, paths, seoV2 } from '../utils/functionV2';
 import { ProductsV2, ProductV2 } from '../interfaces/ecommerceV2';
@@ -19,12 +19,12 @@ interface Props {
 
 const Slug: FC<Props> = () => {
   const { query, asPath } = useRouter()
-  const { data, error, isLoading, isSuccess } = useGetSite(process.env.API_SITE!);
+  const { data: site } = useGetSite(process.env.API_SITE!);
   const { data: furnitures } = useGetProductsFurniture(process.env.API_SITE!);
   const { data: gifts  } = useGetProductsGift(process.env.API_SITE!);
-  const products = {furnitures, gifts}
-  // console.log(products);
-  
+  const { data: teddys  } = useGetProductsTeddy(process.env.API_SITE!);
+  const { data: jewelers  } = useGetProductsJeweler(process.env.API_SITE!);
+  const products = {furnitures, gifts, teddys, jewelers}
   return (
     <>
       {
@@ -34,7 +34,7 @@ const Slug: FC<Props> = () => {
         <Routes />
       </LayoutDashboard>
       :
-      <LayoutPages seo={seoV2(data!, asPath, products)!} site={data!}>
+      <LayoutPages seo={seoV2(site!, asPath, products)!} site={site!}>
         <Routes />
       </LayoutPages>
     }
@@ -76,8 +76,28 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     const { gifts } = await graphQLClientP.request( GIFTS, { site } );
     return gifts;
   })
+  await queryClient.prefetchQuery(["get-products-teddy", site], async () => {
+    const { teddys } = await graphQLClientP.request( TEDDYS, { site } );
+    return teddys;
+  })
+  await queryClient.prefetchQuery(["get-products-jeweler", site], async () => {
+    const { jewelers } = await graphQLClientP.request( JEWELERS, { site } );
+    return jewelers;
+  })
 
-  if ((slug[0] === 'detalles' && slug[1] ==='furniture') || (slug[0] === 'dashboard' && slug[2] ==='furniture')  ) {
+  if ((slug[0] === 'detalles' && slug[1] ==='jeweler') || (slug[0] === 'dashboard' && slug[2] ==='jeweler')  ) {
+    const slug = params?.slug![0] === 'detalles' ? params?.slug![2] : params?.slug![3]
+    await queryClient.prefetchQuery(["get-product-jeweler-by-slug", slug], async () => {
+      const { jewelerBySlug } = await graphQLClientP.request( JEWELER_BY_SLUG, { slug } );
+      return jewelerBySlug;
+    })
+  } else if ((slug[0] === 'detalles' && slug[1] ==='teddy') || (slug[0] === 'dashboard' && slug[2] ==='teddy')  ) {
+    const slug = params?.slug![0] === 'detalles' ? params?.slug![2] : params?.slug![3]
+    await queryClient.prefetchQuery(["get-product-teddy-by-slug", slug], async () => {
+      const { teddyBySlug } = await graphQLClientP.request( TEDDY_BY_SLUG, { slug } );
+      return teddyBySlug;
+    })
+  } else if ((slug[0] === 'detalles' && slug[1] ==='furniture') || (slug[0] === 'dashboard' && slug[2] ==='furniture')  ) {
     const slug = params?.slug![0] === 'detalles' ? params?.slug![2] : params?.slug![3]
     await queryClient.prefetchQuery(["get-product-furniture-by-slug", slug], async () => {
       const { furnitureBySlug } = await graphQLClientP.request( FURNITURE_BY_SLUG, { slug } );
@@ -96,7 +116,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     props: {
       dehydratedState: dehydrate(queryClient),
     },
-    revalidate: 10,
+    revalidate: 86400,
   }
 }
 export default Slug

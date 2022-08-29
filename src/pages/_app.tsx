@@ -1,9 +1,7 @@
 import '../styles/globals.css'
 // import '../styles/antd.minify.css'
 
-import type { AppProps } from 'next/app'
-import { SWRConfig } from 'swr'
-import request from 'graphql-request'
+import type { AppProps, NextWebVitalsMetric } from 'next/app'
 import 'antd/dist/antd.variable.min.css';
 import { ConfigProvider } from 'antd';
 import { Hydrate, QueryClient, QueryClientProvider } from '@tanstack/react-query'
@@ -25,8 +23,6 @@ function MyApp({ Component, pageProps }: AppProps) {
     },
   }))
   return (
-    // <QueryClientProvider client={queryClient}>
-    // </QueryClientProvider>
     <QueryClientProvider client={queryClient}>
 
       <Hydrate state={pageProps.dehydratedState}>
@@ -35,6 +31,16 @@ function MyApp({ Component, pageProps }: AppProps) {
       </Hydrate>
     </QueryClientProvider>
   )
+}
+
+// export function reportWebVitals(metric: NextWebVitalsMetric) {
+//   console.log(metric)
+// }
+
+export function reportWebVitals(metric: NextWebVitalsMetric) {
+  if (metric.label === 'web-vital') {
+    // console.log(metric) // The metric object ({ id, name, startTime, value, label }) is logged to the console
+  }
 }
 
 export default MyApp

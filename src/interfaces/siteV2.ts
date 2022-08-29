@@ -32,8 +32,10 @@ export interface SeoV2 {
   image: Image
 }
 export interface DataBaseV2 {
+  uid: string
   name: string;
   type: string;
+  image: Image
 }
 
 export interface Timestamps {

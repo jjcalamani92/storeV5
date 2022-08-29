@@ -34,21 +34,21 @@ export const ProductDashboard:FC<ProductDashboard> = ({site}) => {
     // },
   ]
   const { asPath } = useRouter()
-// console.log(asPath);
+console.log(site);
 
   return (
     <>
       <HeadingDashboardProducts title={lastElement(asPath)} site={site} />
       <div className=" grid grid-cols-1 sm:grid-cols-3 gap-6 lg:grid-cols-5 ">
         {
-          date.map(data => (
+          site.dataBase.map(data => (
 
-            <Link key={data.title} href={`${asPath}/${data.href}`} >
+            <Link key={data.name} href={`${asPath}/${data.type}`} >
               <a className='shadow-lg '>
                 <div className="w-full bg-white rounded-sm overflow-hidden leading-none">
                   <Image
-                    src={data.imageSrc}
-                    alt={data.title}
+                    src={data.image.src}
+                    alt={data.image.alt}
                     width={300}
                     height={300}
                     objectFit={'cover'}
@@ -56,7 +56,7 @@ export const ProductDashboard:FC<ProductDashboard> = ({site}) => {
                 </div>
                 <div className="p-2 flex justify-between">
                   <h3 className="text-xs md:text-sm text-gray-700">
-                    {data.title}
+                    {data.name}
                   </h3>
                 </div>
               </a>

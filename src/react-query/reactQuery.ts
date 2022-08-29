@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { FURNITURE_BY_SLUG, FURNITURIES, GIFTS, GIFT_BY_SLUG } from "../graphql/query/ecommerceV2.query";
+import { FURNITURE_BY_SLUG, FURNITURIES, GIFTS, GIFT_BY_SLUG, JEWELERS, JEWELER_BY_SLUG, TEDDYS, TEDDY_BY_SLUG } from "../graphql/query/ecommerceV2.query";
 import { SITEV2 } from "../graphql/query/siteV2.query";
 import { Product } from "../interfaces";
 import { ProductV2 } from "../interfaces/ecommerceV2";
@@ -33,6 +33,24 @@ export function useGetProductsGift(site: string) {
     return gifts;
   });
 }
+export function useGetProductsTeddy(site: string) {
+  return useQuery<ProductV2[]>(["get-products-teddy", site], async () => {
+    const { teddys } = await graphQLClientP.request(
+      TEDDYS,
+      { site }
+    );
+    return teddys;
+  });
+}
+export function useGetProductsJeweler(site: string) {
+  return useQuery<ProductV2[]>(["get-products-jeweler", site], async () => {
+    const { jewelers } = await graphQLClientP.request(
+      JEWELERS,
+      { site }
+    );
+    return jewelers;
+  });
+}
 export function useGetProductFurnitureBySlug(slug: string) {
   return useQuery<ProductV2>(["get-product-furniture-by-slug", slug], async () => {
     const { furnitureBySlug } = await graphQLClientP.request(
@@ -49,6 +67,24 @@ export function useGetProductGiftBySlug(slug: string) {
       { slug }
     );
     return giftBySlug;
+  });
+}
+export function useGetProductJewelerBySlug(slug: string) {
+  return useQuery<ProductV2>(["get-product-jeweler-by-slug", slug], async () => {
+    const { jewelerBySlug } = await graphQLClientP.request(
+      JEWELER_BY_SLUG,
+      { slug }
+    );
+    return jewelerBySlug ;
+  });
+}
+export function useGetProductTeddyBySlug(slug: string) {
+  return useQuery<ProductV2>(["get-product-teddy-by-slug", slug], async () => {
+    const { teddyBySlug } = await graphQLClientP.request(
+      TEDDY_BY_SLUG,
+      { slug }
+    );
+    return teddyBySlug ;
   });
 }
 

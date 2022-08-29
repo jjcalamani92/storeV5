@@ -3,6 +3,8 @@ import { SeoV2 } from "./siteV2";
 export interface ProductsV2 {
   furnitures?:  ProductV2[]
   gifts?: ProductV2[]
+  teddys?: ProductV2[]
+  jewelers?: ProductV2[]
 }
 export interface ProductV2 {
   _id: string;
