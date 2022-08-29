@@ -49,7 +49,7 @@ export const ModalProductAntd: FC<Props> = ({ openMP, setOpenMP, children, produ
   const route: Option[] = routes(site)
   const queryClient = useQueryClient()
   const cancelButtonRef = useRef(null)
-  console.log(product);
+  // console.log(product);
   
 //   const {mutate, isLoading} = useMutation(async () => await graphQLClientP.request(ADD_GIFT_PRODUCT, { input: data }), {
 //     onSuccess : (data) => {

@@ -24,3 +24,4 @@ export const graphQLClientP = new GraphQLClient(
     },
   }
 );
+

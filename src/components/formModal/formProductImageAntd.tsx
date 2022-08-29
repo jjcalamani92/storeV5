@@ -2,9 +2,6 @@
 import { FC, Fragment, useRef, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { useRouter } from 'next/router';
-import { useForm } from 'react-hook-form';
-import { CreateProductInput, Product } from '../../interfaces/ecommerceV1';
-import { InboxOutlined, UploadOutlined } from '@ant-design/icons';
 import {
   AutoComplete,
   Button,
@@ -20,14 +17,13 @@ import {
   Upload,
 } from 'antd';
 const { Option } = Select;
-import { graphQLClient } from '../../react-query/graphQLClient';
-import { ADD_IMAGES_FURNITURE, ADD_IMAGES_GIFT} from '../../graphql/mutation/ecommerceV1.mutation';
-import { useSWRConfig } from 'swr';
-import { getURL, slug } from '../../utils/function';
+import { graphQLClient, graphQLClientP } from '../../react-query/graphQLClient';
+import { UPDATE_IMAGES_FURNITURE, UPDATE_IMAGES_GIFT} from '../../graphql/mutation/ecommerceV2.mutation';
 import ImgCrop from 'antd-img-crop';
 import type { RcFile, UploadFile, UploadProps } from 'antd/es/upload/interface';
 import { uuidv3 } from '../../utils/index';
 import { ProductV2 } from '../../interfaces/ecommerceV2';
+import { useQueryClient } from '@tanstack/react-query';
 
 export interface Option {
   value: string;
@@ -44,7 +40,8 @@ interface Props {
 
 export const ModalProductImageAntd: FC<Props> = ({ openMI, setOpenMI, children, product }) => {
   const { asPath, query, push, replace } = useRouter()
-  const { mutate } = useSWRConfig()
+  const queryClient = useQueryClient()
+
   const cancelButtonRef = useRef(null)
   // console.log(product?.article.image);
   const file = product?.article.image ?  product?.article.image.map(data => ({uid: uuidv3(), name:"1", url:data.src})) : []
@@ -112,13 +109,20 @@ export const ModalProductImageAntd: FC<Props> = ({ openMI, setOpenMI, children, 
     // console.log();
     const data = image.filter(data => data.src !== 'undefined')
     let IMAGES
+    let PRODUCTS
     if (query.slug![2] ==='furniture') {
-      IMAGES = ADD_IMAGES_FURNITURE
+      IMAGES = UPDATE_IMAGES_FURNITURE
+      PRODUCTS = 'get-product-furniture-by-slug'
+
     } else {
-      IMAGES = ADD_IMAGES_GIFT
+      IMAGES = UPDATE_IMAGES_GIFT
+      PRODUCTS = 'get-product-gift-by-slug'
+
     }
-    await graphQLClient.request(IMAGES, { _id: product?._id, input: data })
-    replace(`${getURL(asPath)}/${product?.article.slug}`)
+    await graphQLClientP.request(IMAGES, { _id: product?._id, input: data })
+    queryClient.invalidateQueries([PRODUCTS])
+    
+    // replace(`${getURL(asPath)}/${product?.article.slug}`)
 
     // console.log('Received values of form: ', values);
   };

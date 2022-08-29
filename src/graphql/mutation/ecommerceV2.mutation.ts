@@ -51,16 +51,16 @@ export const DELETE_GIFT_PRODUCT = gql`
   }
 `;
 
-export const ADD_IMAGES_FURNITURE = gql`
-mutation AddImagesFurniture($_id: ID!, $input: [AddImagesInput!]!) {
-  addImagesFurniture(_id: $_id, input: $input) {
+export const UPDATE_IMAGES_FURNITURE = gql`
+mutation UpdateImagesFurniture($_id: ID!, $input: [UpdateImagesInput!]!) {
+  updateImagesFurniture(_id: $_id, input: $input) {
     _id
   }
 }
 `;
-export const ADD_IMAGES_GIFT = gql`
-mutation AddImagesGift($_id: ID!, $input: [AddImagesInput!]!) {
-  addImagesGift(_id: $_id, input: $input) {
+export const UPDATE_IMAGES_GIFT = gql`
+mutation UpdateImagesGift($_id: ID!, $input: [UpdateImagesInput!]!) {
+  updateImagesGift(_id: $_id, input: $input) {
     _id
   }
 }
