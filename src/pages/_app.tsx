@@ -16,7 +16,7 @@ ConfigProvider.config({
   },
 });
 
-function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
+function MyApp({ Component, pageProps }: AppProps) {
   const [queryClient] = useState(() => new QueryClient({
     defaultOptions: {
       queries: {
@@ -25,7 +25,7 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
     },
   }))
   return (
-    <SessionProvider session={session}>
+    <SessionProvider>
 
       <AuthProvider>
         <QueryClientProvider client={queryClient}>
