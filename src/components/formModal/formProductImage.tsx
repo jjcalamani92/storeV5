@@ -9,7 +9,7 @@ import { useSWRConfig } from 'swr';
 import { WEARS } from '../../graphql/query/ecommerceV1.query';
 import Image from 'next/image';
 import axios from "axios";
-import { graphQLClient } from '../../swr/graphQLClient';
+import { graphQLClient } from '../../react-query/graphQLClient';
 import { Icon } from '../icon';
 import { getURL } from '../../utils/function';
 interface Props {

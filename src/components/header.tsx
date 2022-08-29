@@ -20,6 +20,8 @@ import { MenuIcon, SearchIcon, ShoppingBagIcon, XIcon } from '@heroicons/react/o
 import { classNames } from '../utils/function';
 import { Site } from '../interfaces/siteV1';
 import Link from 'next/link';
+import { SiteV2 } from '../interfaces/siteV2';
+import Image from 'next/image';
 
 const navigation = {
   featured: [
@@ -159,12 +161,11 @@ const navigation = {
 }
 
 interface Header {
-  site: Site
+  site: SiteV2
 }
 
 export const Header: FC<Header> = ({ site }) => {
   const [open, setOpen] = useState(false)
-  // console.log(site);
 
   return (
     <div className="bg-white">
@@ -219,7 +220,7 @@ export const Header: FC<Header> = ({ site }) => {
                             )
                           }
                         >
-                          {children0.head.name}
+                          {children0.seo.name}
                         </Tab>
                       ))}
                     </Tab.List>
@@ -245,21 +246,21 @@ export const Header: FC<Header> = ({ site }) => {
                             </div>
                           ))}
                         </div>
-                        {children0.children.map((children1, i) => (
+                        {children0.children?.map((children1, i) => (
                           <div key={i}>
                             <p className="font-medium text-gray-900">
-                              {children1.head.name}
+                              {children1.seo.name}
                             </p>
                             <ul
                               role="list"
-                              // aria-labelledby={`${category.id}-${section.id}-heading-mobile`}
+                              // aria-labelledby={`${category.id}-${section.id}-seoing-mobile`}
                               className="mt-6 flex flex-col space-y-6"
                             >
-                              {children1.children.map((children2, i) => (
+                              {children1.children?.map((children2, i) => (
                                 <li key={i} className="flow-root">
-                                  <Link href={`/${children0.head.href}/${children1.head.href}/${children2.head.href}`}>
+                                  <Link href={`/${children0.seo.href}/${children1.seo.href}/${children2.seo.href}`}>
                                     <a className="-m-2 p-2 block text-gray-500">
-                                      {children2.head.name}
+                                      {children2.seo.name}
                                     </a>
                                   </Link>
                                 </li>
@@ -320,7 +321,7 @@ export const Header: FC<Header> = ({ site }) => {
           Obtenga envío gratis en pedidos superiores a $ 100
         </p>
 
-        <nav aria-label="Top" className="max-w-7xl mx-auto px-4 lg:px-0">
+        <nav aria-label="Top" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="border-b border-gray-200">
             <div className="h-16 flex items-center">
               <button
@@ -338,9 +339,12 @@ export const Header: FC<Header> = ({ site }) => {
 
                   <a >
                     <span className="sr-only">Workflow</span>
-                    <img
+                    <Image
                       className="h-8 w-auto"
                       src="https://regalosterrakota.com/wp-content/uploads/2021/10/cropped-2-1-web.png"
+                      width={120}
+                      height={50}
+                      objectFit={"contain"}
                       alt=""
                     />
                   </a>
@@ -363,7 +367,7 @@ export const Header: FC<Header> = ({ site }) => {
                                 'relative z-10 flex items-center transition-colors ease-out duration-200 text-sm font-medium border-b-2 -mb-px pt-px'
                               )}
                             >
-                              {children0.head.name}
+                              {children0.seo.name}
                             </Popover.Button>
                           </div>
 
@@ -408,21 +412,21 @@ export const Header: FC<Header> = ({ site }) => {
                                     <div className="row-start-1 col-span-2 grid grid-cols-4 gap-y-10 gap-x-8 text-sm">
                                       {children0.children.map((children1, i) => (
                                         <div key={i}>
-                                          <p id={`${children1.head.name}-heading`} className="font-medium text-gray-900">
-                                            {children1.head.name}
+                                          <p id={`${children1.seo.name}-heading`} className="font-medium text-gray-900">
+                                            {children1.seo.name}
                                           </p>
                                           <ul
                                             role="list"
-                                            aria-labelledby={`${children1.head.name}-heading`}
+                                            aria-labelledby={`${children1.seo.name}-heading`}
                                             className="mt-6 space-y-6 sm:mt-4 sm:space-y-4"
                                           >
-                                            {children1.children.map((children2, i) => (
+                                            {children1.children?.map((children2, i) => (
                                               <li key={i} className="flex">
-                                                <Link href={`/${children0.head.href}/${children1.head.href}/${children2.head.href}`} >
+                                                <Link href={`/${children0.seo.href}/${children1.seo.href}/${children2.seo.href}`} >
                                                   <a className="hover:text-gray-800" 
                                                   style={{color: "inherit"}}
                                                   >
-                                                    {children2.head.name}
+                                                    {children2.seo.name}
                                                   </a>
                                                 </Link>
                                               </li>

@@ -20,13 +20,14 @@ import {
   Upload,
 } from 'antd';
 const { Option } = Select;
-import { graphQLClient } from '../../swr/graphQLClient';
+import { graphQLClient } from '../../react-query/graphQLClient';
 import { ADD_IMAGES_FURNITURE, ADD_IMAGES_GIFT} from '../../graphql/mutation/ecommerceV1.mutation';
 import { useSWRConfig } from 'swr';
 import { getURL, slug } from '../../utils/function';
 import ImgCrop from 'antd-img-crop';
 import type { RcFile, UploadFile, UploadProps } from 'antd/es/upload/interface';
 import { uuidv3 } from '../../utils/index';
+import { ProductV2 } from '../../interfaces/ecommerceV2';
 
 export interface Option {
   value: string;
@@ -38,7 +39,7 @@ interface Props {
   openMI: boolean
   setOpenMI: React.Dispatch<React.SetStateAction<boolean>>
   children?: React.ReactNode;
-  product?: Product
+  product?: ProductV2
 }
 
 export const ModalProductImageAntd: FC<Props> = ({ openMI, setOpenMI, children, product }) => {
@@ -84,7 +85,7 @@ export const ModalProductImageAntd: FC<Props> = ({ openMI, setOpenMI, children, 
   const onChange: UploadProps['onChange'] = ({ file: newFile, fileList: newFileList , event: newEvent}) => {
     setFileList(newFileList);
     // setFileList([...fileList, {url: newFile.response?.url, uid: "1", name:"image"}]);
-    setImage([...image, { src: `${newFile.response?.url}`, alt: `image of ${product?.article.title}` }])
+    setImage([...image, { src: `${newFile.response?.url}`, alt: `image of ${product?.article.name}` }])
     // console.log(newEvent);
     
     // console.log(newFile.response?.url);
@@ -166,7 +167,7 @@ export const ModalProductImageAntd: FC<Props> = ({ openMI, setOpenMI, children, 
                     name="register"
                     onFinish={onFinish}
                     initialValues={{
-                      title: product ? product?.article.title : "",
+                      title: product ? product?.article.name : "",
                       // mark: product ? product?.article.mark : "",
                       // featured: product ? product?.article.featured.name : "",
                       // route: product ? product?.article.route : "",

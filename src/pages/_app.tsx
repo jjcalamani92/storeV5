@@ -6,6 +6,9 @@ import { SWRConfig } from 'swr'
 import request from 'graphql-request'
 import 'antd/dist/antd.variable.min.css';
 import { ConfigProvider } from 'antd';
+import { Hydrate, QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { useState } from 'react';
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 ConfigProvider.config({
   theme: {
@@ -14,18 +17,23 @@ ConfigProvider.config({
 });
 
 function MyApp({ Component, pageProps }: AppProps) {
+  const [queryClient] = useState(() => new QueryClient({
+    defaultOptions: {
+      queries: {
+        refetchOnWindowFocus: false,
+      },
+    },
+  }))
   return (
-    <SWRConfig value={
-      {
-        fetcher: (query: string, variables) =>
-          request(`${process.env.APIS_URL}/graphql`, query, variables),
-          revalidateOnFocus: false,
-          // refreshInterval: 3000
-          
-      }
-      }>
-      <Component {...pageProps} />
-     </SWRConfig>
+    // <QueryClientProvider client={queryClient}>
+    // </QueryClientProvider>
+    <QueryClientProvider client={queryClient}>
+
+      <Hydrate state={pageProps.dehydratedState}>
+        <Component {...pageProps} />
+        <ReactQueryDevtools initialIsOpen={false} />
+      </Hydrate>
+    </QueryClientProvider>
   )
 }
 

@@ -12,16 +12,16 @@ import { SiteV2 } from "../interfaces/siteV2";
 import { useGetProductFurnitureBySlug, useGetProductGiftBySlug } from "../react-query/reactQuery";
 import { ProductV2 } from "../interfaces/ecommerceV2";
 
-interface ProductOverview {
+interface ProductOverviewDashboard {
 	site: SiteV2
 }
 
-export const ProductOverview: FC<ProductOverview> = ({ site }) => {
+export const ProductOverviewDashboard: FC<ProductOverviewDashboard> = ({ site }) => {
 	const { asPath, query } = useRouter()
-  const { data:furniture } = useGetProductFurnitureBySlug(query.slug![2]);
-  const { data:gift } = useGetProductGiftBySlug(query.slug![2]);
+  const { data:furniture } = useGetProductFurnitureBySlug(query.slug![3]);
+  const { data:gift } = useGetProductGiftBySlug(query.slug![3]);
 	let product: ProductV2
-  if (query.slug![1] === 'furniture') {
+  if (query.slug![2] === 'furniture') {
     product = furniture!
   } else {
     product = gift!
@@ -139,13 +139,13 @@ export const ProductOverview: FC<ProductOverview> = ({ site }) => {
 									Agregar al carrito
 								</button>65525049
 							</form> */}
-							<a
+							{/* <a
 								href={`https://wa.me/59163039181?text=Hola%20me%20interesa%20este%20producto:%20https://terrakota.vercel.app/detalles/${product.article.slug}`}
 								target={'blank'}
 								className="mt-3 w-full bg-pink-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-pink-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-400"
 							>
 								Preguntar por WhatsApp
-							</a>
+							</a> */}
 						</div>
 						<div className="mb-4">
 							<h2 className="text-md font-bold text-gray-900">Descripción</h2>

@@ -3,12 +3,12 @@ import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/router"
 import { FC, useState } from "react"
-import { Site } from "../interfaces"
+import { SiteV2 } from "../interfaces/siteV2"
 import { lastElement } from "../utils/function"
 import { HeadingDashboardProducts } from "./heading"
 
 interface ProductDashboard {
-  site: Site
+  site: SiteV2
 }
 export const ProductDashboard:FC<ProductDashboard> = ({site}) => {
   const date = [

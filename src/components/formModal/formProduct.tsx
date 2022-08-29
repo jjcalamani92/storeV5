@@ -6,7 +6,7 @@ import { useForm } from 'react-hook-form';
 import { CreateProductInput, Product } from '../../interfaces/ecommerceV1';
 import { Cascader } from 'antd';
 
-import { graphQLClient } from '../../swr/graphQLClient';
+import { graphQLClient } from '../../react-query/graphQLClient';
 import { CREATE_FURNITURE_PRODUCT, CREATE_WEAR_PRODUCT, UPDATE_FURNITURE_PRODUCT } from '../../graphql/mutation/ecommerceV1.mutation';
 import { useSWRConfig } from 'swr';
 import { FURNITURIES, WEARS } from '../../graphql/query/ecommerceV1.query';

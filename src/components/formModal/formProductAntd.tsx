@@ -2,8 +2,6 @@
 import { FC, Fragment, useRef, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { useRouter } from 'next/router';
-import { useForm } from 'react-hook-form';
-import { CreateProductInput, Product } from '../../interfaces/ecommerceV1';
 import {
   AutoComplete,
   Button,
@@ -18,15 +16,18 @@ import {
   Select,
 } from 'antd';
 const { Option } = Select;
-import { graphQLClient } from '../../swr/graphQLClient';
-import { CREATE_FURNITURE_PRODUCT, CREATE_GIFT_PRODUCT, CREATE_WEAR_PRODUCT, UPDATE_FURNITURE_PRODUCT, UPDATE_GIFT_PRODUCT } from '../../graphql/mutation/ecommerceV1.mutation';
+import { graphQLClient, graphQLClientP } from '../../react-query/graphQLClient';
 import { useSWRConfig } from 'swr';
 import { FURNITURIES, GIFTS, WEARS } from '../../graphql/query';
-import { Site } from '../../interfaces/siteV1';
-import { routes } from '../../utils/functionV1';
+// import { Site } from '../../interfaces/siteV1';
+import { routes } from '../../utils/functionV2';
 import { getQuery, getURL, lastElement, slug } from '../../utils/function';
 import type { DefaultOptionType } from 'antd/es/cascader';
 import Swal from 'sweetalert2';
+import { SiteV2 } from '../../interfaces/siteV2';
+import { ProductV2 } from '../../interfaces/ecommerceV2';
+import { ADD_FURNITURE_PRODUCT, ADD_GIFT_PRODUCT, UPDATE_FURNITURE_PRODUCT, UPDATE_GIFT_PRODUCT } from '../../graphql/mutation/ecommerceV2.mutation';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 
 export interface Option {
@@ -39,20 +40,23 @@ interface Props {
   openMP: boolean
   setOpenMP: React.Dispatch<React.SetStateAction<boolean>>
   children?: React.ReactNode;
-  product?: Product
-  site: Site
+  product?: ProductV2
+  site: SiteV2
 }
 
 export const ModalProductAntd: FC<Props> = ({ openMP, setOpenMP, children, product, site }) => {
   const { asPath, query, push, replace } = useRouter()
-  const { mutate } = useSWRConfig()
   const route: Option[] = routes(site)
-  // console.log(getQuery(product!.article.route));
-console.log(query.slug![2]);
-
-  
+  const queryClient = useQueryClient()
   const cancelButtonRef = useRef(null)
-
+  console.log(product);
+  
+//   const {mutate, isLoading} = useMutation(async () => await graphQLClientP.request(ADD_GIFT_PRODUCT, { input: data }), {
+//     onSuccess : (data) => {
+//         console.log(data) //This is the response you get back
+//         // setResponse(data)
+//     }
+// })
   const [form] = Form.useForm();
   const onFinish = async (values: any) => {
     const data = { ...values, route: `/${values.route.join('/')}`, site: process.env.API_SITE }
@@ -71,9 +75,11 @@ console.log(query.slug![2]);
       } else {
         UPDATE = UPDATE_GIFT_PRODUCT
       }
-      await graphQLClient.request(UPDATE, { _id: product._id, input: data })
+      await graphQLClientP.request(UPDATE, { _id: product._id, input: data })
 
-      replace(`${getURL(asPath)}/${slug(values.title)}`)
+      replace(`${getURL(asPath)}/${slug(values.name)}`)
+      // console.log('update', data);
+      
     } else {
       Swal.fire({
         position: 'center',
@@ -85,15 +91,15 @@ console.log(query.slug![2]);
       let CREATED
       let PRODUCTS
       if (query.slug![2] ==='furniture') {
-        CREATED = CREATE_FURNITURE_PRODUCT
-        PRODUCTS = FURNITURIES
+        CREATED = ADD_FURNITURE_PRODUCT
+        PRODUCTS = 'get-products-furniture'
       } else {
-        CREATED = CREATE_GIFT_PRODUCT
-        PRODUCTS = GIFTS
+        CREATED = ADD_GIFT_PRODUCT
+        PRODUCTS = 'get-products-gift'
       }
-      await graphQLClient.request(CREATED, { input: data })
-
-      mutate([PRODUCTS, { site: process.env.API_SITE }])
+      await graphQLClientP.request(CREATED, { input: data })
+      queryClient.invalidateQueries([PRODUCTS])
+      // mutate([PRODUCTS, { site: process.env.API_SITE }])
     }
   };
   const filter = (inputValue: string, path: DefaultOptionType[]) =>
@@ -145,7 +151,7 @@ console.log(query.slug![2]);
                     name="register"
                     onFinish={onFinish}
                     initialValues={{
-                      title: product ? product?.article.title : "",
+                      name: product ? product?.article.name : "",
                       mark: product ? product?.article.mark : "",
                       featured: product ? product?.article.featured.name : "",
                       route: product ? getQuery(product?.article.route) : [],
@@ -158,7 +164,7 @@ console.log(query.slug![2]);
                     className="grid grid-cols-2 gap-x-3"
                   >
                     <Form.Item
-                      name="title"
+                      name="name"
                       label="Name"
                       className="col-span-2"
                       rules={[
@@ -207,7 +213,7 @@ console.log(query.slug![2]);
                       label="Route"
                       className="col-span-2"
                       rules={[
-                        { type: 'array', required: true, message: 'Please select your route!' },
+                        { type: 'array', required: true, message: 'Please select your Route!' },
                       ]}
                     >
                       <Cascader 
@@ -226,19 +232,19 @@ console.log(query.slug![2]);
                     
                     <Form.Item label="Price" className="col-span-1">
                       <Form.Item name="price" noStyle>
-                        <InputNumber min={0} defaultValue={0}  />
+                        <InputNumber min={0}   />
                       </Form.Item>
                       <span className="ant-form-text"> Bs</span>
                     </Form.Item>
                     <Form.Item label="Discount Price" className="col-span-1">
                       <Form.Item name="discountPrice" noStyle>
-                        <InputNumber min={0} defaultValue={0}  />
+                        <InputNumber min={0}  />
                       </Form.Item>
                       <span className="ant-form-text"> Bs</span>
                     </Form.Item>
                     <Form.Item label="Stock" className="col-span-2">
                       <Form.Item name="inStock" noStyle>
-                        <InputNumber min={1} max={10} defaultValue={1}  />
+                        <InputNumber min={1} max={10}  />
                       </Form.Item>
                       <span className="ant-form-text"> unidades</span>
                     </Form.Item>

@@ -7,12 +7,14 @@ import { classNames } from "../utils/function";
 import { Site } from "../interfaces/siteV1";
 import { ModalProductAntd } from './formModal/formProductAntd';
 import { ModalProductImageAntd } from "./formModal/formProductImageAntd";
+import { ProductV2 } from '../interfaces/ecommerceV2';
+import { SiteV2 } from "../interfaces/siteV2";
 
 
 interface HeadingDashboardProducts {
   title: string;
-  product?:Product
-  site:Site
+  product?:ProductV2
+  site:SiteV2
 }
 
 const form = [
@@ -75,8 +77,8 @@ export const HeadingDashboardProducts: FC<HeadingDashboardProducts> = ({ title, 
 }
 interface HeadingDashboardProduct {
   title: string;
-  product:Product
-  site:Site
+  product:ProductV2
+  site:SiteV2
 }
 const formProduct = [
   { name: 'Update Product', href: 'update-product', current: true },

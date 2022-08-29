@@ -7,13 +7,14 @@ import { useSWRConfig } from 'swr';
 import { CREATE_GIFT_PRODUCT, DELETE_FURNITURE_PRODUCT, DELETE_GIFT_PRODUCT } from '../../graphql/mutation/ecommerceV1.mutation';
 import { FURNITURIES, GIFTS } from '../../graphql/query/ecommerceV1.query';
 import { Product } from '../../interfaces/ecommerceV1';
-import { graphQLClient } from '../../swr/graphQLClient';
+import { graphQLClient } from '../../react-query/graphQLClient';
 import { useRouter } from 'next/router';
 import Swal from "sweetalert2";
+import { ProductV2 } from '../../interfaces/ecommerceV2';
 
 const { Meta } = Card;
 interface CardComponent {
-  product: Product
+  product: ProductV2
 }
 
 export const CardComponent:FC<CardComponent> = ({product}) => {
@@ -74,7 +75,7 @@ export const CardComponent:FC<CardComponent> = ({product}) => {
         >
           <Meta
             // avatar={<Avatar src="https://joeschmoe.io/api/v1/random" />}
-            title={product.article.title}
+            title={product.article.name}
             description={product.article.mark}
 
           />

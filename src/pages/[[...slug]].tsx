@@ -1,59 +1,98 @@
 import type { GetStaticPaths, GetStaticProps } from 'next'
 import { useRouter } from 'next/router'
 import { FC } from 'react'
-import { SITE, FURNITURIES, GIFTS } from '../graphql'
+import { FURNITURE_BY_SLUG, FURNITURIES, GIFTS, GIFT_BY_SLUG } from '../graphql/query/ecommerceV2.query'
+import { SITEV2 } from '../graphql/query/siteV2.query'
 import { Product, Site } from '../interfaces'
+import { SiteV2 } from '../interfaces/siteV2'
 import { LayoutPages, Routes, LayoutDashboard } from '../layouts'
-import { graphQLClient } from '../swr/graphQLClient'
-import { paths, seo } from '../utils/functionV1'
+import { graphQLClient, graphQLClientP, graphQLClientS } from '../react-query/graphQLClient'
+import { getSite, useGetSite } from '../react-query/reactQuery'
+import { getQuery } from '../utils/function'
+import { children0, childrens0, seoV2 } from '../utils/functionV2';
+import { ProductV2 } from '../interfaces/ecommerceV2';
+import { dehydrate, QueryClient } from '@tanstack/react-query';
 
 interface Props {
-  site: Site
-  products: {
-    furnitures: Product[]
-    gifts: Product[]
-  }
+  
 }
 
-const Slug: FC<Props> = ({site, products}) => {
+const Slug: FC<Props> = () => {
   const { query, asPath } = useRouter()
-  console.log(query);
+  const { data, error, isLoading, isSuccess } = useGetSite(process.env.API_SITE!);
+
   
   return (
     <>
-    {
+      {
       query.slug && query.slug[0] === "dashboard" 
       ?
       <LayoutDashboard >
-        <Routes site={site} products={products } />
+        <Routes />
       </LayoutDashboard>
       :
-      <LayoutPages head={seo(site, query, asPath, products)!}  site={site}>
-        <Routes site={site} products={products} />
+      <LayoutPages seo={seoV2(data!, asPath)!} site={data!}>
+        <Routes />
       </LayoutPages>
     }
+      
     </>
-    )
+  )
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const { site } = await graphQLClient.request(SITE, { _id: process.env.API_SITE })
+  const { siteV2 } = await graphQLClientS.request(SITEV2, { _id: process.env.API_SITE })
   return {
-    paths: paths(site).map(data =>( {params: data})),
+    // paths: paths(siteV2).map(data =>( {params: data})),
+    paths: [{ params: { slug: [] } }],
     fallback: 'blocking'
   };
 }
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-  const { site } = await graphQLClient.request(SITE, { _id: process.env.API_SITE })
-  const { furnitures } = await graphQLClient.request(FURNITURIES, { site: process.env.API_SITE })
-  const { gifts } = await graphQLClient.request(GIFTS, { site: process.env.API_SITE })
+  const { slug = [] } = params as { slug: string[] }
+
+  const _id = process.env.API_SITE!
+  const site = process.env.API_SITE
+
+  const queryClient = new QueryClient()
+  
+  await queryClient.prefetchQuery(["get-site", _id],  async () => {
+    const { siteV2 } = await graphQLClientS.request(
+      SITEV2,
+      { _id }
+    );
+    return siteV2;
+  })
+
+  await queryClient.prefetchQuery(["get-products-furniture", site], async () => {
+    const { furnitures } = await graphQLClientP.request( FURNITURIES, { site } );
+    return furnitures;
+  })
+  await queryClient.prefetchQuery(["get-products-gift", site], async () => {
+    const { gifts } = await graphQLClientP.request( GIFTS, { site } );
+    return gifts;
+  })
+
+  if ((slug[0] === 'detalles' && slug[1] ==='furniture') || (slug[0] === 'dashboard' && slug[2] ==='furniture')  ) {
+    const slug = params?.slug![0] === 'detalles' ? params?.slug![2] : params?.slug![3]
+    await queryClient.prefetchQuery(["get-product-furniture-by-slug", slug], async () => {
+      const { furnitureBySlug } = await graphQLClientP.request( FURNITURE_BY_SLUG, { slug } );
+      return furnitureBySlug;
+    })
+  } else if ((slug[0] === 'detalles' && slug[1] ==='gift') || (slug[0] === 'dashboard' && slug[2] ==='gift')) {
+    const slug = params?.slug![0] === 'detalles' ? params?.slug![2] : params?.slug![3]
+    await queryClient.prefetchQuery(["get-product-gift-by-slug", slug], async () => {
+      const { giftBySlug } = await graphQLClientP.request( GIFT_BY_SLUG, { slug } );
+      return giftBySlug;
+    })
+  }
+
+  // const { gifts } = await graphQLClient.request(GIFTS, { site: process.env.API_SITE })
   return {
-    props: { site, products: {furnitures, gifts} 
-    //   fallback: {
-    //   [FURNITURIES]:
-    // },
-  },
+    props: {
+      dehydratedState: dehydrate(queryClient),
+    },
     revalidate: 10,
   }
 }

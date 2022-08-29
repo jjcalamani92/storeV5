@@ -8,7 +8,7 @@ import { useRouter } from 'next/router';
     href?: string
   }
   interface BreadcrumbComponent {
-    route: any[]
+    route: Route[]
   }
 
 export const BreadcrumbComponent: FC<BreadcrumbComponent> = ({route}) => {
@@ -18,17 +18,16 @@ export const BreadcrumbComponent: FC<BreadcrumbComponent> = ({route}) => {
     <div className='my-6'>
       <Breadcrumb >
       {
-        route.map(data => data.href ? (
+        route.map((data, i:number) => data.href ? (
 
-        <Breadcrumb.Item key={data.name}>
+        <Breadcrumb.Item key={i}>
           <Link href={data.href}>
             <a>{data.name}</a>
           </Link>
         </Breadcrumb.Item>
         ) : 
-        <Breadcrumb.Item>
+        <Breadcrumb.Item key={i}>
           {data.name}
-          
         </Breadcrumb.Item>
         )
       }
