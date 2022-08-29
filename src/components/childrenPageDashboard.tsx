@@ -6,6 +6,7 @@ import { Children, Site } from '../interfaces/siteV1';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { HeadingDashboardProducts } from './heading';
+import { ChildrenV2, SiteV2 } from '../interfaces/siteV2';
 /*
   This example requires Tailwind CSS v2.0+ 
   
@@ -24,8 +25,8 @@ import { HeadingDashboardProducts } from './heading';
 */
 
 interface ChildrenPage {
-  item: Children[]
-  site: Site
+  item: ChildrenV2[]
+  site: SiteV2
 }
 export const ChildrenPageDashboard: FC<ChildrenPage> = ({ item, site }) => {
   // console.log(item);
@@ -37,12 +38,12 @@ export const ChildrenPageDashboard: FC<ChildrenPage> = ({ item, site }) => {
       <h2 className="text-2xl font-bold text-gray-900">Pages</h2>
       <div className="mt-6 space-y-12 md:space-y-0 md:grid md:grid-cols-3 md:gap-6 lg:grid-cols-5">
         {item.map((data, i) => (
-          <Link key={i} href={`${asPath}/${data.head.href}`}>
+          <Link key={i} href={`${asPath}/${data.seo.href}`}>
           <a className="shadow-xl">
             <div className="w-full bg-white rounded-lg   leading-none relative">
               <Image
-                src={data.head.image.src}
-                alt={data.head.image.alt}
+                src={data.seo.image.src}
+                alt={data.seo.image.alt}
                 width={500}
                 height={600}
                 objectFit='cover'
@@ -52,9 +53,9 @@ export const ChildrenPageDashboard: FC<ChildrenPage> = ({ item, site }) => {
 
             <h3 className="mt-6 text-sm text-gray-500">
               
-                {data.head.name}
+                {data.seo.name}
             </h3>
-            <p className="text-base font-semibold text-gray-900">{data.head.description}</p>
+            <p className="text-base font-semibold text-gray-900">{data.seo.description}</p>
             </div>
           </a>
                 </Link>

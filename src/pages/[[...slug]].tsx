@@ -9,7 +9,7 @@ import { LayoutPages, Routes, LayoutDashboard } from '../layouts'
 import { graphQLClient, graphQLClientP, graphQLClientS } from '../react-query/graphQLClient'
 import { getSite, useGetSite } from '../react-query/reactQuery'
 import { getQuery } from '../utils/function'
-import { children0, childrens0, seoV2 } from '../utils/functionV2';
+import { children0, childrens0, paths, seoV2 } from '../utils/functionV2';
 import { ProductV2 } from '../interfaces/ecommerceV2';
 import { dehydrate, QueryClient } from '@tanstack/react-query';
 
@@ -43,8 +43,8 @@ const Slug: FC<Props> = () => {
 export const getStaticPaths: GetStaticPaths = async () => {
   const { siteV2 } = await graphQLClientS.request(SITEV2, { _id: process.env.API_SITE })
   return {
-    // paths: paths(siteV2).map(data =>( {params: data})),
-    paths: [{ params: { slug: [] } }],
+    paths: paths(siteV2).map(data =>( {params: data})),
+    // paths: [{ params: { slug: [] } }],
     fallback: 'blocking'
   };
 }

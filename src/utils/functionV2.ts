@@ -123,28 +123,28 @@ export const childrenPaths2 = (site: SiteV2) => {
     .flat(2)
     .filter((data) => typeof data !== "undefined");
 };
-// export const paths = (site: Site) => {
-//   return site.children
-//     .map((data0) => [
-//       {
-//         slug: data0.slug === "home" ? [] : [data0.slug],
-//       },
-//       data0.children &&
-//         data0.children.map((data1) => [
-//           {
-//             slug: [data0.slug, data1.slug],
-//           },
-//           data1.children &&
-//             data1.children.map((data2) => [
-//               {
-//                 slug: [data0.slug, data1.slug, data2.slug],
-//               },
-//             ]),
-//         ]),
-//     ])
-//     .flat(5)
-//     .filter((data) => data !== null);
-// };
+export const paths = (site: SiteV2) => {
+  return site.children
+    .map((data0) => [
+      {
+        slug: data0.slug === "home" ? [] : [data0.slug],
+      },
+      data0.children &&
+        data0.children.map((data1) => [
+          {
+            slug: [data0.slug, data1.slug],
+          },
+          data1.children &&
+            data1.children.map((data2) => [
+              {
+                slug: [data0.slug, data1.slug, data2.slug],
+              },
+            ]),
+        ]),
+    ])
+    .flat(5)
+    .filter((data) => data !== null);
+};
 export const getProduct = (products: ProductV2[], asPath: string) => {
   const query = getQuery(asPath)
   return products.find((data) =>
