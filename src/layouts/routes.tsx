@@ -7,7 +7,6 @@ import { childrenPaths0, childrenPaths1, childrenPaths2, productDashboardDataBas
 import { useGetProductsFurniture, useGetProductsGift, useGetProductsJeweler, useGetProductsTeddy, useGetSite } from "../react-query/reactQuery";
 import { ProductOverviewDashboard } from "../components/productOverviewDashboard";
 import { Login } from "../components/login";
-import Nextauth from "../pages/api/auth/[...nextauth]";
 
 interface Routes {
 }
