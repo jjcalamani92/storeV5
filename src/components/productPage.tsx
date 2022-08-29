@@ -1,15 +1,8 @@
-
 import { FC, Key } from 'react';
 import Image from "next/image"
-
-import { Children } from '../interfaces/siteV1';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import useSWR from 'swr';
-import { FURNITURIES } from '../graphql/query/ecommerceV1.query';
-import Skeleton from "react-loading-skeleton";
 import 'react-loading-skeleton/dist/skeleton.css'
-import { Product } from '../interfaces/ecommerceV1';
 import { ChildrenV2 } from '../interfaces/siteV2';
 import { ProductV2 } from '../interfaces/ecommerceV2';
 import { useGetProductsFurniture, useGetProductsGift, useGetProductsJeweler, useGetProductsTeddy } from '../react-query/reactQuery';

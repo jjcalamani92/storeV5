@@ -7,6 +7,8 @@ import { ConfigProvider } from 'antd';
 import { Hydrate, QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { useState } from 'react';
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { SessionProvider } from "next-auth/react"
+import { AuthProvider } from '../context';
 
 ConfigProvider.config({
   theme: {
@@ -23,13 +25,19 @@ function MyApp({ Component, pageProps }: AppProps) {
     },
   }))
   return (
+    <SessionProvider>
+
     <QueryClientProvider client={queryClient}>
 
       <Hydrate state={pageProps.dehydratedState}>
+      <AuthProvider>
+
         <Component {...pageProps} />
+      </AuthProvider>
         <ReactQueryDevtools initialIsOpen={false} />
       </Hydrate>
     </QueryClientProvider>
+    </SessionProvider>
   )
 }
 

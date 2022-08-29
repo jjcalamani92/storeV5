@@ -6,6 +6,8 @@ import { ProductPageDashboard, ProductOverview, ProductDashboard, ChildrenPageDa
 import { childrenPaths0, childrenPaths1, childrenPaths2, productDashboardDataBasePaths, productDashboardPaths, productPaths, productsDashboardPaths, productsPaths } from "../utils/functionV2";
 import { useGetProductsFurniture, useGetProductsGift, useGetProductsJeweler, useGetProductsTeddy, useGetSite } from "../react-query/reactQuery";
 import { ProductOverviewDashboard } from "../components/productOverviewDashboard";
+import { Login } from "../components/login";
+import Nextauth from "../pages/api/auth/[...nextauth]";
 
 interface Routes {
 }
@@ -19,8 +21,8 @@ export const Routes: FC<Routes> = ({  }) => {
 
   // console.log(productPaths(furnitures!, 'furniture'));
   // console.log(productsPaths({furnitures, gifts, teddys, jewelers}, site!));
-  console.log(productsPaths({furnitures, gifts, teddys, jewelers}, site!));
-  console.log(productsDashboardPaths({furnitures, gifts, teddys, jewelers}, site!));
+  // console.log(productsPaths({furnitures, gifts, teddys, jewelers}, site!));
+  // console.log(productsDashboardPaths({furnitures, gifts, teddys, jewelers}, site!));
   
   switch (asPath) {
     case childrenPaths0(site!).find(data => data === asPath):
@@ -36,6 +38,10 @@ export const Routes: FC<Routes> = ({  }) => {
     // case productPaths(teddys!, 'teddy').find(data => data === asPath):
     //   return <ProductOverview site={site!}/>
 
+    case '/auth/login':
+      return <Login />
+    // case '/auth/login?callbackUrl=http%3A%2F%2Flocalhost%3A3000%2Fauth%2Flogin&error=OAuthCallback':
+    //   return <Nextauth />
     case '/dashboard/products':
       return <ProductDashboard  site={site!}/>
     case productDashboardDataBasePaths(site!).find(data => data === asPath):

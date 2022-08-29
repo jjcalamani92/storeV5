@@ -34,7 +34,7 @@ export const ProductDashboard:FC<ProductDashboard> = ({site}) => {
     // },
   ]
   const { asPath } = useRouter()
-console.log(site);
+// console.log(site);
 
   return (
     <>

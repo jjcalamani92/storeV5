@@ -12,6 +12,7 @@ import { getQuery } from '../utils/function'
 import { children0, childrens0, paths, seoV2 } from '../utils/functionV2';
 import { ProductsV2, ProductV2 } from '../interfaces/ecommerceV2';
 import { dehydrate, QueryClient } from '@tanstack/react-query';
+import { getSession } from 'next-auth/react'
 
 interface Props {
   
@@ -34,6 +35,10 @@ const Slug: FC<Props> = () => {
         <Routes />
       </LayoutDashboard>
       :
+      query.slug && query.slug[0] === "auth" 
+      ?
+        <Routes />
+      :
       <LayoutPages seo={seoV2(site!, asPath, products)!} site={site!}>
         <Routes />
       </LayoutPages>
@@ -53,8 +58,8 @@ export const getStaticPaths: GetStaticPaths = async () => {
 }
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-  const { slug = [] } = params as { slug: string[] }
 
+  const { slug = [] } = params as { slug: string[] }
   const _id = process.env.API_SITE!
   const site = process.env.API_SITE
 
@@ -112,6 +117,9 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   }
 
   // const { gifts } = await graphQLClient.request(GIFTS, { site: process.env.API_SITE })
+  // const session = await getSession({req})
+  // console.log('session', session);
+  
   return {
     props: {
       dehydratedState: dehydrate(queryClient),
