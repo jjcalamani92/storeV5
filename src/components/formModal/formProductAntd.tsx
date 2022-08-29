@@ -70,14 +70,22 @@ export const ModalProductAntd: FC<Props> = ({ openMP, setOpenMP, children, produ
         timer: 1500
       })
       let UPDATE
+      let PRODUCTS
+
       if (query.slug![2] ==='furniture') {
         UPDATE = UPDATE_FURNITURE_PRODUCT
+        PRODUCTS = 'get-product-furniture-by-slug'
+
       } else {
         UPDATE = UPDATE_GIFT_PRODUCT
+        PRODUCTS = 'get-product-gift-by-slug'
+
       }
       await graphQLClientP.request(UPDATE, { _id: product._id, input: data })
 
       replace(`${getURL(asPath)}/${slug(values.name)}`)
+      queryClient.invalidateQueries([PRODUCTS])
+
       // console.log('update', data);
       
     } else {
