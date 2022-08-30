@@ -14,6 +14,7 @@ const nextConfig = {
 		GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
 		MONGO_URL: process.env.MONGO_URL,
 		PORT: process.env.PORT,
+		NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
 	},
 	images: {
 		// loader: 'cloudinary',
