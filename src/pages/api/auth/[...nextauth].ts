@@ -3,6 +3,8 @@ import Credentials from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 import { dbUsers } from "../../../db";
 import jwt from "jsonwebtoken"
+import Cookies from "js-cookie";
+import { getCsrfToken } from "next-auth/react";
 
 export default NextAuth({
   // Configure one or more authentication providers
@@ -43,10 +45,12 @@ export default NextAuth({
     strategy: 'jwt',
     updateAge: 86400,
   },
+  
 
   //Callbacks
   callbacks: {
     async jwt({token, account, user}) {
+      
       if (account) {
         token.accessToken = account.access_token;
         switch( account.type ){
@@ -55,14 +59,19 @@ export default NextAuth({
           break
           case 'credentials':
             token.user = user;
-          break
+            break
+          }
         }
-      }
+        // console.log('"token":',{token, account, user});
       return token
     },
     async session({session, token, user}) {
-      session.accessToken = token.accessToken;
-      session.user = token.user as any
+      session.accessToken = token;
+      session.user = token.user as any;
+      // Cookies.set('token', jwt.sign(getCsrfToken.user, 'secret'));
+      // response.setHeader('Set-Cookie', session.user);
+      // console.log('"session":', {token, session, user});
+
       return  session
     }
   }

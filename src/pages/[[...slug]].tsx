@@ -25,7 +25,7 @@ const Slug: FC<Props> = () => {
   const { data: jewelers  } = useGetProductsJeweler(process.env.API_SITE!);
   const products = {furnitures, gifts, teddys, jewelers}
   const { data: session, status } = useSession()
-  // console.log(session);
+  console.log(session);
 
   return (
     <>
