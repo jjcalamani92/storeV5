@@ -46,7 +46,7 @@ export const ProductOverviewDashboard: FC<ProductOverviewDashboard> = ({ site })
 						<HeadingDashboardProduct title='Product Edit' product={product} site={site} />
 						: <BreadcrumbComponent route={getProductRoute(site, product)} />
 				}
-				<div className=" py-0 px-4 sm:px-0 lg:max-w-7xl lg:py-0 lg:px-0 grid grid-cols-1 lg:gap-6 lg:grid-cols-5">
+				<div className=" py-0 px-0 sm:px-0 lg:max-w-7xl lg:py-0 lg:px-0 grid grid-cols-1 lg:gap-6 lg:grid-cols-5">
 					<div className="col-span-3" >
 						{/* <SwiperDetail image={product.article.image} /> */}
 						<SwiperPaginationDynamic images={product?.article.image} />

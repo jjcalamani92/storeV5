@@ -2,6 +2,7 @@ import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 import { dbUsers } from "../../../db";
+import jwt from "jsonwebtoken"
 
 export default NextAuth({
   // Configure one or more authentication providers
@@ -9,13 +10,13 @@ export default NextAuth({
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID as string,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
-      authorization: {
-        params: {
-          prompt: "consent",
-          access_type: "offline",
-          response_type: "code"
-        }
-      }
+      // authorization: {
+      //   params: {
+      //     prompt: "consent",
+      //     access_type: "offline",
+      //     response_type: "code"
+      //   }
+      // }
     }),
     Credentials({
       name: "Custom Login",
@@ -27,8 +28,7 @@ export default NextAuth({
           placeholder: " 123fgt",
         },
       },
-      async authorize(credentials) {
-        // console.log('hola')
+      async authorize(credentials) {   
         return await dbUsers.checkUserEmailPassword(credentials!.email, credentials!.password)
       }
     }),
@@ -43,6 +43,7 @@ export default NextAuth({
     strategy: 'jwt',
     updateAge: 86400,
   },
+
   //Callbacks
   callbacks: {
     async jwt({token, account, user}) {

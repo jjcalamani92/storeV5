@@ -9,7 +9,7 @@ import MoreProduct from "./moreProducts";
 import { BreadcrumbComponent } from "./antd/breadcrumb";
 import { getProduct, getProductRoute } from "../utils/functionV2";
 import { SiteV2 } from "../interfaces/siteV2";
-import { useGetProductFurnitureBySlug, useGetProductGiftBySlug } from "../react-query/reactQuery";
+import { useGetProductFurnitureBySlug, useGetProductGiftBySlug, useGetProductJewelerBySlug, useGetProductTeddyBySlug } from "../react-query/reactQuery";
 import { ProductV2 } from "../interfaces/ecommerceV2";
 
 interface ProductOverview {
@@ -20,13 +20,21 @@ export const ProductOverview: FC<ProductOverview> = ({ site }) => {
 	const { asPath, query } = useRouter()
   const { data:furniture } = useGetProductFurnitureBySlug(query.slug![2]);
   const { data:gift } = useGetProductGiftBySlug(query.slug![2]);
-	let product: ProductV2
+	const { data:teddy } = useGetProductTeddyBySlug(query.slug![2]);
+  const { data:jeweler } = useGetProductJewelerBySlug(query.slug![2]);
+	let product!: ProductV2
+  if (query.slug![1] === 'jeweler') {
+    product = jeweler!
+  } else 
+  if (query.slug![1] === 'teddy') {
+    product = teddy!
+  } else 
   if (query.slug![1] === 'furniture') {
     product = furniture!
-  } else {
+  } else 
+	if (query.slug![1] === 'gift') {
     product = gift!
   }
-	// const product= furniture!;
 
 
 	return (
@@ -37,7 +45,7 @@ export const ProductOverview: FC<ProductOverview> = ({ site }) => {
 						<HeadingDashboardProduct title='Product Edit' product={product} site={site} />
 						: <BreadcrumbComponent route={getProductRoute(site, product)} />
 				}
-				<div className=" py-0 px-4 sm:px-0 lg:max-w-7xl lg:py-0 lg:px-0 grid grid-cols-1 lg:gap-6 lg:grid-cols-5">
+				<div className=" py-0 px-0 sm:px-0 lg:max-w-7xl lg:py-0 lg:px-0 grid grid-cols-1 lg:gap-6 lg:grid-cols-5">
 					<div className="col-span-3" >
 						{/* <SwiperDetail image={product.article.image} /> */}
 						<SwiperPaginationDynamic images={product?.article.image} />

@@ -1,40 +1,40 @@
-import { Site } from "../interfaces/siteV1";
-import { ParsedUrlQuery } from "querystring";
-import { Product } from "../interfaces/ecommerceV1";
 import { Option } from "../components/formModal/formProduct";
-import { getQuery, slug } from "./function";
-import { SiteV2 } from "../interfaces/siteV2";
+import { getQuery } from "./function";
+import { ChildrenV2, SiteV2 } from "../interfaces/siteV2";
 import { ProductV2, ProductsV2 } from "../interfaces/ecommerceV2";
-import { graphQLClientP } from "../react-query/graphQLClient";
-import { FURNITURIES } from "../graphql/query/ecommerceV2.query";
 
 export const childrens0 = (site: SiteV2) => {
   return site?.children;
 };
+
 export const childrens1 = (site: SiteV2) => {
   return childrens0(site)
     .map((data0) => data0?.children)
     .filter((data) => data !== null)
     .flat(1);
 };
+
 export const childrens2 = (site: SiteV2) => {
   return childrens1(site)
     .map((data1) => data1?.children)
     .filter((data) => data !== null)
     .flat(2);
 };
+
 export const childrens3 = (site: SiteV2) => {
   return childrens2(site)
     .map((data2) => data2?.children)
     .filter((data) => data !== null)
     .flat(3);
 };
+
 export const childrens4 = (site: SiteV2) => {
   return childrens3(site)
     .map((data3) => data3?.children)
     .filter((data) => data !== null)
     .flat(4);
 };
+
 export const childrens5 = (site: SiteV2) => {
   return childrens4(site)
     .map((data4) => data4?.children)
@@ -59,12 +59,55 @@ export const children3 = (site: SiteV2, asPath: string) => {
   const query = getQuery(asPath);
   return childrens3(site)?.find((data) => data?.seo.href === query![3]);
 };
+
+export const children0Dashboard = (site: SiteV2, asPath: string) => {
+  const query = getQuery(asPath);
+  return childrens0(site)?.find((data) => data?.slug === query![2]);
+};
+export const children1Dashboard = (site: SiteV2, asPath: string) => {
+  const query = getQuery(asPath);
+  return childrens1(site)?.find((data) => data?.slug === query![3]);
+};
+export const children2Dashboard = (site: SiteV2, asPath: string) => {
+  const query = getQuery(asPath);
+  return childrens2(site)?.find((data) => data?.slug === query![4]);
+};
+
 // export const children4 = (site: Site, query: ParsedUrlQuery) => {
 //   return childrens4(site)?.find((data) => data?.head.href === query.slug![4]);
 // };
 // export const children5 = (site: Site, query: ParsedUrlQuery) => {
 //   return childrens5(site)?.find((data) => data?.head.href === query.slug![5]);
 // };
+
+export const getChildrenDashboard = (site: SiteV2, asPath: string) => {
+  const query = getQuery(asPath);
+  if (query.length === 5) {
+    return children2Dashboard(site, asPath)!;
+  } else 
+  if (query.length === 4) {
+    return children1Dashboard(site, asPath)!;
+  } else 
+  if (query.length === 3) {
+    return children0Dashboard(site, asPath)!;
+  } else 
+  if (query.length === 2) {
+    return {
+      uid:"q",
+      seo: {
+        name: site.data.name,
+        href: "#",
+        description: site.data.description,
+        image:{
+          src: "src",
+          alt:"alt"
+        }
+      },
+      slug:"slug",
+      type:"root",
+      children: site.children};
+  }
+};
 
 export const seoV2 = (site: SiteV2, asPath: string, products: ProductsV2) => {
   const query = getQuery(asPath);
@@ -134,6 +177,23 @@ export const childrenPaths2 = (site: SiteV2) => {
     .flat(2)
     .filter((data) => typeof data !== "undefined");
 };
+
+export const childrenPaths0Dashboard = (site: SiteV2) => {
+  const pathsChildren = childrens0(site)!.map((data0) => [
+    `/dashboard/pages/${data0.slug}`,
+    data0.children && 
+    data0.children.map((data1) => [
+      `/dashboard/pages/${data0.slug}/${data1.slug}`,
+      data1.children && 
+    data1.children.map((data2) => [
+      `/dashboard/pages/${data0.slug}/${data1.slug}/${data2.slug}`
+    ])
+    ])
+  ]);
+
+  return [...pathsChildren, '/dashboard/pages'].flat(5).filter((data) =>  data !== null)
+};
+
 export const paths = (site: SiteV2) => {
   return site.children
     .map((data0) => [
@@ -263,19 +323,23 @@ export const productsDashboardPaths = (products: ProductsV2, site: SiteV2) => {
   const productsPaths = site.dataBase!.map((data) =>
     data.type === "furniture"
       ? products.furnitures!.map(
-          (product) => `/dashboard/products/${data.type}/${product.article.slug}`
+          (product) =>
+            `/dashboard/products/${data.type}/${product.article.slug}`
         )
       : data.type === "gift"
       ? products.gifts!.map(
-          (product) => `/dashboard/products/${data.type}/${product.article.slug}`
+          (product) =>
+            `/dashboard/products/${data.type}/${product.article.slug}`
         )
       : data.type === "teddy"
       ? products.teddys!.map(
-          (product) => `/dashboard/products/${data.type}/${product.article.slug}`
+          (product) =>
+            `/dashboard/products/${data.type}/${product.article.slug}`
         )
       : data.type === "jeweler"
       ? products.jewelers!.map(
-          (product) => `/dashboard/products/${data.type}/${product.article.slug}`
+          (product) =>
+            `/dashboard/products/${data.type}/${product.article.slug}`
         )
       : null
   );
@@ -286,6 +350,7 @@ export const productsDashboardPaths = (products: ProductsV2, site: SiteV2) => {
 export const productDashboardDataBasePaths = (site: SiteV2) => {
   return site.dataBase.map((data) => `/dashboard/products/${data.type}`);
 };
+
 export const productDashboardPaths = (type: string, products: ProductV2[]) => {
   return products.map(
     (data) => `/dashboard/products/${type}/${data.article.slug}`

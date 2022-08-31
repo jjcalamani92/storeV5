@@ -26,20 +26,20 @@ const Slug: FC<Props> = () => {
   const products = {furnitures, gifts, teddys, jewelers}
   const { data: session, status } = useSession()
   // console.log(session);
-  
+
   return (
     <>
       {
       query.slug && query.slug[0] === "dashboard"   
       ?
-      (
-        status === "authenticated" ?
         <LayoutDashboard >
           <Routes />
         </LayoutDashboard>
-        :
-        <Page404 />
-      )
+      // (
+      //   status === "authenticated" ?
+      //   :
+      //   <Page404 />
+      // )
       :
       query.slug && query.slug[0] === "auth" 
       ?

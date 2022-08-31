@@ -16,7 +16,7 @@ ConfigProvider.config({
   },
 });
 
-function MyApp({ Component, pageProps }: AppProps) {
+function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   const [queryClient] = useState(() => new QueryClient({
     defaultOptions: {
       queries: {
@@ -25,7 +25,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     },
   }))
   return (
-    <SessionProvider>
+    <SessionProvider session={session}>
 
       <AuthProvider>
         <QueryClientProvider client={queryClient}>
@@ -45,10 +45,10 @@ function MyApp({ Component, pageProps }: AppProps) {
 //   console.log(metric)
 // }
 
-// export function reportWebVitals(metric: NextWebVitalsMetric) {
-//   if (metric.label === 'web-vital') {
-//     // console.log(metric) // The metric object ({ id, name, startTime, value, label }) is logged to the console
-//   }
-// }
+export function reportWebVitals(metric: NextWebVitalsMetric) {
+  if (metric.label === 'web-vital') {
+    // console.log(metric) // The metric object ({ id, name, startTime, value, label }) is logged to the console
+  }
+}
 
 export default MyApp
