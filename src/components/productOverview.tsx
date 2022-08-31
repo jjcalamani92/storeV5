@@ -18,6 +18,8 @@ interface ProductOverview {
 
 export const ProductOverview: FC<ProductOverview> = ({ site }) => {
 	const { asPath, query } = useRouter()
+	console.log(asPath);
+	
   const { data:furniture } = useGetProductFurnitureBySlug(query.slug![2]);
   const { data:gift } = useGetProductGiftBySlug(query.slug![2]);
 	const { data:teddy } = useGetProductTeddyBySlug(query.slug![2]);
@@ -148,7 +150,7 @@ export const ProductOverview: FC<ProductOverview> = ({ site }) => {
 								</button>65525049
 							</form> */}
 							<a
-								href={`https://wa.me/59163039181?text=Hola%20me%20interesa%20este%20producto:%20https://terrakota.vercel.app/detalles/${product.article.slug}`}
+								href={`https://wa.me/59163039181?text=Hola%20me%20interesa%20este%20producto:%20https://regalosterrakota.vercel.app${asPath}`}
 								target={'blank'}
 								className="mt-3 w-full bg-pink-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-pink-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-400"
 							>

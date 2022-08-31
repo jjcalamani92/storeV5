@@ -111,15 +111,25 @@ export const getChildrenDashboard = (site: SiteV2, asPath: string) => {
 
 export const seoV2 = (site: SiteV2, asPath: string, products: ProductsV2) => {
   const query = getQuery(asPath);
+  if (productPaths(products.jewelers!, "jeweler").includes(asPath)) {
+    return getProduct(products.jewelers!, asPath)?.article.seo;
+  } else 
+  if (productPaths(products.teddys!, "teddy").includes(asPath)) {
+    return getProduct(products.teddys!, asPath)?.article.seo;
+  } else 
   if (productPaths(products.furnitures!, "furniture").includes(asPath)) {
     return getProduct(products.furnitures!, asPath)?.article.seo;
-  } else if (productPaths(products.gifts!, "gift").includes(asPath)) {
+  } else 
+  if (productPaths(products.gifts!, "gift").includes(asPath)) {
     return getProduct(products.gifts!, asPath)?.article.seo;
-  } else if (query[3]) {
+  } else 
+  if (query[3]) {
     return children3(site, asPath)?.seo;
-  } else if (query[2]) {
+  } else 
+  if (query[2]) {
     return children2(site, asPath)?.seo;
-  } else if (query[1]) {
+  } else 
+  if (query[1]) {
     return children1(site, asPath)?.seo;
   } else {
     return children0(site, asPath)?.seo;
