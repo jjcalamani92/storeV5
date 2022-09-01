@@ -18,7 +18,7 @@ export const Routes: FC<Routes> = ({  }) => {
   const { data: gifts  } = useGetProductsGift(process.env.API_SITE!);
   const { data: teddys  } = useGetProductsTeddy(process.env.API_SITE!);
   const { data: jewelers  } = useGetProductsJeweler(process.env.API_SITE!);
-  const { data: session, status } = useSession()
+  // const { data: session, status } = useSession()
   // console.log(children0Dashboard(site!, asPath));
 
   // console.log(children0Dashboard(site!, asPath));

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useRouter } from 'next/router';
 import { signIn, getProviders } from "next-auth/react";
+import axios from "axios";
 // import { isEmail } from '../../src/utils/validation';
 
 type FormData = {
@@ -10,7 +11,7 @@ type FormData = {
 };
 
 export const Login = () => {
-	const router = useRouter()
+	const {push} = useRouter()
 	const [showError, setShowError] = useState(false)
 	const [providers, setProviders] = useState<any>({})
 	const { register, handleSubmit, watch, formState: { errors } } = useForm<FormData>();
@@ -21,7 +22,11 @@ export const Login = () => {
 	}, [])
 	const onLoginSubmit = async ({ email, password }: FormData) => {
 		// setShowError(false)
-		await signIn('credentials', { email, password })
+		console.log(email, password);
+		const response = await axios.post('/api/auth/login', {email: email, password: password})
+    // console.log(response);
+		push('/dashboard/products')
+		// await signIn('credentials', { email, password })
 	};
 	return (
 		<div
@@ -37,7 +42,7 @@ export const Login = () => {
 					>
 						Iniciar Sesión
 					</p>
-					<button aria-label="Continuar con google" className="focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-gray-700 py-3.5 px-4 border rounded-lg border-gray-700 flex items-center w-full mt-10"
+					{/* <button aria-label="Continuar con google" className="focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-gray-700 py-3.5 px-4 border rounded-lg border-gray-700 flex items-center w-full mt-10"
 					onClick={ () => signIn(providers.google.id, {callbackUrl:'http://localhost:3000/dashboard/products'}) }
 					>
 						<svg width={19} height={20} viewBox="0 0 19 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -47,7 +52,7 @@ export const Login = () => {
 							<path d="M9.68807 3.85336C11.5073 3.85336 12.7344 4.66168 13.4342 5.33718L16.1684 2.59107C14.4892 0.985496 12.3039 0 9.68807 0C5.89885 0 2.62637 2.23672 1.0332 5.49214L4.16573 7.99466C4.95162 5.59183 7.12608 3.85336 9.68807 3.85336Z" fill="#EB4335" />
 						</svg>
 						<p className="text-base font-medium ml-4 text-gray-700">Continuar con Google</p>
-					</button>
+					</button> */}
 					<form onSubmit={handleSubmit(onLoginSubmit)}>
 					
 						<div className="w-full flex items-center justify-between py-5">

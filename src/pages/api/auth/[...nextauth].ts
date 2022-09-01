@@ -1,79 +1,17 @@
-import NextAuth from "next-auth";
-import Credentials from "next-auth/providers/credentials";
-import GoogleProvider from "next-auth/providers/google";
-import { dbUsers } from "../../../db";
+import type { NextAuthOptions } from "next-auth"
+import NextAuth from "next-auth"
 import jwt from "jsonwebtoken"
-import Cookies from "js-cookie";
-import { getCsrfToken } from "next-auth/react";
 
-export default NextAuth({
-  // Configure one or more authentication providers
-  providers: [
-    GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID as string,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
-      // authorization: {
-      //   params: {
-      //     prompt: "consent",
-      //     access_type: "offline",
-      //     response_type: "code"
-      //   }
-      // }
-    }),
-    Credentials({
-      name: "Custom Login",
-      credentials: {
-        email: { label: "email", type: "email", placeholder: " hola@hola.com" },
-        password: {
-          label: "password",
-          type: "password",
-          placeholder: " 123fgt",
-        },
-      },
-      async authorize(credentials) {   
-        return await dbUsers.checkUserEmailPassword(credentials!.email, credentials!.password)
-      }
-    }),
-    // ...add more providers here
-  ],
-  pages:{
-    signIn: '/auth/login',
-    newUser: '/auth/register'
-  },
-  session: {
-    maxAge: 2592000,
-    strategy: 'jwt',
-    updateAge: 86400,
-  },
-  
-
-  //Callbacks
-  callbacks: {
-    async jwt({token, account, user}) {
-      
-      if (account) {
-        token.accessToken = account.access_token;
-        switch( account.type ){
-          case 'oauth':
-            token.user = await dbUsers.oAUthToDbUser(user?.email || '', user?.name || '', user?.image|| '')
-          break
-          case 'credentials':
-            token.user = user;
-            break
-          }
-        }
-        // console.log('"token":',{token, account, user});
-      return token
+export const authOptions: any = {
+  providers: [],
+  jwt: {
+    async encode({ secret, token }:any) {
+      return jwt.sign(token!, secret)
     },
-    async session({session, token, user}) {
-      session.accessToken = token;
-      session.user = token.user as any;
-      // Cookies.set('token', jwt.sign(getCsrfToken.user, 'secret'));
-      // response.setHeader('Set-Cookie', session.user);
-      // console.log('"session":', {token, session, user});
+    async decode({ secret, token }:any) {
+      return jwt.verify(token, secret)
+    },
+  },
+}
 
-      return  session
-    }
-  }
-});
-
+export default NextAuth(authOptions)

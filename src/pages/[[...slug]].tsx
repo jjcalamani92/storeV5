@@ -1,4 +1,4 @@
-import type { GetStaticPaths, GetStaticProps } from 'next'
+import type { GetServerSideProps, GetStaticPaths, GetStaticProps } from 'next'
 import { useRouter } from 'next/router'
 import { FC } from 'react'
 import { FURNITURE_BY_SLUG, FURNITURIES, GIFTS, GIFT_BY_SLUG, JEWELERS, JEWELER_BY_SLUG, TEDDYS, TEDDY_BY_SLUG } from '../graphql/query/ecommerceV2.query'
@@ -9,7 +9,7 @@ import { getSite, useGetProductsFurniture, useGetProductsGift, useGetProductsJew
 
 import { children0, childrens0, paths, seoV2 } from '../utils/functionV2';
 import { dehydrate, QueryClient } from '@tanstack/react-query';
-import { useSession } from 'next-auth/react';
+import { getSession, useSession } from 'next-auth/react';
 import { Page404 } from '../components'
 
 interface Props {
@@ -24,8 +24,9 @@ const Slug: FC<Props> = () => {
   const { data: teddys  } = useGetProductsTeddy(process.env.API_SITE!);
   const { data: jewelers  } = useGetProductsJeweler(process.env.API_SITE!);
   const products = {furnitures, gifts, teddys, jewelers}
-  const { data: session, status } = useSession()
-  console.log(session);
+  // const { data: session, status } = useSession()
+  // console.log(useSession());
+
 
   return (
     <>
@@ -35,11 +36,6 @@ const Slug: FC<Props> = () => {
         <LayoutDashboard >
           <Routes />
         </LayoutDashboard>
-      // (
-      //   status === "authenticated" ?
-      //   :
-      //   <Page404 />
-      // )
       :
       query.slug && query.slug[0] === "auth" 
       ?
@@ -63,9 +59,10 @@ export const getStaticPaths: GetStaticPaths = async () => {
   };
 }
 
-export const getStaticProps: GetStaticProps = async ({params}) => {
-  // const { params } = ctx
-  // console.log(ctx);
+export const getStaticProps: GetStaticProps = async (context: any) => {
+  const { params } = context
+  
+  
   
   const { slug = [] } = params as { slug: string[] }
   const _id = process.env.API_SITE!
@@ -132,4 +129,5 @@ export const getStaticProps: GetStaticProps = async ({params}) => {
     revalidate: 86400,
   }
 }
+
 export default Slug
